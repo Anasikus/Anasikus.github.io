@@ -1,0 +1,363 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  position: relative;
+
+  padding: 180px 0 220px;
+
+  overflow: hidden;
+
+  background: $color-bg-secondary;
+}
+
+.container {
+  @include container;
+}
+
+.heading {
+  max-width: 900px;
+
+  margin-bottom: 180px;
+}
+
+.label {
+  display: block;
+
+  margin-bottom: 40px;
+
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.18em;
+}
+
+.heading h2 {
+  margin: 0;
+
+  font-size: clamp(
+    52px,
+    8vw,
+    120px
+  );
+
+  line-height: 0.92;
+
+  letter-spacing: -0.05em;
+}
+
+.heading p {
+  max-width: 520px;
+
+  margin-top: 40px;
+
+  color: $color-text-secondary;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+.timeline {
+  position: relative;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+}
+
+.line {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  left: 120px;
+
+  width: 1px;
+
+  background: $color-border;
+
+  overflow: hidden;
+}
+
+.lineProgress {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: calc(100% - 10px);
+
+  background:
+    linear-gradient(
+      to bottom,
+      $color-purple-light,
+      $color-purple,
+      rgba(124, 58, 237, 0.2)
+    );
+
+  transform-origin: top center;
+
+  transform: scaleY(0);
+}
+
+.item {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns: 120px 1fr;
+
+  min-height: 360px;
+
+  opacity: 0;
+}
+.item:hover {
+  .content {
+    transform: translateX(12px);
+  }
+
+  .period {
+    letter-spacing: 0.22em;
+  }
+}
+.marker {
+  position: relative;
+
+  z-index: 3;
+
+  display: flex;
+
+  justify-content: flex-start;
+
+  opacity: 0;
+
+  transform: scale(0.5);
+
+  span {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid $color-border;
+
+    border-radius: 50%;
+
+    background: $color-bg-secondary;
+
+    color: $color-text-secondary;
+
+    font-size: 10px;
+
+    transition:
+      border-color 0.5s ease,
+      color 0.5s ease,
+      box-shadow 0.5s ease,
+      transform 0.5s ease;
+  }
+}
+
+.markerActive span {
+  border-color: $color-purple-light;
+
+  color: $color-purple-light;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(124, 58, 237, 0.15),
+    0 0 35px
+      rgba(124, 58, 237, 0.4);
+
+  transform: scale(1.08);
+}
+
+.content {
+  padding:
+    0
+    0
+    120px
+    80px;
+
+  transition:
+    transform 0.6s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+.period {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.15em;
+
+  transition:
+    letter-spacing 0.5s ease;
+}
+.content h3 {
+  max-width: 750px;
+
+  margin: 0 0 28px;
+
+  font-size: clamp(
+    30px,
+    4vw,
+    56px
+  );
+
+  line-height: 1;
+
+  letter-spacing: -0.035em;
+}
+
+.content p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: $color-text-secondary;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+}
+
+.technologies {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 32px;
+
+  span {
+    padding: 8px 14px;
+
+    border: 1px solid $color-border;
+
+    border-radius: 100px;
+
+    color: $color-text-secondary;
+
+    font-size: 11px;
+
+    transition:
+      border-color 0.35s ease,
+      color 0.35s ease,
+      background 0.35s ease,
+      transform 0.35s ease,
+      box-shadow 0.35s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+
+      border-color: $color-purple-light;
+
+      background:
+        rgba(124, 58, 237, 0.1);
+
+      color: $color-white;
+
+      box-shadow:
+        0 8px 30px
+        rgba(124, 58, 237, 0.12);
+    }
+  }
+}
+.lineEnd {
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  border:
+    1px solid
+    $color-purple-light;
+
+  border-radius: 50%;
+
+  background:
+    $color-bg-secondary;
+
+  transform:
+    translateX(-50%);
+
+  box-shadow:
+    0 0 0 4px
+      rgba(124, 58, 237, 0.08),
+    0 0 25px
+      rgba(124, 58, 237, 0.35);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding:
+      120px
+      0
+      160px;
+  }
+
+  .heading {
+    margin-bottom: 100px;
+  }
+
+  .heading h2 {
+    font-size: 54px;
+  }
+
+  .heading p {
+    font-size: 16px;
+  }
+
+  .line {
+    left: 20px;
+  }
+
+  .item {
+    grid-template-columns: 40px 1fr;
+
+    min-height: 0;
+  }
+
+  .marker {
+    span {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .content {
+    padding:
+      0
+      0
+      100px
+      40px;
+  }
+
+  .content h3 {
+    font-size: 34px;
+  }
+
+  .content p {
+    font-size: 15px;
+  }
+}

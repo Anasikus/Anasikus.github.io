@@ -1,0 +1,56 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: 100;
+
+  width: 100%;
+
+  padding: 24px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include container;
+}
+
+.logo {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.navigation {
+  display: flex;
+  gap: 32px;
+
+  a {
+    color: $color-text-secondary;
+
+    font-size: 14px;
+
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+}
+
+.github {
+  color: $color-text;
+
+  font-size: 14px;
+
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-purple-light;
+  }
+}

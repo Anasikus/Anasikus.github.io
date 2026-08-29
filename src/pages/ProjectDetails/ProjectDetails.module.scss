@@ -1,0 +1,133 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.page {
+  min-height: 100vh;
+
+  padding: 160px 0 120px;
+}
+
+.container {
+  @include container;
+}
+
+.back {
+  display: inline-block;
+
+  margin-bottom: 100px;
+
+  color: $color-text-secondary;
+
+  font-size: 14px;
+
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-white;
+  }
+}
+
+.category {
+  margin-bottom: 24px;
+
+  color: $color-purple-light;
+
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.container h1 {
+  margin-bottom: 48px;
+
+  font-size: clamp(64px, 12vw, 180px);
+
+  line-height: 0.85;
+
+  letter-spacing: -0.06em;
+}
+
+.description {
+  max-width: 700px;
+
+  margin-bottom: 48px;
+
+  color: $color-text-secondary;
+
+  font-size: 20px;
+  line-height: 1.7;
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 48px;
+
+  span {
+    padding: 10px 16px;
+
+    border: 1px solid $color-border;
+    border-radius: 100px;
+
+    color: $color-text-secondary;
+
+    font-size: 13px;
+  }
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+
+  margin-bottom: 120px;
+
+  a {
+    padding: 14px 22px;
+
+    border: 1px solid $color-border;
+    border-radius: 100px;
+
+    transition:
+      background $transition-fast,
+      border-color $transition-fast;
+
+    &:hover {
+      background: $color-purple;
+      border-color: $color-purple;
+    }
+  }
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+
+  gap: 32px;
+
+  img {
+    width: 100%;
+
+    display: block;
+
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-top: 130px;
+  }
+
+  .back {
+    margin-bottom: 70px;
+  }
+
+  .links {
+    flex-direction: column;
+
+    margin-bottom: 80px;
+  }
+}

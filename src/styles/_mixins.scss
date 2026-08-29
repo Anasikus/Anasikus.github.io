@@ -1,0 +1,31 @@
+@use "./variables" as *;
+
+@mixin container {
+  width: min(100% - 40px, $container-width);
+
+  margin-inline: auto;
+}
+
+@mixin flex-center {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin absolute-center {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+@mixin section {
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding: 120px 0;
+}

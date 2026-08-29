@@ -1,0 +1,51 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.page {
+  min-height: 100vh;
+
+  padding: 180px 0 120px;
+}
+
+.container {
+  @include container;
+}
+
+.label {
+  margin-bottom: 60px;
+
+  color: $color-purple-light;
+
+  font-size: 13px;
+  letter-spacing: 0.15em;
+}
+
+.container h1 {
+  margin-bottom: 100px;
+
+  font-size: clamp(64px, 10vw, 150px);
+
+  line-height: 0.9;
+
+  letter-spacing: -0.05em;
+}
+
+.projects {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 80px 32px;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-top: 140px;
+  }
+
+  .projects {
+    grid-template-columns: 1fr;
+
+    gap: 60px;
+  }
+}
