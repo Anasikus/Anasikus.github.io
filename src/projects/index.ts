@@ -5,6 +5,7 @@ import { togerher } from "./together"
 import { coffeeShop } from "./coffeeShop";
 import { shelkoPrint } from "./shelkoPrint";
 import { vizCard } from "./vizCard";
+import { collegeTour } from "./collegeTour";
 
 export const projects: Project[] = [
   flowersLife,
@@ -12,4 +13,5 @@ export const projects: Project[] = [
   coffeeShop,
   shelkoPrint,
   vizCard,
+  collegeTour,
 ];

@@ -1,25 +1,94 @@
 export interface ExperienceItem {
   period: string;
+  startDate: string;
+  endDate: string;
   title: string;
+  position: string;
   description: string;
   technologies: string[];
 }
 
 export const experience: ExperienceItem[] = [
   {
-    period: "2025 — Present",
+    period: "09.2024 — 10.2024",
+    startDate: "2024-09",
+    endDate: "2024-10",
 
-    title: "Full-stack Developer",
+    title: "Ареал",
+
+    position: "Стажёр Full-stack разработчик",
 
     description:
-      "Development of client-server web applications using React, TypeScript, Node.js and relational databases.",
+      "Стажировка в качестве Full-stack разработчика. Работа над веб-приложениями, участие в разработке клиентской и серверной частей проекта, работа с базой данных и системой контроля версий.",
 
     technologies: [
-      "React",
-      "TypeScript",
+      "Vue.js",
+      "PostgreSQL",
       "Node.js",
+      "GitHub",
+    ],
+  },
+
+  {
+    period: "06.2025 — 07.2025",
+    startDate: "2025-06",
+    endDate: "2025-07",
+
+    title: "НПК ЯрЛи",
+
+    position: "Практикант Full-stack разработчик",
+
+    description:
+      "Разработка Todo-приложения во время производственной практики в IT-отделе компании «ЯрЛи». Реализация клиентской и серверной частей приложения, работа с базой данных и системой контроля версий.",
+
+    technologies: [
+      "MongoDB",
+      "React",
+      "Node.js",
+      "GitHub",
+    ],
+  },
+
+  {
+    period: "09.2025 — 10.2025",
+    startDate: "2025-09",
+    endDate: "2025-10",
+
+    title: "Сайт-визитка",
+
+    position: "Full-stack разработчик",
+
+    description:
+      "Разработка сайта-визитки для преподавателя в рамках участия в конкурсе. Реализация клиентской и серверной частей проекта, работа с базой данных и пользовательским интерфейсом.",
+
+    technologies: [
       "MySQL",
-      "Git",
+      "PHP",
+      "JavaScript",
+      "HTML",
+      "CSS",
+    ],
+  },
+
+  {
+    period: "09.2025 — 02.2026",
+    startDate: "2025-09",
+    endDate: "2026-02",
+
+    title: "ШелкоПринт",
+
+    position: "Full-stack разработчик",
+
+    description:
+      "Разработка заказного веб-проекта. Работа над клиентской и серверной частями приложения, реализация функциональности, взаимодействие с базой данных и сопровождение проекта.",
+
+    technologies: [
+      "MySQL",
+      "PHP",
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "GitHub",
     ],
   },
 ];

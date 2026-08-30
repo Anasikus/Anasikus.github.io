@@ -1,0 +1,1388 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  position: relative;
+
+  padding: 200px 0 220px;
+
+  overflow: hidden;
+
+  background: $color-bg;
+}
+
+.container {
+  @include container;
+
+  width: 100%;
+  max-width: 100%;
+}
+
+.heading {
+  max-width: 1100px;
+
+  margin-bottom: 150px;
+}
+
+.label {
+  display: block;
+
+  margin-bottom: 40px;
+
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.18em;
+}
+
+.heading h2 {
+  margin: 0;
+
+  font-size:
+    clamp(
+      72px,
+      12vw,
+      180px
+    );
+
+  line-height: 0.85;
+
+  letter-spacing: -0.07em;
+}
+
+.heading p {
+  max-width: 560px;
+
+  margin-top: 45px;
+
+  color: $color-text-secondary;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+
+.timelineWrapper {
+  width: 100%;
+
+  overflow-x: hidden;
+
+  padding:
+    110px 0 150px;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    $color-purple
+    transparent;
+
+  overscroll-behavior-x: contain;
+}
+
+.timelineWrapper::-webkit-scrollbar {
+  height: 5px;
+}
+
+.timelineWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timelineWrapper::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+
+  background: $color-purple;
+}
+
+.timeline {
+  position: relative;
+
+  /*
+   * Небольшой отступ от краёв.
+   *
+   * Раньше шкала начиналась прямо от края.
+   */
+  width: calc(100% - 40px);
+
+  margin-left: 20px;
+
+  height: 600px;
+
+  max-width: calc(100% - 40px);
+}
+
+.timelineYears {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 0 4px;
+
+  box-sizing: border-box;
+
+  color: $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.15em;
+
+  pointer-events: none;
+}
+
+.timelineTrack {
+  position: absolute;
+
+  top: 75px;
+  left: 0;
+
+  width: 100%;
+
+  height: 500px;
+}
+
+/* =========================================================
+   FUTURE PATH
+   ========================================================= */
+
+.futurePath {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 300px;
+
+  overflow: visible;
+
+  pointer-events: none;
+}
+
+.futureDashedPath {
+  fill: none;
+
+  stroke: $color-border;
+
+  stroke-width: 1.2;
+
+  stroke-dasharray: 8 9;
+
+  stroke-linecap: round;
+
+  vector-effect: non-scaling-stroke;
+}
+
+/*
+ * Нормальное сердце.
+ *
+ * Оно теперь визуально читается именно как сердце,
+ * а не как случайный набор линий.
+ */
+.futureHeart {
+  fill: none;
+
+  stroke:
+    url(#futureGradient);
+
+  stroke-width: 1.4;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+
+  vector-effect:
+    non-scaling-stroke;
+
+  animation:
+    heartPulse
+    3s
+    ease-in-out
+    infinite;
+}
+
+/*
+ * Отдельная небольшая стрелка под сердцем.
+ */
+.futureArrow {
+  fill: none;
+
+  stroke:
+    url(#futureGradient);
+
+  stroke-width: 1.2;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+
+  vector-effect:
+    non-scaling-stroke;
+
+  opacity: 0.75;
+}
+
+/* =========================================================
+   EXPERIENCE ITEMS
+   ========================================================= */
+
+.experienceItem {
+  position: absolute;
+
+  left: 0;
+
+  width: 0;
+
+  height: 150px;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  /*
+   * Очень важно:
+   * сам контейнер НЕ является hover-зоной.
+   *
+   * Hover теперь определяется только
+   * через .experienceHitArea.
+   */
+  pointer-events: none;
+}
+
+.experienceItemActive {
+  z-index: 20;
+}
+
+/*
+ * ШелкоПринт визуально начинается с первой точки,
+ * но интерактивная область начинается со второй.
+ */
+.shellPrint {
+  pointer-events: none;
+}
+
+.websiteItem {
+  pointer-events: none;
+}
+
+/* =========================================================
+   HIT AREA
+   ========================================================= */
+
+.experienceHitArea {
+  position: absolute;
+
+  top: 15px;
+
+  height: 32px;
+
+  padding: 0;
+
+  border: 0;
+
+  outline: none;
+
+  background:
+    transparent;
+
+  cursor: pointer;
+
+  /*
+   * Именно кнопка отвечает за наведение.
+   */
+  pointer-events: auto;
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.itemDate {
+  position: absolute;
+
+  top: 0;
+
+  width: max-content;
+
+  color:
+    $color-purple-light;
+
+  font-size: 11px;
+
+  line-height: 1;
+
+  letter-spacing: 0.1em;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   EXPERIENCE LINE
+   ========================================================= */
+
+.itemLine {
+  position: absolute;
+
+  top: 30px;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  overflow: hidden;
+
+  border-radius: 100px;
+
+  /*
+   * Основная линия остаётся пунктирной.
+   */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(
+        168,
+        85,
+        247,
+        0.4
+      ) 0,
+      rgba(
+        168,
+        85,
+        247,
+        0.4
+      ) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+
+  pointer-events: none;
+}
+
+/*
+ * Активное заполнение.
+ *
+ * Для ШелкоПринта оно тоже занимает всю
+ * визуальную линию — от первой до третьей точки.
+ */
+.itemLine::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      $color-purple-light,
+      $color-purple,
+      #c084fc,
+      $color-purple-light
+    );
+
+  background-size:
+    250% 100%;
+
+  opacity: 0;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+}
+
+/*
+ * Теперь анимация запускается НЕ через :hover,
+ * а через React-класс.
+ */
+.experienceItemActive
+  .itemLine::after {
+  animation:
+    lineDraw
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+/* =========================================================
+   POINTS
+   ========================================================= */
+
+.itemPointStart,
+.itemPointEnd {
+  position: absolute;
+
+  top: 32px;
+
+  width: 12px;
+  height: 12px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    $color-purple-light;
+
+  border-radius: 50%;
+
+  background:
+    $color-bg;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.itemPointStart {
+  left: 0;
+}
+
+.itemPointEnd {
+  left: 100%;
+}
+
+.experienceItemActive
+  .itemPointStart,
+.experienceItemActive
+  .itemPointEnd {
+  border-color:
+    $color-purple-light;
+
+  background:
+    rgba(
+      168,
+      85,
+      247,
+      0.12
+    );
+
+  box-shadow:
+    0 0 0 5px
+      rgba(
+        124,
+        58,
+        237,
+        0.08
+      ),
+    0 0 25px
+      rgba(
+        124,
+        58,
+        237,
+        0.4
+      );
+}
+
+/* =========================================================
+   EXPERIENCE INFO
+   ========================================================= */
+
+.itemInfo {
+  position: absolute;
+
+  top: 60px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  width: max-content;
+
+  max-width: 500px;
+
+  pointer-events: none;
+}
+
+/*
+ * У ШелкоПринта left задаётся из TS:
+ * от второй точки.
+ *
+ * Поэтому текст автоматически оказывается
+ * между второй и третьей точкой.
+ */
+
+.itemTitle {
+  display: block;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 20px;
+
+  line-height: 1.1;
+
+  letter-spacing: -0.025em;
+
+  white-space: nowrap;
+
+  transform-origin:
+    left center;
+
+  transition:
+    color 0.35s ease,
+    transform 0.35s
+      cubic-bezier(
+        0.16,
+        1,
+        0.3,
+        1
+      );
+}
+
+.experienceItemActive
+  .itemTitle {
+  color:
+    $color-white;
+
+  transform:
+    scale(1.1);
+}
+
+.itemPosition {
+  display: block;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.38
+    );
+
+  font-size: 10px;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.08em;
+
+  text-transform:
+    uppercase;
+
+  white-space: nowrap;
+
+  transition:
+    color 0.3s ease;
+}
+
+.experienceItemActive
+  .itemPosition {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
+}
+
+/* =========================================================
+   NOW
+   ========================================================= */
+
+.now {
+  position: absolute;
+
+  top: 17px;
+  right: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color:
+    $color-purple-light;
+
+  font-size: 9px;
+
+  letter-spacing: 0.15em;
+
+  white-space: nowrap;
+}
+
+.now span {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    $color-purple-light;
+
+  box-shadow:
+    0 0 15px
+      rgba(
+        168,
+        85,
+        247,
+        0.8
+      );
+}
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.hint {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 5px;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 10px;
+
+  letter-spacing: 0.08em;
+}
+
+.hint span {
+  color:
+    $color-purple-light;
+
+  font-size: 16px;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modalOverlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 30px;
+
+  overflow: hidden;
+
+  background:
+    rgba(
+      5,
+      5,
+      8,
+      0.78
+    );
+
+  backdrop-filter:
+    blur(12px);
+
+  overscroll-behavior:
+    contain;
+
+  animation:
+    overlayIn
+    0.3s
+    ease;
+}
+
+.modal {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  width:
+    min(
+      680px,
+      100%
+    );
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  padding: 55px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  background:
+    $color-bg-secondary;
+
+  box-shadow:
+    0 30px 100px
+      rgba(
+        0,
+        0,
+        0,
+        0.5
+      );
+
+  overscroll-behavior:
+    contain;
+
+  touch-action:
+    pan-y;
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    $color-purple
+    transparent;
+
+  animation:
+    modalIn
+    0.45s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+.modal::-webkit-scrollbar {
+  width: 5px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  border-radius:
+    100px;
+
+  background:
+    $color-purple;
+}
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
+
+.close {
+  position: absolute;
+
+  top: 25px;
+  right: 25px;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border:
+    1px solid
+    $color-border;
+
+  border-radius: 50%;
+
+  background:
+    transparent;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 24px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.close:hover {
+  border-color:
+    $color-purple-light;
+
+  color:
+    $color-white;
+
+  transform:
+    rotate(90deg);
+}
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.modalHeader {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 45px;
+}
+
+.modalNumber {
+  color:
+    $color-purple-light;
+
+  font-size: 11px;
+
+  letter-spacing: 0.15em;
+}
+
+.modalPeriod {
+  color:
+    $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+}
+
+/* =========================================================
+   MODAL CONTENT
+   ========================================================= */
+
+.modalContent h3 {
+  max-width: 550px;
+
+  margin: 0;
+
+  font-size:
+    clamp(
+      38px,
+      6vw,
+      64px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing: -0.05em;
+}
+
+.modalPosition {
+  display: block;
+
+  margin-top: 20px;
+
+  color:
+    $color-purple-light;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+
+  text-transform:
+    uppercase;
+}
+
+.modalContent p {
+  max-width: 560px;
+
+  margin: 40px 0 0;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+}
+
+/* =========================================================
+   TECHNOLOGIES
+   ========================================================= */
+
+.modalTechnologies {
+  margin-top: 45px;
+
+  padding-top: 30px;
+
+  border-top:
+    1px solid
+    $color-border;
+}
+
+.technologiesLabel {
+  display: block;
+
+  margin-bottom: 18px;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 12px;
+
+  letter-spacing: 0.18em;
+}
+
+.technologies {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.technologies span {
+  padding: 8px 12px;
+
+  border:
+    1px solid
+    $color-border;
+
+  border-radius:
+    100px;
+
+  color:
+    $color-text-secondary;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.technologies span:hover {
+  border-color:
+    $color-purple-light;
+
+  color:
+    $color-white;
+}
+
+/* =========================================================
+   MODAL FOOTER
+   ========================================================= */
+
+.modalFooter {
+  display: flex;
+
+  flex-shrink: 0;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 55px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid
+    $color-border;
+}
+
+.navigationButton {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 8px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    $color-text-secondary;
+
+  cursor: pointer;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.navigationButton span {
+  font-size: 24px;
+
+  line-height: 1;
+}
+
+.navigationButton small {
+  font-size: 9px;
+
+  letter-spacing: 0.12em;
+}
+
+.navigationButton:hover {
+  color:
+    $color-white;
+}
+
+.navigationButton:first-child:hover {
+  transform:
+    translateX(-5px);
+}
+
+.navigationButton:last-child:hover {
+  transform:
+    translateX(5px);
+}
+
+.counter {
+  color:
+    $color-text-secondary;
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+}
+
+.keyboardHint {
+  display: block;
+
+  flex-shrink: 0;
+
+  margin-top: 20px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.3
+    );
+
+  font-size: 12px;
+
+  text-align: center;
+
+  letter-spacing: 0.1em;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes lineDraw {
+  0% {
+    opacity: 0;
+
+    transform:
+      scaleX(0);
+
+    transform-origin:
+      left center;
+
+    background-position:
+      0% 50%;
+  }
+
+  25% {
+    opacity: 1;
+
+    transform:
+      scaleX(0.5);
+
+    transform-origin:
+      left center;
+
+    background-position:
+      50% 50%;
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+
+    transform-origin:
+      left center;
+
+    background-position:
+      100% 50%;
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+
+    transform-origin:
+      right center;
+
+    background-position:
+      50% 50%;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      scaleX(0);
+
+    transform-origin:
+      right center;
+
+    background-position:
+      0% 50%;
+  }
+}
+
+@keyframes heartPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform:
+      scale(1);
+
+    transform-origin:
+      center;
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.04);
+
+    transform-origin:
+      center;
+  }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .section {
+    padding:
+      120px 0 160px;
+  }
+
+  .heading {
+    margin-bottom: 80px;
+  }
+
+  .heading h2 {
+    font-size: 72px;
+  }
+
+  .heading p {
+    margin-top: 30px;
+
+    font-size: 16px;
+  }
+
+  .timelineWrapper {
+    margin-right: -20px;
+
+    padding:
+      70px 20px 100px 0;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .timeline {
+    min-width: 1450px;
+
+    width: calc(
+      1450px - 40px
+    );
+
+    max-width: none;
+
+    margin-left: 20px;
+
+    height: 720px;
+  }
+
+  .timelineTrack {
+    top: 70px;
+  }
+
+  .itemTitle {
+    font-size: 17px;
+  }
+
+  .itemPosition {
+    font-size: 8px;
+  }
+
+  .modalOverlay {
+    padding: 15px;
+  }
+
+  .modal {
+    width: 100%;
+
+    max-height: 92vh;
+
+    padding:
+      40px 25px 30px;
+  }
+
+  .close {
+    top: 18px;
+
+    right: 18px;
+  }
+
+  .modalHeader {
+    margin-bottom: 35px;
+  }
+
+  .modalContent h3 {
+    font-size: 42px;
+  }
+
+  .modalContent p {
+    margin-top: 30px;
+
+    font-size: 15px;
+  }
+
+  .modalFooter {
+    margin-top: 40px;
+  }
+
+  .keyboardHint {
+    display: none;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .section {
+    padding:
+      100px 0 130px;
+  }
+
+  .heading h2 {
+    font-size: 58px;
+  }
+
+  .heading p {
+    font-size: 15px;
+  }
+
+  .timelineWrapper {
+    padding:
+      60px 20px 80px 0;
+  }
+
+  .timeline {
+    min-width: 1250px;
+
+    width: calc(
+      1250px - 40px
+    );
+
+    margin-left: 20px;
+
+    height: 680px;
+  }
+
+  .modalContent h3 {
+    font-size: 36px;
+  }
+
+  .modal {
+    padding:
+      40px 20px 25px;
+  }
+}
