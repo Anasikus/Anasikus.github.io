@@ -4,10 +4,18 @@
 .section {
   @include section;
 
+  position: relative;
+
+  overflow: hidden;
+
   background: $color-bg-secondary;
 }
 
 .container {
+  position: relative;
+
+  z-index: 1;
+
   @include container;
 }
 

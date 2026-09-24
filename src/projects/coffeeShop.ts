@@ -5,7 +5,7 @@ export const coffeeShop: Project = {
 
   title: "Coffee & Cake",
 
-  category: "frontend-develop",
+  category: "Frontend",
 
   year: "2023",
 

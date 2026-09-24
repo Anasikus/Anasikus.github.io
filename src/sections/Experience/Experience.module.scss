@@ -4,7 +4,7 @@
 .section {
   position: relative;
 
-  padding: 200px 0 220px;
+  padding: 160px 0 200px;
 
   overflow: hidden;
 
@@ -12,16 +12,17 @@
 }
 
 .container {
-  @include container;
+  position: relative;
 
-  width: 100%;
-  max-width: 100%;
+  z-index: 1;
+
+  @include container;
 }
 
 .heading {
   max-width: 1100px;
 
-  margin-bottom: 150px;
+  margin-bottom: 110px;
 }
 
 .label {
@@ -67,318 +68,34 @@
    TIMELINE
    ========================================================= */
 
-.timelineWrapper {
-  width: 100%;
-
-  overflow-x: hidden;
-
-  padding:
-    110px 0 150px;
-
-  scrollbar-width: thin;
-
-  scrollbar-color:
-    $color-purple
-    transparent;
-
-  overscroll-behavior-x: contain;
-}
-
-.timelineWrapper::-webkit-scrollbar {
-  height: 5px;
-}
-
-.timelineWrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.timelineWrapper::-webkit-scrollbar-thumb {
-  border-radius: 100px;
-
-  background: $color-purple;
-}
-
 .timeline {
   position: relative;
-
-  /*
-   * Небольшой отступ от краёв.
-   *
-   * Раньше шкала начиналась прямо от края.
-   */
-  width: calc(100% - 40px);
-
-  margin-left: 20px;
-
-  height: 600px;
-
-  max-width: calc(100% - 40px);
 }
 
-.timelineYears {
+.timelineLine {
   position: absolute;
 
   top: 0;
-  left: 0;
+  left: 50%;
 
-  display: flex;
-
-  justify-content: space-between;
-
-  width: 100%;
-
-  padding: 0 4px;
-
-  box-sizing: border-box;
-
-  color: $color-text-secondary;
-
-  font-size: 11px;
-
-  letter-spacing: 0.15em;
-
-  pointer-events: none;
-}
-
-.timelineTrack {
-  position: absolute;
-
-  top: 75px;
-  left: 0;
-
-  width: 100%;
-
-  height: 500px;
-}
-
-/* =========================================================
-   FUTURE PATH
-   ========================================================= */
-
-.futurePath {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 300px;
-
-  overflow: visible;
-
-  pointer-events: none;
-}
-
-.futureDashedPath {
-  fill: none;
-
-  stroke: $color-border;
-
-  stroke-width: 1.2;
-
-  stroke-dasharray: 8 9;
-
-  stroke-linecap: round;
-
-  vector-effect: non-scaling-stroke;
-}
-
-/*
- * Нормальное сердце.
- *
- * Оно теперь визуально читается именно как сердце,
- * а не как случайный набор линий.
- */
-.futureHeart {
-  fill: none;
-
-  stroke:
-    url(#futureGradient);
-
-  stroke-width: 1.4;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
-
-  vector-effect:
-    non-scaling-stroke;
-
-  animation:
-    heartPulse
-    3s
-    ease-in-out
-    infinite;
-}
-
-/*
- * Отдельная небольшая стрелка под сердцем.
- */
-.futureArrow {
-  fill: none;
-
-  stroke:
-    url(#futureGradient);
-
-  stroke-width: 1.2;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
-
-  vector-effect:
-    non-scaling-stroke;
-
-  opacity: 0.75;
-}
-
-/* =========================================================
-   EXPERIENCE ITEMS
-   ========================================================= */
-
-.experienceItem {
-  position: absolute;
-
-  left: 0;
-
-  width: 0;
-
-  height: 150px;
-
-  min-width: 0;
-
-  box-sizing: border-box;
-
-  /*
-   * Очень важно:
-   * сам контейнер НЕ является hover-зоной.
-   *
-   * Hover теперь определяется только
-   * через .experienceHitArea.
-   */
-  pointer-events: none;
-}
-
-.experienceItemActive {
-  z-index: 20;
-}
-
-/*
- * ШелкоПринт визуально начинается с первой точки,
- * но интерактивная область начинается со второй.
- */
-.shellPrint {
-  pointer-events: none;
-}
-
-.websiteItem {
-  pointer-events: none;
-}
-
-/* =========================================================
-   HIT AREA
-   ========================================================= */
-
-.experienceHitArea {
-  position: absolute;
-
-  top: 15px;
-
-  height: 32px;
-
-  padding: 0;
-
-  border: 0;
-
-  outline: none;
+  width: 2px;
+  height: 100%;
 
   background:
-    transparent;
-
-  cursor: pointer;
-
-  /*
-   * Именно кнопка отвечает за наведение.
-   */
-  pointer-events: auto;
-}
-
-/* =========================================================
-   DATE
-   ========================================================= */
-
-.itemDate {
-  position: absolute;
-
-  top: 0;
-
-  width: max-content;
-
-  color:
-    $color-purple-light;
-
-  font-size: 11px;
-
-  line-height: 1;
-
-  letter-spacing: 0.1em;
-
-  white-space: nowrap;
-
-  pointer-events: none;
-}
-
-/* =========================================================
-   EXPERIENCE LINE
-   ========================================================= */
-
-.itemLine {
-  position: absolute;
-
-  top: 30px;
-  left: 0;
-
-  width: 100%;
-  height: 4px;
-
-  overflow: hidden;
-
-  border-radius: 100px;
-
-  /*
-   * Основная линия остаётся пунктирной.
-   */
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(
-        168,
-        85,
-        247,
-        0.4
-      ) 0,
-      rgba(
-        168,
-        85,
-        247,
-        0.4
-      ) 8px,
-      transparent 8px,
-      transparent 16px
+    linear-gradient(
+      to bottom,
+      transparent,
+      $color-border 8%,
+      $color-border 92%,
+      transparent
     );
 
+  transform: translateX(-50%);
+
   pointer-events: none;
 }
 
-/*
- * Активное заполнение.
- *
- * Для ШелкоПринта оно тоже занимает всю
- * визуальную линию — от первой до третьей точки.
- */
-.itemLine::after {
-  content: "";
-
+.timelineProgress {
   position: absolute;
 
   inset: 0;
@@ -386,273 +103,292 @@
   width: 100%;
   height: 100%;
 
-  border-radius: inherit;
-
   background:
     linear-gradient(
-      90deg,
+      to bottom,
       $color-purple-light,
       $color-purple,
-      #c084fc,
-      $color-purple-light
-    );
-
-  background-size:
-    250% 100%;
-
-  opacity: 0;
-
-  transform:
-    scaleX(0);
-
-  transform-origin:
-    left center;
-}
-
-/*
- * Теперь анимация запускается НЕ через :hover,
- * а через React-класс.
- */
-.experienceItemActive
-  .itemLine::after {
-  animation:
-    lineDraw
-    2.4s
-    ease-in-out
-    infinite;
-}
-
-/* =========================================================
-   POINTS
-   ========================================================= */
-
-.itemPointStart,
-.itemPointEnd {
-  position: absolute;
-
-  top: 32px;
-
-  width: 12px;
-  height: 12px;
-
-  box-sizing: border-box;
-
-  border:
-    1px solid
-    $color-purple-light;
-
-  border-radius: 50%;
-
-  background:
-    $color-bg;
-
-  transform:
-    translate(
-      -50%,
-      -50%
-    );
-
-  z-index: 3;
-
-  pointer-events: none;
-
-  transition:
-    box-shadow 0.35s ease,
-    border-color 0.35s ease,
-    background-color 0.35s ease;
-}
-
-.itemPointStart {
-  left: 0;
-}
-
-.itemPointEnd {
-  left: 100%;
-}
-
-.experienceItemActive
-  .itemPointStart,
-.experienceItemActive
-  .itemPointEnd {
-  border-color:
-    $color-purple-light;
-
-  background:
-    rgba(
-      168,
-      85,
-      247,
-      0.12
+      #c084fc
     );
 
   box-shadow:
-    0 0 0 5px
-      rgba(
-        124,
-        58,
-        237,
-        0.08
-      ),
-    0 0 25px
-      rgba(
-        124,
-        58,
-        237,
-        0.4
-      );
+    0 0 16px
+    rgba(168, 85, 247, 0.5);
+
+  transform-origin: top center;
+
+  transform: scaleY(0);
 }
 
-/* =========================================================
-   EXPERIENCE INFO
-   ========================================================= */
-
-.itemInfo {
-  position: absolute;
-
-  top: 60px;
+.timelineList {
+  position: relative;
 
   display: flex;
 
   flex-direction: column;
 
-  align-items: flex-start;
+  gap: 72px;
 
-  gap: 8px;
+  margin: 0;
+  padding: 0;
 
-  width: max-content;
-
-  max-width: 500px;
-
-  pointer-events: none;
-}
-
-/*
- * У ШелкоПринта left задаётся из TS:
- * от второй точки.
- *
- * Поэтому текст автоматически оказывается
- * между второй и третьей точкой.
- */
-
-.itemTitle {
-  display: block;
-
-  color:
-    $color-text-secondary;
-
-  font-size: 20px;
-
-  line-height: 1.1;
-
-  letter-spacing: -0.025em;
-
-  white-space: nowrap;
-
-  transform-origin:
-    left center;
-
-  transition:
-    color 0.35s ease,
-    transform 0.35s
-      cubic-bezier(
-        0.16,
-        1,
-        0.3,
-        1
-      );
-}
-
-.experienceItemActive
-  .itemTitle {
-  color:
-    $color-white;
-
-  transform:
-    scale(1.1);
-}
-
-.itemPosition {
-  display: block;
-
-  color:
-    rgba(
-      255,
-      255,
-      255,
-      0.38
-    );
-
-  font-size: 10px;
-
-  line-height: 1.4;
-
-  letter-spacing: 0.08em;
-
-  text-transform:
-    uppercase;
-
-  white-space: nowrap;
-
-  transition:
-    color 0.3s ease;
-}
-
-.experienceItemActive
-  .itemPosition {
-  color:
-    rgba(
-      255,
-      255,
-      255,
-      0.65
-    );
+  list-style: none;
 }
 
 /* =========================================================
-   NOW
+   ROW
    ========================================================= */
 
-.now {
+.row {
+  position: relative;
+
+  display: flex;
+
+  width: 100%;
+}
+
+.row[data-side="left"] {
+  justify-content: flex-start;
+}
+
+.row[data-side="right"] {
+  justify-content: flex-end;
+}
+
+.dot {
   position: absolute;
 
-  top: 17px;
-  right: 0;
+  top: 50%;
+  left: 50%;
+
+  width: 14px;
+  height: 14px;
+
+  box-sizing: border-box;
+
+  border: 2px solid $color-purple-light;
+  border-radius: 50%;
+
+  background: $color-bg;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 2;
+
+  box-shadow:
+    0 0 0 6px rgba(124, 58, 237, 0.12);
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+  position: relative;
+
+  width: calc(50% - 56px);
+
+  padding: 32px;
+
+  border: 1px solid $color-border;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(168, 85, 247, 0.06),
+      transparent 60%
+    ),
+    $color-bg-secondary;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-6px);
+
+  border-color: rgba(168, 85, 247, 0.5);
+
+  box-shadow:
+    0 20px 50px rgba(76, 29, 149, 0.25);
+}
+
+.card:hover .cardTitle,
+.card:focus-visible .cardTitle {
+  color: $color-white;
+}
+
+.card:hover .cardCta,
+.card:focus-visible .cardCta {
+  color: $color-purple-light;
+}
+
+.card:hover .cardCta span,
+.card:focus-visible .cardCta span {
+  transform: translateX(4px);
+}
+
+.card:focus-visible {
+  outline: 1px solid $color-purple-light;
+  outline-offset: 3px;
+}
+
+.cardPeriod {
+  display: block;
+
+  margin-bottom: 16px;
+
+  color: $color-purple-light;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+}
+
+.cardTitle {
+  margin: 0;
+
+  color: $color-text;
+
+  font-size: 24px;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.02em;
+
+  transition: color 0.3s ease;
+}
+
+.cardPosition {
+  display: block;
+
+  margin-top: 8px;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 10px;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.cardDescription {
+  display: -webkit-box;
+
+  margin: 18px 0 0;
+
+  overflow: hidden;
+
+  color: $color-text-secondary;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.cardTech {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-top: 20px;
+}
+
+.cardTech span {
+  padding: 5px 10px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  color: $color-text-secondary;
+
+  font-size: 11px;
+}
+
+.cardTech .cardTechMore {
+  color: $color-purple-light;
+}
+
+.cardCta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 22px;
+
+  color: $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+
+  transition: color 0.3s ease;
+}
+
+.cardCta span {
+  display: inline-block;
+
+  font-size: 14px;
+
+  transition: transform 0.3s ease;
+}
+
+/* =========================================================
+   NOW ROW
+   ========================================================= */
+
+.nowRow {
+  position: relative;
 
   display: flex;
 
   align-items: center;
 
-  gap: 9px;
+  justify-content: center;
 
-  color:
-    $color-purple-light;
+  gap: 12px;
 
-  font-size: 9px;
+  padding-top: 8px;
+}
+
+.dotNow {
+  position: static;
+
+  transform: none;
+
+  border-color: $color-purple-light;
+
+  background: rgba(168, 85, 247, 0.15);
+
+  animation: nowPulse 2.4s ease-in-out infinite;
+}
+
+.nowLabel {
+  color: $color-purple-light;
+
+  font-size: 11px;
 
   letter-spacing: 0.15em;
 
-  white-space: nowrap;
-}
-
-.now span {
-  width: 7px;
-  height: 7px;
-
-  flex-shrink: 0;
-
-  border-radius: 50%;
-
-  background:
-    $color-purple-light;
-
-  box-shadow:
-    0 0 15px
-      rgba(
-        168,
-        85,
-        247,
-        0.8
-      );
+  text-transform: uppercase;
 }
 
 /* =========================================================
@@ -666,10 +402,9 @@
 
   gap: 12px;
 
-  margin-top: 5px;
+  margin-top: 60px;
 
-  color:
-    $color-text-secondary;
+  color: $color-text-secondary;
 
   font-size: 10px;
 
@@ -677,8 +412,7 @@
 }
 
 .hint span {
-  color:
-    $color-purple-light;
+  color: $color-purple-light;
 
   font-size: 16px;
 }
@@ -1120,93 +854,18 @@
    ANIMATIONS
    ========================================================= */
 
-@keyframes lineDraw {
-  0% {
-    opacity: 0;
-
-    transform:
-      scaleX(0);
-
-    transform-origin:
-      left center;
-
-    background-position:
-      0% 50%;
-  }
-
-  25% {
-    opacity: 1;
-
-    transform:
-      scaleX(0.5);
-
-    transform-origin:
-      left center;
-
-    background-position:
-      50% 50%;
-  }
-
-  50% {
-    opacity: 1;
-
-    transform:
-      scaleX(1);
-
-    transform-origin:
-      left center;
-
-    background-position:
-      100% 50%;
-  }
-
-  70% {
-    opacity: 1;
-
-    transform:
-      scaleX(1);
-
-    transform-origin:
-      right center;
-
-    background-position:
-      50% 50%;
-  }
-
-  100% {
-    opacity: 0;
-
-    transform:
-      scaleX(0);
-
-    transform-origin:
-      right center;
-
-    background-position:
-      0% 50%;
-  }
-}
-
-@keyframes heartPulse {
+@keyframes nowPulse {
   0%,
   100% {
-    opacity: 0.55;
-
-    transform:
-      scale(1);
-
-    transform-origin:
-      center;
+    box-shadow:
+      0 0 0 0
+      rgba(168, 85, 247, 0.45);
   }
 
   50% {
-    opacity: 1;
-
-    transform:
-      scale(1.04);
-
-    transform-origin:
-      center;
+    box-shadow:
+      0 0 0 8px
+      rgba(168, 85, 247, 0);
   }
 }
 
@@ -1262,42 +921,44 @@
     font-size: 16px;
   }
 
-  .timelineWrapper {
-    margin-right: -20px;
-
-    padding:
-      70px 20px 100px 0;
-
-    overflow-x: auto;
-
-    -webkit-overflow-scrolling:
-      touch;
+  .timelineLine {
+    left: 20px;
   }
 
-  .timeline {
-    min-width: 1450px;
-
-    width: calc(
-      1450px - 40px
-    );
-
-    max-width: none;
-
-    margin-left: 20px;
-
-    height: 720px;
+  .timelineList {
+    gap: 48px;
   }
 
-  .timelineTrack {
-    top: 70px;
+  .row,
+  .row[data-side="left"],
+  .row[data-side="right"] {
+    justify-content: flex-start;
+
+    padding-left: 52px;
   }
 
-  .itemTitle {
-    font-size: 17px;
+  .dot {
+    left: 20px;
   }
 
-  .itemPosition {
-    font-size: 8px;
+  .card {
+    width: 100%;
+
+    padding: 26px;
+  }
+
+  .nowRow {
+    justify-content: flex-start;
+
+    padding-left: 52px;
+  }
+
+  .dotNow {
+    position: absolute;
+
+    left: 20px;
+
+    transform: translateY(-50%);
   }
 
   .modalOverlay {
@@ -1358,23 +1019,6 @@
 
   .heading p {
     font-size: 15px;
-  }
-
-  .timelineWrapper {
-    padding:
-      60px 20px 80px 0;
-  }
-
-  .timeline {
-    min-width: 1250px;
-
-    width: calc(
-      1250px - 40px
-    );
-
-    margin-left: 20px;
-
-    height: 680px;
   }
 
   .modalContent h3 {

@@ -5,7 +5,7 @@ export const vizCard: Project = {
 
   title: "Визитная карточка",
 
-  category: "frontend-develop",
+  category: "Frontend",
 
   year: "2025",
 

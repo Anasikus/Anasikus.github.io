@@ -7,12 +7,16 @@ import {
 
 import { router } from "./routes";
 
+import { LanguageProvider } from "./i18n/LanguageContext";
+
 import "./styles/global.scss";
 
 ReactDOM.createRoot(
   document.getElementById("root")!
 ).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <LanguageProvider>
+      <RouterProvider router={router} />
+    </LanguageProvider>
   </React.StrictMode>
 );

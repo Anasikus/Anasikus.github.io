@@ -11,6 +11,6 @@ export const socialLinks: SocialLink[] = [
 
   {
     name: "Email",
-    url: "mailto:your-email@example.com",
+    url: "mailto:nastyadavydova20@gmail.com",
   },
 ];

@@ -1,53 +1,77 @@
 import { Link } from "react-router-dom";
 
-import { projects } from "../../projects";
+import { getLocalizedProjects } from "../../i18n/content/projects";
+import { useLanguage } from "../../i18n/useLanguage";
+import { useMagnetic } from "../../hooks/useMagnetic";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
+import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
 
 import styles from "./Projects.module.scss";
 
 const Projects = () => {
-  const featuredProjects = projects.filter(
-    (project) => project.featured
-  );
+  const { t, language } = useLanguage();
+
+  const allProjectsRef =
+    useMagnetic<HTMLAnchorElement>();
+
+  const viewAllRef =
+    useMagnetic<HTMLAnchorElement>();
+
+  const featuredProjects =
+    getLocalizedProjects(
+      language
+    ).filter(
+      (project) => project.featured
+    );
 
   return (
     <section
       id="projects"
       className={styles.section}
     >
+      <AmbientBackground />
+
       <div className={styles.container}>
         <div className={styles.top}>
           <span className={styles.label}>
-            03 / ИЗБРАННЫЕ ПРОЕКТЫ
+            {t.projectsSection.label}
           </span>
         </div>
 
         <header className={styles.heading}>
           <div className={styles.titleBlock}>
             <h2>
-              Любимые разработки
+              {t.projectsSection.heading}
             </h2>
           </div>
 
           <div className={styles.intro}>
             <p>
-              От первых учебных проектов
-              до полноценных веб-приложений.
+              {
+                t.projectsSection
+                  .introLine1
+              }
             </p>
 
             <p>
-              Здесь собраны работы,
-              которые лучше всего
-              рассказывают о моём пути
-              как разработчика.
+              {
+                t.projectsSection
+                  .introLine2
+              }
             </p>
 
             <Link
+              ref={allProjectsRef}
               to="/projects"
               className={styles.allProjects}
               data-cursor="hover"
             >
-              <span>Все проекты</span>
+              <span>
+                {
+                  t.projectsSection
+                    .allProjects
+                }
+              </span>
 
               <span className={styles.allProjectsArrow}>
                 ↗
@@ -67,11 +91,17 @@ const Projects = () => {
 
         <div className={styles.bottomLink}>
           <Link
+            ref={viewAllRef}
             to="/projects"
             className={styles.viewAll}
             data-cursor="hover"
           >
-            <span>Смотреть все проекты</span>
+            <span>
+              {
+                t.projectsSection
+                  .viewAllProjects
+              }
+            </span>
 
             <span className={styles.viewAllArrow}>
               →

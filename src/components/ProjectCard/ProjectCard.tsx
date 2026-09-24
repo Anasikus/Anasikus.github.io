@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 
 import type { Project } from "../../projects/types";
 
+import { useLanguage } from "../../i18n/useLanguage";
+
 import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
@@ -11,6 +13,8 @@ interface ProjectCardProps {
 const ProjectCard = ({
   project,
 }: ProjectCardProps) => {
+  const { t } = useLanguage();
+
   return (
     <Link
       to={`/projects/${project.id}`}
@@ -43,7 +47,9 @@ const ProjectCard = ({
         )}
 
         <div className={styles.overlay}>
-          <span>VIEW PROJECT</span>
+          <span>
+            {t.projectsSection.viewProject}
+          </span>
           <span>↗</span>
         </div>
       </div>

@@ -1,23 +1,34 @@
 import { Link, useParams } from "react-router-dom";
 
-import { projects } from "../../projects";
+import { getLocalizedProjects } from "../../i18n/content/projects";
+import { useLanguage } from "../../i18n/useLanguage";
 
 import styles from "./ProjectDetails.module.scss";
 
 const ProjectDetails = () => {
   const { id } = useParams();
 
-  const project = projects.find(
-    (item) => item.id === id
-  );
+  const { t, language } = useLanguage();
+
+  const project = getLocalizedProjects(
+    language
+  ).find((item) => item.id === id);
 
   if (!project) {
     return (
       <main>
-        <h1>Project not found</h1>
+        <h1>
+          {
+            t.projectDetails
+              .notFoundTitle
+          }
+        </h1>
 
         <Link to="/projects">
-          Back to projects
+          {
+            t.projectDetails
+              .notFoundBack
+          }
         </Link>
       </main>
     );
@@ -30,7 +41,7 @@ const ProjectDetails = () => {
           to="/projects"
           className={styles.back}
         >
-          ← Back to projects
+          {t.projectDetails.back}
         </Link>
 
         <p className={styles.category}>
@@ -60,7 +71,10 @@ const ProjectDetails = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Live website ↗
+              {
+                t.projectDetails
+                  .liveWebsite
+              }
             </a>
           )}
 
@@ -76,14 +90,15 @@ const ProjectDetails = () => {
         </div>
 
         <div className={styles.gallery}>
-          {project.gallery.map(
+          {project.gallery?.map(
             (image, index) => (
               <img
                 key={image}
                 src={image}
-                alt={`${project.title} screenshot ${
-                  index + 1
-                }`}
+                alt={`${project.title}, ${
+                  t.projectDetails
+                    .galleryAlt
+                } ${index + 1}`}
               />
             )
           )}

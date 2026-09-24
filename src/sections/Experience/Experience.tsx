@@ -8,114 +8,118 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { experience } from "../../data/experience";
+import { getLocalizedExperience } from "../../i18n/content/experience";
+import { useLanguage } from "../../i18n/useLanguage";
+
+import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
 
 import styles from "./Experience.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = () => {
+  const { t, language } = useLanguage();
+
+  const localizedExperience =
+    getLocalizedExperience(language);
+
   const sectionRef =
     useRef<HTMLElement | null>(null);
+
+  const rowRefs = useRef<
+    Array<HTMLLIElement | null>
+  >([]);
+
+  const progressRef =
+    useRef<HTMLDivElement | null>(null);
 
   const [selectedIndex, setSelectedIndex] =
     useState<number | null>(null);
 
-  const [hoveredIndex, setHoveredIndex] =
-    useState<number | null>(null);
-
   const selectedExperience =
     selectedIndex !== null
-      ? experience[selectedIndex]
+      ? localizedExperience[selectedIndex]
       : null;
-
-  const timelineStart =
-    new Date("2024-09-01").getTime();
-
-    const timelineEnd =
-    new Date("2027-01-01").getTime();
-
-  const totalDuration =
-    timelineEnd - timelineStart;
-
-  const getStartTime = (
-    date: string
-  ) => {
-    return new Date(
-      `${date}-01`
-    ).getTime();
-  };
-
-  const getEndTime = (
-    date: string
-  ) => {
-    const [year, month] =
-      date.split("-").map(Number);
-
-    return new Date(
-      year,
-      month,
-      1
-    ).getTime();
-  };
-
-  const getTimelinePosition = (
-    date: string
-  ) => {
-    const value =
-      getStartTime(date);
-
-    return (
-      ((value - timelineStart) /
-        totalDuration) *
-      100
-    );
-  };
-
-  const getTimelineWidth = (
-    startDate: string,
-    endDate: string
-  ) => {
-    const start =
-      getStartTime(startDate);
-
-    const end =
-      getEndTime(endDate);
-
-    return (
-      ((end - start) /
-        totalDuration) *
-      100
-    );
-  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const timeline =
-        sectionRef.current?.querySelector(
-          `.${styles.timeline}`
+      if (progressRef.current) {
+        gsap.fromTo(
+          progressRef.current,
+          {
+            scaleY: 0,
+          },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger:
+                sectionRef.current,
+              start: "top 70%",
+              end: "bottom 75%",
+              scrub: 0.6,
+            },
+          }
         );
-
-      if (!timeline) {
-        return;
       }
 
-      gsap.fromTo(
-        timeline,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: timeline,
-            start: "top 80%",
-            once: true,
-          },
+      rowRefs.current.forEach(
+        (row) => {
+          if (!row) {
+            return;
+          }
+
+          const dot =
+            row.querySelector(
+              `.${styles.dot}`
+            );
+
+          const card =
+            row.querySelector(
+              `.${styles.card}`
+            );
+
+          const side =
+            row.dataset.side ===
+            "right"
+              ? 1
+              : -1;
+
+          gsap.fromTo(
+            card,
+            {
+              opacity: 0,
+              x: 48 * side,
+            },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: row,
+                start: "top 85%",
+                once: true,
+              },
+            }
+          );
+
+          gsap.fromTo(
+            dot,
+            {
+              scale: 0,
+            },
+            {
+              scale: 1,
+              duration: 0.5,
+              ease: "back.out(2)",
+              scrollTrigger: {
+                trigger: row,
+                start: "top 85%",
+                once: true,
+              },
+            }
+          );
         }
       );
     }, sectionRef);
@@ -168,7 +172,7 @@ const Experience = () => {
             }
 
             return current === 0
-              ? experience.length - 1
+              ? localizedExperience.length - 1
               : current - 1;
           }
         );
@@ -184,7 +188,7 @@ const Experience = () => {
             }
 
             return current ===
-              experience.length - 1
+              localizedExperience.length - 1
               ? 0
               : current + 1;
           }
@@ -203,7 +207,10 @@ const Experience = () => {
         handleKeyDown
       );
     };
-  }, [selectedIndex]);
+  }, [
+    selectedIndex,
+    localizedExperience.length,
+  ]);
 
   const handlePrevious = () => {
     setSelectedIndex(
@@ -213,7 +220,7 @@ const Experience = () => {
         }
 
         return current === 0
-          ? experience.length - 1
+          ? localizedExperience.length - 1
           : current - 1;
       }
     );
@@ -227,7 +234,7 @@ const Experience = () => {
         }
 
         return current ===
-          experience.length - 1
+          localizedExperience.length - 1
           ? 0
           : current + 1;
       }
@@ -241,293 +248,192 @@ const Experience = () => {
         className={styles.section}
         id="experience"
       >
+        <AmbientBackground showGrid />
+
         <div className={styles.container}>
           <header className={styles.heading}>
             <span className={styles.label}>
-              03 / ОПЫТ
+              {t.experience.label}
             </span>
 
             <h2>
-              От теории к практике
+              {t.experience.heading}
             </h2>
 
             <p>
-              Проекты, практика и
-              стажировка, которые стали
-              частью моего
-              профессионального пути.
+              {t.experience.description}
             </p>
           </header>
 
           <div
-            className={
-              styles.timelineWrapper
-            }
+            className={styles.timeline}
           >
             <div
-              className={styles.timeline}
+              className={
+                styles.timelineLine
+              }
             >
               <div
+                ref={progressRef}
                 className={
-                  styles.timelineYears
+                  styles.timelineProgress
                 }
-              >
-                <span>2024</span>
-                <span>2025</span>
-                <span>2026</span>
-              </div>
-
-              <div
-                className={
-                  styles.timelineTrack
-                }
-              >
-                <svg
-                  className={
-                    styles.futurePath
-                  }
-                  viewBox="0 0 1000 300"
-                  preserveAspectRatio="none"
-                >
-                  <defs>
-                    <linearGradient
-                      id="futureGradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop
-                        offset="0%"
-                        stopColor="var(--color-purple-light)"
-                      />
-
-                      <stop
-                        offset="50%"
-                        stopColor="var(--color-purple)"
-                      />
-
-                      <stop
-                        offset="100%"
-                        stopColor="#c084fc"
-                      />
-                    </linearGradient>
-                  </defs>
-
-                  <path
-                    className={
-                      styles.futureDashedPath
-                    }
-                    d="M 0 30 H 920 Q 955 30 955 65 Q 955 105 915 135 H 865"
-                  />
-
-                    <path
-                    className={styles.futureHeart}
-                    d="
-                        M 850 165
-                        C 832 140 790 145 790 177
-                        C 790 207 820 225 850 245
-                        C 880 225 910 207 910 177
-                        C 910 145 868 140 850 165
-                        Z
-                    "
-                    />
-                    <path
-                    className={styles.futureArrow}
-                    d="
-                        M 850 270
-                        C 850 258 850 250 850 242
-                        M 850 270
-                        L 838 258
-                        M 850 270
-                        L 862 258
-                    "
-                    />
-                </svg>
-
-                {experience.map(
-                (item, index) => {
-                    const originalLeft =
-                    getTimelinePosition(
-                        item.startDate
-                    );
-
-                    const originalWidth =
-                    getTimelineWidth(
-                        item.startDate,
-                        item.endDate
-                    );
-
-                    const isShellPrint =
-                    item.title === "ШелкоПринт";
-
-                    /*
-                    * Для ШелкоПринта:
-                    *
-                    * визуальная линия:
-                    * 1 точка → 3 точка
-                    *
-                    * текст:
-                    * 2 точка → 3 точка
-                    *
-                    * hover:
-                    * 2 точка → 3 точка
-                    */
-                    const visualLeft =
-                    originalLeft;
-
-                    const visualWidth =
-                    originalWidth;
-
-                    const interactionLeft =
-                    isShellPrint
-                        ? getTimelinePosition(
-                            "2025-09"
-                        ) - originalLeft
-                        : 0;
-
-                    const interactionWidth =
-                    isShellPrint
-                        ? originalWidth -
-                        interactionLeft
-                        : originalWidth;
-
-                    const isHovered =
-                    hoveredIndex === index;
-
-                    return (
-                    <div
-                        key={`${item.title}-${index}`}
-                        className={`
-                        ${styles.experienceItem}
-                        ${
-                            isHovered
-                            ? styles.experienceItemActive
-                            : ""
-                        }
-                        ${
-                            isShellPrint
-                            ? styles.shellPrint
-                            : styles.websiteItem
-                        }
-                        `}
-                        style={{
-                        left: `${visualLeft}%`,
-                        width: `${visualWidth}%`,
-                        zIndex: isHovered
-                            ? 20
-                            : isShellPrint
-                            ? 12
-                            : 11,
-                        }}
-                    >
-                        <button
-                        type="button"
-                        className={
-                            styles.experienceHitArea
-                        }
-                        style={{
-                            left: isShellPrint
-                            ? `${interactionLeft}%`
-                            : "0%",
-                            width: isShellPrint
-                            ? `${interactionWidth}%`
-                            : "100%",
-                        }}
-                        onMouseEnter={() =>
-                            setHoveredIndex(index)
-                        }
-                        onMouseLeave={() =>
-                            setHoveredIndex(null)
-                        }
-                        onFocus={() =>
-                            setHoveredIndex(index)
-                        }
-                        onBlur={() =>
-                            setHoveredIndex(null)
-                        }
-                        onClick={() =>
-                            setSelectedIndex(index)
-                        }
-                        aria-label={`Подробнее: ${item.title}`}
-                        />
-
-                        <span
-                        className={
-                            styles.itemDate
-                        }
-                        style={{
-                            left: isShellPrint
-                            ? `${interactionLeft}%`
-                            : "0%",
-                        }}
-                        >
-                        {item.period}
-                        </span>
-
-                        <span
-                        className={
-                            styles.itemLine
-                        }
-                        />
-
-                        <span
-                        className={
-                            styles.itemPointStart
-                        }
-                        />
-
-                        <span
-                        className={
-                            styles.itemPointEnd
-                        }
-                        />
-
-                        <span
-                        className={
-                            styles.itemInfo
-                        }
-                        style={{
-                            left: isShellPrint
-                            ? `${interactionLeft}%`
-                            : "0%",
-                        }}
-                        >
-                        <span
-                            className={
-                            styles.itemTitle
-                            }
-                        >
-                            {item.title}
-                        </span>
-
-                        <span
-                            className={
-                            styles.itemPosition
-                            }
-                        >
-                            {item.position}
-                        </span>
-                        </span>
-                    </div>
-                    );
-                }
-                )}
-
-                <div
-                  className={styles.now}
-                >
-                  <span />
-                  Сегодня
-                </div>
-              </div>
+              />
             </div>
+
+            <ol
+              className={
+                styles.timelineList
+              }
+            >
+              {localizedExperience.map(
+                (item, index) => (
+                  <li
+                    key={index}
+                    ref={(el) => {
+                      rowRefs.current[
+                        index
+                      ] = el;
+                    }}
+                    className={
+                      styles.row
+                    }
+                    data-side={
+                      index % 2 === 0
+                        ? "left"
+                        : "right"
+                    }
+                  >
+                    <span
+                      className={
+                        styles.dot
+                      }
+                      aria-hidden="true"
+                    />
+
+                    <button
+                      type="button"
+                      className={
+                        styles.card
+                      }
+                      onClick={() =>
+                        setSelectedIndex(
+                          index
+                        )
+                      }
+                    >
+                      <span
+                        className={
+                          styles.cardPeriod
+                        }
+                      >
+                        {item.period}
+                      </span>
+
+                      <h3
+                        className={
+                          styles.cardTitle
+                        }
+                      >
+                        {item.title}
+                      </h3>
+
+                      <span
+                        className={
+                          styles.cardPosition
+                        }
+                      >
+                        {item.position}
+                      </span>
+
+                      <p
+                        className={
+                          styles.cardDescription
+                        }
+                      >
+                        {
+                          item.description
+                        }
+                      </p>
+
+                      <div
+                        className={
+                          styles.cardTech
+                        }
+                      >
+                        {item.technologies
+                          .slice(0, 4)
+                          .map(
+                            (
+                              technology
+                            ) => (
+                              <span
+                                key={
+                                  technology
+                                }
+                              >
+                                {
+                                  technology
+                                }
+                              </span>
+                            )
+                          )}
+
+                        {item
+                          .technologies
+                          .length >
+                          4 && (
+                          <span
+                            className={
+                              styles.cardTechMore
+                            }
+                          >
+                            +
+                            {item
+                              .technologies
+                              .length -
+                              4}
+                          </span>
+                        )}
+                      </div>
+
+                      <span
+                        className={
+                          styles.cardCta
+                        }
+                      >
+                        Подробнее
+                        <span>→</span>
+                      </span>
+                    </button>
+                  </li>
+                )
+              )}
+
+              <li
+                className={
+                  styles.nowRow
+                }
+              >
+                <span
+                  className={`${styles.dot} ${styles.dotNow}`}
+                  aria-hidden="true"
+                />
+
+                <span
+                  className={
+                    styles.nowLabel
+                  }
+                >
+                  {t.experience.now}
+                </span>
+              </li>
+            </ol>
           </div>
 
           <div className={styles.hint}>
             <span>↗</span>
-            Нажмите на отрезок,
-            чтобы узнать подробнее
+            {t.experience.hint}
           </div>
         </div>
       </section>
@@ -560,7 +466,9 @@ const Experience = () => {
               onClick={() =>
                 setSelectedIndex(null)
               }
-              aria-label="Закрыть"
+              aria-label={
+                t.experience.modalClose
+              }
             >
               ×
             </button>
@@ -629,7 +537,10 @@ const Experience = () => {
                     styles.technologiesLabel
                   }
                 >
-                  ТЕХНОЛОГИИ
+                  {
+                    t.experience
+                      .modalTechnologiesLabel
+                  }
                 </span>
 
                 <div
@@ -663,11 +574,17 @@ const Experience = () => {
                 onClick={
                   handlePrevious
                 }
-                aria-label="Предыдущий опыт"
+                aria-label={
+                  t.experience
+                    .modalPrevAria
+                }
               >
                 <span>←</span>
                 <small>
-                  Назад
+                  {
+                    t.experience
+                      .modalPrev
+                  }
                 </small>
               </button>
 
@@ -678,7 +595,7 @@ const Experience = () => {
               >
                 {(selectedIndex ?? 0) +
                   1}{" "}
-                / {experience.length}
+                / {localizedExperience.length}
               </span>
 
               <button
@@ -687,10 +604,16 @@ const Experience = () => {
                   styles.navigationButton
                 }
                 onClick={handleNext}
-                aria-label="Следующий опыт"
+                aria-label={
+                  t.experience
+                    .modalNextAria
+                }
               >
                 <small>
-                  Далее
+                  {
+                    t.experience
+                      .modalNext
+                  }
                 </small>
                 <span>→</span>
               </button>
@@ -701,8 +624,10 @@ const Experience = () => {
                 styles.keyboardHint
               }
             >
-              ESC — закрыть&nbsp;&nbsp;
-              ← → — переключить
+              {
+                t.experience
+                  .modalKeyboardHint
+              }
             </span>
           </div>
         </div>

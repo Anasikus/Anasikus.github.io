@@ -2,7 +2,10 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { timeline } from "../../data/timeline";
+import { getLocalizedTimeline } from "../../i18n/content/timeline";
+import { useLanguage } from "../../i18n/useLanguage";
+
+import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
 
 import styles from "./About.module.scss";
 
@@ -10,6 +13,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const { t, language } = useLanguage();
+
+  const timeline = getLocalizedTimeline(language);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -239,22 +246,22 @@ const About = () => {
       className={styles.section}
       id="about"
     >
+      <AmbientBackground showGrid />
+
       <div className={styles.container}>
         <header className={styles.heading}>
           <span className={styles.label}>
-            02 / МОЙ ПУТЬ
+            {t.about.label}
           </span>
 
           <h2>
-            Всё началось
+            {t.about.headingLine1}
             <br />
-            с интереса.
+            {t.about.headingLine2}
           </h2>
 
           <p>
-            А дальше были годы обучения,
-            первые проекты, ошибки, заказчики
-            и всё более сложные задачи.
+            {t.about.description}
           </p>
         </header>
 

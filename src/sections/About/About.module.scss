@@ -4,7 +4,7 @@
 .section {
   position: relative;
 
-  padding: 180px 0 220px;
+  padding: 180px 0 160px;
 
   overflow: hidden;
 
@@ -12,6 +12,10 @@
 }
 
 .container {
+  position: relative;
+
+  z-index: 1;
+
   @include container;
 }
 

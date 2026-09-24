@@ -1,0 +1,406 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  position: relative;
+
+  padding: 160px 0;
+
+  overflow: hidden;
+
+  background: $color-bg;
+}
+
+.container {
+  position: relative;
+
+  z-index: 1;
+
+  @include container;
+}
+
+.heading {
+  margin-bottom: 70px;
+}
+
+.label {
+  display: block;
+
+  margin-bottom: 40px;
+
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.18em;
+}
+
+.heading h2 {
+  margin: 0;
+
+  font-size:
+    clamp(
+      52px,
+      8vw,
+      110px
+    );
+
+  line-height: 0.9;
+
+  letter-spacing: -0.05em;
+}
+
+/* =========================================================
+   CAROUSEL
+   ========================================================= */
+
+.carousel {
+  position: relative;
+}
+
+.track {
+  display: flex;
+
+  gap: 24px;
+
+  overflow-x: auto;
+
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.card {
+  display: flex;
+
+  flex-direction: column;
+
+  flex: 0 0 auto;
+
+  width: 320px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 1px solid $color-border;
+  border-radius: 20px;
+
+  background: $color-bg-secondary;
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  scroll-snap-align: start;
+
+  transition: border-color 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+
+    transform: translateY(-4px);
+  }
+
+  img {
+    display: block;
+
+    width: 100%;
+    height: 220px;
+
+    object-fit: cover;
+
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.cardCaption {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 18px 20px 22px;
+}
+
+.cardTitle {
+  color: $color-text;
+
+  font-size: 15px;
+
+  line-height: 1.4;
+}
+
+.cardMeta {
+  color: $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.06em;
+}
+
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 200;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  background: rgba(5, 5, 7, 0.92);
+
+  backdrop-filter: blur(8px);
+
+  animation: lightbox-fade-in 0.25s ease;
+}
+
+@keyframes lightbox-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.lightbox {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 24px;
+
+  max-width: min(900px, 100%);
+  max-height: 100%;
+}
+
+.lightboxImageWrap {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  max-height: 65vh;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  border: 1px solid $color-border;
+
+  img {
+    display: block;
+
+    max-width: 100%;
+    max-height: 65vh;
+
+    object-fit: contain;
+  }
+}
+
+.lightboxInfo {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  max-width: 620px;
+
+  text-align: center;
+
+  h3 {
+    margin: 0;
+
+    font-size: 22px;
+  }
+
+  p {
+    margin: 0;
+
+    color: $color-text-secondary;
+
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+.lightboxMeta {
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.08em;
+}
+
+.lightboxCounter {
+  margin-top: 4px;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.lightboxClose,
+.lightboxNav {
+  position: fixed;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid $color-border;
+  border-radius: 50%;
+
+  background: rgba(11, 8, 18, 0.8);
+
+  color: $color-white;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    color: $color-purple-light;
+  }
+}
+
+.lightboxClose {
+  top: 24px;
+  right: 24px;
+
+  width: 48px;
+  height: 48px;
+
+  font-size: 26px;
+}
+
+.lightboxNav {
+  top: 50%;
+
+  width: 56px;
+  height: 56px;
+
+  font-size: 22px;
+
+  transform: translateY(-50%);
+}
+
+.lightboxPrev {
+  left: 24px;
+}
+
+.lightboxNext {
+  right: 24px;
+}
+
+@media (max-width: 768px) {
+  .lightboxOverlay {
+    padding: 20px;
+  }
+
+  .lightboxNav {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lightboxPrev {
+    left: 8px;
+  }
+
+  .lightboxNext {
+    right: 8px;
+  }
+
+  .lightboxClose {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+.controls {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 24px;
+
+  button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid $color-border;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: $color-text-secondary;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease;
+
+    &:hover {
+      border-color: rgba(168, 85, 247, 0.5);
+
+      color: $color-purple-light;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 110px 0;
+  }
+
+  .heading {
+    margin-bottom: 40px;
+  }
+
+  .card {
+    width: 260px;
+  }
+
+  .card img {
+    height: 170px;
+  }
+}

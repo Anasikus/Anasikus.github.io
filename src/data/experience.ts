@@ -1,7 +1,5 @@
 export interface ExperienceItem {
   period: string;
-  startDate: string;
-  endDate: string;
   title: string;
   position: string;
   description: string;
@@ -11,8 +9,6 @@ export interface ExperienceItem {
 export const experience: ExperienceItem[] = [
   {
     period: "09.2024 — 10.2024",
-    startDate: "2024-09",
-    endDate: "2024-10",
 
     title: "Ареал",
 
@@ -31,8 +27,6 @@ export const experience: ExperienceItem[] = [
 
   {
     period: "06.2025 — 07.2025",
-    startDate: "2025-06",
-    endDate: "2025-07",
 
     title: "НПК ЯрЛи",
 
@@ -51,8 +45,6 @@ export const experience: ExperienceItem[] = [
 
   {
     period: "09.2025 — 10.2025",
-    startDate: "2025-09",
-    endDate: "2025-10",
 
     title: "Сайт-визитка",
 
@@ -72,8 +64,6 @@ export const experience: ExperienceItem[] = [
 
   {
     period: "09.2025 — 02.2026",
-    startDate: "2025-09",
-    endDate: "2026-02",
 
     title: "ШелкоПринт",
 

@@ -26,16 +26,25 @@ export const skills: SkillGroup[] = [
   },
 
   {
-    title: "Database",
+    title: "База данных",
     skills: [
       "MySQL",
       "PostgreSQL",
       "MongoDB",
+      "SQLite",
     ],
   },
 
   {
-    title: "Tools",
+    title: "Другие языки",
+    skills: [
+      "C#",
+      "Python",
+    ],
+  },
+
+  {
+    title: "Инструменты",
     skills: [
       "Git",
       "GitHub",

@@ -1,9 +1,15 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 
+import { useLanguage } from "../../i18n/useLanguage";
+
+import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
+import FlowField from "../../components/FlowField/FlowField";
+
 import styles from "./Hero.module.scss";
 
 const Hero = () => {
+  const { t } = useLanguage();
   const heroRef = useRef<HTMLElement | null>(null);
 
   const introRef = useRef<HTMLDivElement | null>(null);
@@ -109,6 +115,9 @@ const Hero = () => {
       ref={heroRef}
       className={styles.hero}
     >
+      <AmbientBackground />
+      <FlowField />
+
       <div className={styles.background} />
 
       <div
@@ -126,7 +135,7 @@ const Hero = () => {
           </span>
 
           <span className={styles.subtitle}>
-            FULL-STACK РАЗРАБОТКА
+            {t.hero.badge}
           </span>
         </div>
 
@@ -134,18 +143,16 @@ const Hero = () => {
           ref={titleRef}
           className={styles.title}
         >
-          Создаю цифровые
+          {t.hero.titleLine1}
           <br />
-          продукты.
+          {t.hero.titleLine2}
         </h1>
 
         <p
           ref={descriptionRef}
           className={styles.description}
         >
-          Разрабатываю современные веб-приложения,
-          соединяя функциональность, технологичность
-          и визуальную составляющую.
+          {t.hero.description}
         </p>
       </div>
 
@@ -153,7 +160,7 @@ const Hero = () => {
         ref={scrollRef}
         className={styles.scroll}
       >
-        <span>ПРОКРУТИТЬ</span>
+        <span>{t.hero.scroll}</span>
 
         <span className={styles.arrow}>
           ↓

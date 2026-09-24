@@ -5,7 +5,7 @@ export const togerher: Project = {
 
   title: "Проект Вместе",
 
-  category: "frontend-develop",
+  category: "Frontend",
 
   year: "2026",
 

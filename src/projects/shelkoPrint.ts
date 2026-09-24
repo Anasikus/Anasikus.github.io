@@ -5,7 +5,7 @@ export const shelkoPrint: Project = {
 
   title: 'ШелкоПринт',
 
-  category: "full-stack",
+  category: "Full-stack",
 
   year: "2025",
 

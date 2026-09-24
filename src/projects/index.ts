@@ -6,6 +6,9 @@ import { coffeeShop } from "./coffeeShop";
 import { shelkoPrint } from "./shelkoPrint";
 import { vizCard } from "./vizCard";
 import { collegeTour } from "./collegeTour";
+import { flowersLifeDesktop } from "./flowersLifeDesktop";
+import { abilimpiks } from "./abilimpiks";
+import { autoDocUpdater } from "./autoDocUpdater";
 
 export const projects: Project[] = [
   flowersLife,
@@ -14,4 +17,7 @@ export const projects: Project[] = [
   shelkoPrint,
   vizCard,
   collegeTour,
+  flowersLifeDesktop,
+  abilimpiks,
+  autoDocUpdater,
 ];

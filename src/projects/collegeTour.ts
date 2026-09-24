@@ -5,7 +5,7 @@ export const collegeTour: Project = {
 
   title: "Экскурсия по колледжу",
 
-  category: "frontend-develop",
+  category: "Frontend",
 
   year: "2024",
 

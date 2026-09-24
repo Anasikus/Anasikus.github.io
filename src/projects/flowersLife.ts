@@ -5,7 +5,7 @@ export const flowersLife: Project = {
 
   title: "FlowersLife",
 
-  category: "Full-stack e-commerce",
+  category: "Full-stack",
 
   year: "2026",
 
