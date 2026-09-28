@@ -21,13 +21,19 @@ export const coffeeShop: Project = {
     "JavaScript",
   ],
 
-  previewImage:
-    "/projects/coffeeShop/preview.webp",
+  accent: {
+    from: "#f59e0b",
+    to: "#b45309",
+  },
+
+  previewImage: "/projects/coffee-shop/cover.webp",
+
+  mobileImage: "/projects/coffee-shop/mobile.webp",
 
   gallery: [
-    "/projects/coffeeShop/01.webp",
-    "/projects/coffeeShop/02.webp",
-    "/projects/coffeeShop/03.webp",
+    "/projects/coffee-shop/shot-1.webp",
+    "/projects/coffee-shop/shot-2.webp",
+    "/projects/coffee-shop/shot-3.webp",
   ],
 
   githubUrl:

@@ -3,14 +3,19 @@ export interface SocialLink {
   url: string;
 }
 
+/*
+ * Иконки этих ссылок показаны в затемнённом футере (см.
+ * Contact.tsx) — Email туда добавляется отдельно, он не
+ * "внешняя" ссылка, а mailto:, собранный из data/contactInfo.
+ */
 export const socialLinks: SocialLink[] = [
   {
-    name: "GitHub",
-    url: "https://github.com/Anasikus",
+    name: "VK",
+    url: "https://vk.ru/anasikus",
   },
 
   {
-    name: "Email",
-    url: "mailto:nastyadavydova20@gmail.com",
+    name: "Telegram",
+    url: "https://t.me/Anasikus",
   },
 ];

@@ -5,6 +5,7 @@ const en: UiDictionary = {
     logo: "BUILDING SOLUTIONS",
     navAbout: "About",
     navSkills: "Skills",
+    navStats: "Stats",
     navProjects: "Projects",
     navExperience: "Experience",
     navContact: "Contact",
@@ -19,6 +20,7 @@ const en: UiDictionary = {
     description:
       "I build web applications and desktop programs in C# and Python, combining functionality, technology and visual design.",
     scroll: "SCROLL",
+    scrollAria: "Scroll to the “My path” section",
   },
 
   about: {
@@ -27,6 +29,12 @@ const en: UiDictionary = {
     headingLine2: "with curiosity.",
     description:
       "What followed were years of learning, first projects, mistakes, clients and increasingly complex tasks.",
+    photoOpenAria: "Open full screen",
+    photoHint: "Open ↗",
+    viewProject: "View project",
+    photoClose: "Close",
+    photoPrev: "Previous photo",
+    photoNext: "Next photo",
   },
 
   skills: {
@@ -70,6 +78,9 @@ const en: UiDictionary = {
       "Projects, practice and internships that became part of my professional journey.",
     hint: "Click a card to learn more",
     now: "Now",
+    more: "Details",
+    linkSite: "Website",
+    linksLabel: "LINKS",
     modalTechnologiesLabel:
       "TECHNOLOGIES",
     modalPrev: "Prev",
@@ -90,6 +101,14 @@ const en: UiDictionary = {
     close: "Close",
     openAria: "Open full screen",
     imageCounter: "{current} of {total}",
+  },
+
+  video: {
+    label: "07 / VIDEO",
+    headingLine1: "A few words",
+    headingLine2: "from me, in person.",
+    description:
+      "A short intro to who I am and what I do — in my own voice, not just text on a page.",
   },
 
   contact: {
@@ -119,20 +138,40 @@ const en: UiDictionary = {
     mailtoReplyLabel: "Reply email",
     directLabel: "Or directly",
     copy: "Copy",
-    copied: "Copied",
-    copyError: "Failed",
+    copyPhoneDone: "Phone number copied",
+    copyEmailDone: "Email copied",
+    copyError: "Couldn’t copy",
+    emailIconAria: "Send an email",
     footerCopy: "Developer portfolio",
     toTop: "Back to top ↑",
   },
 
   projectsPage: {
+    filterAll: "All",
     label: "ALL PROJECTS",
     headingLine1: "Selected",
     headingLine2: "work.",
   },
 
   projectDetails: {
-    back: "← Back to projects",
+    about: "About the project",
+    facts: "Details",
+    year: "Year",
+    type: "Type",
+    status: "Status",
+    statusLive: "Live",
+    statusCode: "Open source",
+    statusClosed: "In development",
+    statusDone: "Completed",
+    screens: "Screens",
+    openShot: "Open screenshot",
+    closeShot: "Close",
+    prevShot: "Previous screenshot",
+    nextShot: "Next screenshot",
+    nextProject: "Next project",
+    prevProject: "Previous project",
+    phoneAlt: "Mobile version",
+    back: "← Back",
     liveWebsite: "Live website ↗",
     technologiesLabel: "TECHNOLOGIES",
     notFoundTitle: "Project not found",

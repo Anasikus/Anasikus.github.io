@@ -42,6 +42,12 @@ const en: TimelineTranslations = {
     description:
       "After connecting with the company ‘Areal,’ I went through an interview and got my first practical trial task. I worked with the structure of a real project, GitHub, Node.js, Vue.js and PostgreSQL. Even though I didn’t finish the trial in time, it became an important professional lesson that showed me how much proper requirements work and planning matter.",
   },
+  "professionaly-2025": {
+    period: "FEBRUARY 2025",
+    title: "‘Professionals’ championship",
+    description:
+      "I took part in the regional stage of the ‘Professionals’ skills championship, in the ‘Business software solutions’ category. I prepared for the wrong thing entirely — expecting 1C tasks, when the real challenge was a mobile app (I didn’t know Kotlin at all), a desktop app (the one stage with no surprises) and a web service I’d never built before. The result wasn’t great, but it’s exactly what pushed me to take development seriously — after the contest I learned to build not just desktop apps, but full web services too.",
+  },
   "college-project": {
     period: "YEAR 3",
     title:
@@ -82,11 +88,23 @@ const en: TimelineTranslations = {
     description:
       "My final study project was the ‘Flowers and Gifts’ online service. The project brought together my knowledge of frontend and backend development, working with databases, APIs, authorization and the architecture of a full-fledged web application.",
   },
+  "olympiad-2026": {
+    period: "2026",
+    title: "Regional olympiad prize-winner",
+    description:
+      "I took part in the regional professional skills olympiad for students of Yaroslavl Region educational institutions, in the enlarged specialty group 09.00.00 ‘Computer Science and Engineering’ (specialty 09.02.07 ‘Information Systems and Programming’), and placed 3rd.",
+  },
+  "conference-2026": {
+    period: "FEBRUARY 27, 2026",
+    title: "Professional skills conference",
+    description:
+      "Spoke at a conference, presenting my professional skills and personal experience in programming to fellow students and instructors.",
+  },
   graduation: {
     period: "JUNE 2026",
     title: "Honors diploma",
     description:
-      "In June 2026, I received a secondary vocational education degree in ‘Information Systems and Programming’ with honors.",
+      "In June 2026, I received a secondary vocational education degree in ‘Information Systems and Programming’ with honors. I was also awarded a certificate for responsibility and strong academic performance.",
   },
 };
 
@@ -117,6 +135,12 @@ const kk: TimelineTranslations = {
       "Коммерциялық әзірлеудегі алғашқы тәжірибе",
     description:
       "«Ареал» компаниясымен танысқаннан кейін мен сұхбаттан өттім және алғашқы практикалық сынақ тапсырмасын алдым. Нақты жобаның құрылымымен, GitHub, Node.js, Vue.js және PostgreSQL-мен жұмыс істедім. Сынақты уақытында аяқтай алмасам да, бұл тәжірибе маңызды кәсіби сабаққа айналды және маған талаптармен сауатты жұмыс пен жоспарлаудың маңыздылығын көрсетті.",
+  },
+  "professionaly-2025": {
+    period: "2025 ЖЫЛҒЫ АҚПАН",
+    title: "«Кәсіпқойлар» чемпионаты",
+    description:
+      "«Бизнеске арналған бағдарламалық шешімдер» құзыреттілігі бойынша «Кәсіпқойлар» кәсіби шеберлік чемпионатының өңірлік кезеңіне қатыстым. Дайындығым қате бағытта болды: 1С бойынша тапсырмалар күттім, ал іс жүзінде мобильді қосымша (Kotlin-ды мүлдем білмедім), десктоп қосымша (тек осы кезең ғана дайындықсыз өтті) және бұрын-соңды жасамаған веб-сервисті іске асыру керек болды. Нәтиже сәтсіз болды, бірақ дәл осы жайт мені әзірлеумен байыппен айналысуға итермеледі — байқаудан кейін мен тек десктоп қосымшаларды ғана емес, толыққанды веб-сервистерді де жасауды үйрендім.",
   },
   "college-project": {
     period: "3-КУРС",
@@ -158,11 +182,23 @@ const kk: TimelineTranslations = {
     description:
       "Оқудың қорытынды жобасы «Гүлдер мен сыйлықтар» интернет-қызметі болды. Жоба менің frontend- және backend-әзірлеу, дерекқорлармен жұмыс, API, авторизация және толыққанды веб-қосымша архитектурасы бойынша білімімді біріктірді.",
   },
+  "olympiad-2026": {
+    period: "2026",
+    title: "Өңірлік олимпиада жүлдегері",
+    description:
+      "Ярославль облысы білім беру ұйымдары студенттерінің 09.00.00 «Информатика және есептеу техникасы» ірілендірілген мамандықтар тобы (09.02.07 «Ақпараттық жүйелер және бағдарламалау» мамандығы) бойынша кәсіби шеберлік өңірлік олимпиадасына қатысып, 3-орын алдым.",
+  },
+  "conference-2026": {
+    period: "2026 ЖЫЛҒЫ 27 АҚПАН",
+    title: "Кәсіби шеберлік конференциясы",
+    description:
+      "Конференцияда сөз сөйлеп, өз кәсіби дағдыларым мен бағдарламалаудағы жеке тәжірибемді басқа студенттер мен оқытушыларға таныстырдым.",
+  },
   graduation: {
     period: "МАУСЫМ 2026",
     title: "Үздік диплом",
     description:
-      "2026 жылдың маусымында мен «Ақпараттық жүйелер және бағдарламалау» мамандығы бойынша орта кәсіптік білімді үздік бітірдім.",
+      "2026 жылдың маусымында мен «Ақпараттық жүйелер және бағдарламалау» мамандығы бойынша орта кәсіптік білімді үздік бітірдім. Сондай-ақ жауапкершілігім мен оқудағы жоғары көрсеткіштерім үшін грамотамен марапатталдым.",
   },
 };
 
@@ -192,6 +228,12 @@ const be: TimelineTranslations = {
       "Першы досвед камерцыйнай распрацоўкі",
     description:
       "Пасля знаёмства з кампаніяй «Арэал» я прайшла сумоўе і атрымала першае практычнае выпрабаванне. Працавала са структурай рэальнага праекта, GitHub, Node.js, Vue.js і PostgreSQL. Нягледзячы на тое, што выпрабаванне не ўдалося завяршыць у тэрмін, гэты досвед стаў важным прафесійным урокам і паказаў мне значнасць граматнай працы з патрабаваннямі і планавання.",
+  },
+  "professionaly-2025": {
+    period: "ЛЮТЫ 2025",
+    title: "Чэмпіянат «Прафесіяналы»",
+    description:
+      "Удзельнічала ў рэгіянальным этапе чэмпіянату прафесійнага майстэрства «Прафесіяналы» па кампетэнцыі «Праграмныя рашэнні для бізнесу». Рыхтавалася не ў той бок: чакала задач на 1С, а трэба было рэалізаваць мабільны дадатак (Kotlin тады не ведала зусім), настольны дадатак (адзіны этап без сюрпрызаў) і вэб-сэрвіс, з якім раней таксама не працавала. Выступленне атрымалася няўдалым, затое менавіта яно падштурхнула мяне ўсур'ёз разабрацца ў распрацоўцы — пасля конкурсу я навучылася рабіць не толькі настольныя праграмы, але і поўнавартасныя вэб-сэрвісы.",
   },
   "college-project": {
     period: "3 КУРС",
@@ -233,11 +275,23 @@ const be: TimelineTranslations = {
     description:
       "Выніковым праектам навучання стаў інтэрнэт-сэрвіс «Кветкі і падарункі». Праект аб’яднаў мае веды frontend- і backend-распрацоўкі, працы з базамі дадзеных, API, аўтарызацыяй і архітэктурай поўнавартаснага вэб-дадатку.",
   },
+  "olympiad-2026": {
+    period: "2026",
+    title: "Прызёр рэгіянальнай алімпіяды",
+    description:
+      "Удзельнічала ў рэгіянальнай алімпіядзе прафесійнага майстэрства студэнтаў адукацыйных арганізацый Яраслаўскай вобласці па ўзбуйненай групе спецыяльнасцей 09.00.00 «Інфарматыка і вылічальная тэхніка» (спецыяльнасць 09.02.07 «Інфармацыйныя сістэмы і праграмаванне») і заняла 3 месца.",
+  },
+  "conference-2026": {
+    period: "27 ЛЮТАГА 2026",
+    title: "Канферэнцыя прафмайстэрства",
+    description:
+      "Выступіла на канферэнцыі, дзе прадставіла прафесійныя навыкі і асабісты досвед у праграмаванні перад іншымі студэнтамі і выкладчыкамі.",
+  },
   graduation: {
     period: "ЧЭРВЕНЬ 2026",
     title: "Дыплом з адзнакай",
     description:
-      "У чэрвені 2026 года я атрымала сярэднюю прафесійную адукацыю па спецыяльнасці «Інфармацыйныя сістэмы і праграмаванне» з адзнакай.",
+      "У чэрвені 2026 года я атрымала сярэднюю прафесійную адукацыю па спецыяльнасці «Інфармацыйныя сістэмы і праграмаванне» з адзнакай. А яшчэ атрымала грамату за адказнасць і высокія паказчыкі ў вучобе.",
   },
 };
 

@@ -9,6 +9,7 @@ const ru = {
     logo: "СОЗДАЮ РЕШЕНИЯ",
     navAbout: "О себе",
     navSkills: "Скилы",
+    navStats: "Статистика",
     navProjects: "Проекты",
     navExperience: "Опыт",
     navContact: "Контакты",
@@ -23,6 +24,7 @@ const ru = {
     description:
       "Разрабатываю веб-приложения и настольные программы на C# и Python, соединяя функциональность, технологичность и визуальную составляющую.",
     scroll: "ПРОКРУТИТЬ",
+    scrollAria: "Прокрутить к разделу «Мой путь»",
   },
 
   about: {
@@ -31,6 +33,12 @@ const ru = {
     headingLine2: "с интереса.",
     description:
       "А дальше были годы обучения, первые проекты, ошибки, заказчики и всё более сложные задачи.",
+    photoOpenAria: "Открыть на весь экран",
+    photoHint: "Открыть ↗",
+    viewProject: "Смотреть проект",
+    photoClose: "Закрыть",
+    photoPrev: "Предыдущее фото",
+    photoNext: "Следующее фото",
   },
 
   skills: {
@@ -74,6 +82,9 @@ const ru = {
       "Проекты, практика и стажировка, которые стали частью моего профессионального пути.",
     hint: "Нажмите на карточку, чтобы узнать подробнее",
     now: "Сегодня",
+    more: "Подробнее",
+    linkSite: "Сайт",
+    linksLabel: "ССЫЛКИ",
     modalTechnologiesLabel:
       "ТЕХНОЛОГИИ",
     modalPrev: "Назад",
@@ -94,6 +105,14 @@ const ru = {
     close: "Закрыть",
     openAria: "Открыть на весь экран",
     imageCounter: "{current} из {total}",
+  },
+
+  video: {
+    label: "07 / ВИДЕО",
+    headingLine1: "Пара слов",
+    headingLine2: "от меня лично.",
+    description:
+      "Коротко о том, кто я и чем занимаюсь — своим голосом, а не только текстом на сайте.",
   },
 
   contact: {
@@ -123,20 +142,40 @@ const ru = {
       "Email для ответа",
     directLabel: "Или напрямую",
     copy: "Скопировать",
-    copied: "Скопировано",
-    copyError: "Не удалось",
+    copyPhoneDone: "Номер телефона скопирован",
+    copyEmailDone: "Почта скопирована",
+    copyError: "Не удалось скопировать",
+    emailIconAria: "Написать на почту",
     footerCopy: "Портфолио разработчика",
     toTop: "Наверх ↑",
   },
 
   projectsPage: {
+    filterAll: "Все",
     label: "ВСЕ ПРОЕКТЫ",
     headingLine1: "Избранные",
     headingLine2: "работы.",
   },
 
   projectDetails: {
-    back: "← Назад к проектам",
+    about: "О проекте",
+    facts: "Детали",
+    year: "Год",
+    type: "Тип",
+    status: "Статус",
+    statusLive: "Онлайн",
+    statusCode: "Код открыт",
+    statusClosed: "В разработке",
+    statusDone: "Завершён",
+    screens: "Экраны",
+    openShot: "Открыть скриншот",
+    closeShot: "Закрыть",
+    prevShot: "Предыдущий скриншот",
+    nextShot: "Следующий скриншот",
+    nextProject: "Следующий проект",
+    prevProject: "Предыдущий проект",
+    phoneAlt: "Мобильная версия",
+    back: "← Назад",
     liveWebsite: "Сайт проекта ↗",
     technologiesLabel: "ТЕХНОЛОГИИ",
     notFoundTitle: "Проект не найден",

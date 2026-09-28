@@ -5,6 +5,7 @@ const kk: UiDictionary = {
     logo: "ШЕШІМДЕР ЖАСАЙМЫН",
     navAbout: "Мен туралы",
     navSkills: "Дағдылар",
+    navStats: "Статистика",
     navProjects: "Жобалар",
     navExperience: "Тәжірибе",
     navContact: "Байланыс",
@@ -19,6 +20,7 @@ const kk: UiDictionary = {
     description:
       "Веб-қосымшалар мен C# және Python тіліндегі десктоп бағдарламаларын әзірлеймін, функционалдылықты, технологияны және визуалды безендіруді біріктіре отырып.",
     scroll: "ТӨМЕН ЖЫЛЖЫТУ",
+    scrollAria: "«Менің жолым» бөліміне жылжыту",
   },
 
   about: {
@@ -27,6 +29,12 @@ const kk: UiDictionary = {
     headingLine2: "басталды.",
     description:
       "Одан кейін оқу жылдары, алғашқы жобалар, қателер, тапсырыс берушілер және барған сайын күрделене түскен тапсырмалар болды.",
+    photoOpenAria: "Толық экранда ашу",
+    photoHint: "Ашу ↗",
+    viewProject: "Жобаны көру",
+    photoClose: "Жабу",
+    photoPrev: "Алдыңғы фото",
+    photoNext: "Келесі фото",
   },
 
   skills: {
@@ -70,6 +78,9 @@ const kk: UiDictionary = {
       "Менің кәсіби жолымның бір бөлігіне айналған жобалар, практика және тағылымдама.",
     hint: "Толығырақ білу үшін карточканы басыңыз",
     now: "Бүгін",
+    more: "Толығырақ",
+    linkSite: "Сайт",
+    linksLabel: "СІЛТЕМЕЛЕР",
     modalTechnologiesLabel:
       "ТЕХНОЛОГИЯЛАР",
     modalPrev: "Артқа",
@@ -90,6 +101,14 @@ const kk: UiDictionary = {
     close: "Жабу",
     openAria: "Толық экранда ашу",
     imageCounter: "{current} / {total}",
+  },
+
+  video: {
+    label: "07 / БЕЙНЕ",
+    headingLine1: "Өзім туралы",
+    headingLine2: "бірнеше сөз.",
+    description:
+      "Мен кіммін және немен айналысамын — сайттағы мәтін ғана емес, өз дауысыммен қысқаша.",
   },
 
   contact: {
@@ -120,20 +139,40 @@ const kk: UiDictionary = {
     mailtoReplyLabel: "Жауап email",
     directLabel: "Немесе тікелей",
     copy: "Көшіру",
-    copied: "Көшірілді",
-    copyError: "Сәтсіз",
+    copyPhoneDone: "Телефон нөмірі көшірілді",
+    copyEmailDone: "Пошта көшірілді",
+    copyError: "Көшіру мүмкін болмады",
+    emailIconAria: "Поштаға жазу",
     footerCopy: "Әзірлеушінің портфолиосы",
     toTop: "Жоғарыға ↑",
   },
 
   projectsPage: {
+    filterAll: "Барлығы",
     label: "БАРЛЫҚ ЖОБАЛАР",
     headingLine1: "Таңдаулы",
     headingLine2: "жұмыстар.",
   },
 
   projectDetails: {
-    back: "← Жобаларға оралу",
+    about: "Жоба туралы",
+    facts: "Мәліметтер",
+    year: "Жыл",
+    type: "Түрі",
+    status: "Мәртебесі",
+    statusLive: "Онлайн",
+    statusCode: "Ашық код",
+    statusClosed: "Әзірленуде",
+    statusDone: "Аяқталған",
+    screens: "Экрандар",
+    openShot: "Скриншотты ашу",
+    closeShot: "Жабу",
+    prevShot: "Алдыңғы скриншот",
+    nextShot: "Келесі скриншот",
+    nextProject: "Келесі жоба",
+    prevProject: "Алдыңғы жоба",
+    phoneAlt: "Мобильді нұсқа",
+    back: "← Артқа",
     liveWebsite: "Жоба сайты ↗",
     technologiesLabel:
       "ТЕХНОЛОГИЯЛАР",

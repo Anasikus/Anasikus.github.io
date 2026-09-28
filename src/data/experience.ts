@@ -1,9 +1,15 @@
+export interface ExperienceLink {
+  kind: "github" | "site";
+  href: string;
+}
+
 export interface ExperienceItem {
   period: string;
   title: string;
   position: string;
   description: string;
   technologies: string[];
+  links?: ExperienceLink[];
 }
 
 export const experience: ExperienceItem[] = [
@@ -41,6 +47,13 @@ export const experience: ExperienceItem[] = [
       "Node.js",
       "GitHub",
     ],
+
+    links: [
+      {
+        kind: "github",
+        href: "https://github.com/Anasikus/todo-app",
+      },
+    ],
   },
 
   {
@@ -59,6 +72,17 @@ export const experience: ExperienceItem[] = [
       "JavaScript",
       "HTML",
       "CSS",
+    ],
+
+    links: [
+      {
+        kind: "site",
+        href: "https://anasikus.github.io/VizCard/",
+      },
+      {
+        kind: "github",
+        href: "https://github.com/Anasikus/VizCard",
+      },
     ],
   },
 
@@ -79,6 +103,13 @@ export const experience: ExperienceItem[] = [
       "HTML",
       "CSS",
       "GitHub",
+    ],
+
+    links: [
+      {
+        kind: "site",
+        href: "https://shelko-print.ru/",
+      },
     ],
   },
 ];

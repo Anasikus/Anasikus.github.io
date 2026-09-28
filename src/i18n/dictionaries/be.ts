@@ -5,6 +5,7 @@ const be: UiDictionary = {
     logo: "СТВАРАЮ РАШЭННІ",
     navAbout: "Пра мяне",
     navSkills: "Навыкі",
+    navStats: "Статыстыка",
     navProjects: "Праекты",
     navExperience: "Досвед",
     navContact: "Кантакты",
@@ -19,6 +20,7 @@ const be: UiDictionary = {
     description:
       "Распрацоўваю вэб-дадаткі і настольныя праграмы на C# і Python, спалучаючы функцыянальнасць, тэхналагічнасць і візуальную састаўляючую.",
     scroll: "ПРАКРУЦІЦЬ",
+    scrollAria: "Пракруціць да раздзела «Мой шлях»",
   },
 
   about: {
@@ -27,6 +29,12 @@ const be: UiDictionary = {
     headingLine2: "з цікавасці.",
     description:
       "А далей былі гады навучання, першыя праекты, памылкі, заказчыкі і ўсё больш складаныя задачы.",
+    photoOpenAria: "Адкрыць на ўвесь экран",
+    photoHint: "Адкрыць ↗",
+    viewProject: "Глядзець праект",
+    photoClose: "Закрыць",
+    photoPrev: "Папярэдняе фота",
+    photoNext: "Наступнае фота",
   },
 
   skills: {
@@ -70,6 +78,9 @@ const be: UiDictionary = {
       "Праекты, практыка і стажыроўка, якія сталі часткай майго прафесійнага шляху.",
     hint: "Націсніце на картку, каб даведацца больш",
     now: "Сёння",
+    more: "Падрабязней",
+    linkSite: "Сайт",
+    linksLabel: "СПАСЫЛКІ",
     modalTechnologiesLabel:
       "ТЭХНАЛОГІІ",
     modalPrev: "Назад",
@@ -90,6 +101,14 @@ const be: UiDictionary = {
     close: "Закрыць",
     openAria: "Адкрыць на ўвесь экран",
     imageCounter: "{current} з {total}",
+  },
+
+  video: {
+    label: "07 / ВІДЭА",
+    headingLine1: "Некалькі слоў",
+    headingLine2: "ад мяне асабіста.",
+    description:
+      "Коратка пра тое, хто я і чым займаюся — сваім голасам, а не толькі тэкстам на сайце.",
   },
 
   contact: {
@@ -121,20 +140,40 @@ const be: UiDictionary = {
       "Email для адказу",
     directLabel: "Або напрамую",
     copy: "Капіраваць",
-    copied: "Скапіравана",
-    copyError: "Не атрымалася",
+    copyPhoneDone: "Нумар тэлефона скапіраваны",
+    copyEmailDone: "Пошта скапіравана",
+    copyError: "Не атрымалася скапіраваць",
+    emailIconAria: "Напісаць на пошту",
     footerCopy: "Партфоліа распрацоўшчыка",
     toTop: "Наверх ↑",
   },
 
   projectsPage: {
+    filterAll: "Усе",
     label: "УСЕ ПРАЕКТЫ",
     headingLine1: "Выбраныя",
     headingLine2: "працы.",
   },
 
   projectDetails: {
-    back: "← Назад да праектаў",
+    about: "Пра праект",
+    facts: "Дэталі",
+    year: "Год",
+    type: "Тып",
+    status: "Статус",
+    statusLive: "Анлайн",
+    statusCode: "Адкрыты код",
+    statusClosed: "У распрацоўцы",
+    statusDone: "Завершаны",
+    screens: "Экраны",
+    openShot: "Адкрыць скрыншот",
+    closeShot: "Закрыць",
+    prevShot: "Папярэдні скрыншот",
+    nextShot: "Наступны скрыншот",
+    nextProject: "Наступны праект",
+    prevProject: "Папярэдні праект",
+    phoneAlt: "Мабільная версія",
+    back: "← Назад",
     liveWebsite: "Сайт праекта ↗",
     technologiesLabel:
       "ТЭХНАЛОГІІ",

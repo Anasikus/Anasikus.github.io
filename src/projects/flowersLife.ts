@@ -13,7 +13,7 @@ export const flowersLife: Project = {
     'Full-stack веб-приложение "Цветы и подарки".',
 
   description:
-    "FlowersLife - это полноценная платформа электронной коммерции, предназначенная для продажи цветов и подарков. Проект включает в себя клиентский интерфейс, панель администрирования, управление продуктами, заказами, зонами доставки, управление складом и другие бизнес-функции. Проект все еще находится в стадии разработки.",
+    "FlowersLife — полноценная платформа электронной коммерции для магазина цветов и подарков: витрина для покупателей и панель администратора в одном проекте.\nВнутри каталог и карточки товаров, заказы, зоны доставки, склад, управление продуктами и другие бизнес-функции. Клиентская часть написана на React и TypeScript, сервер — на Node.js и Express с базой MySQL, авторизация построена на JWT.\nЭто итоговый проект обучения, и он всё ещё в активной разработке: исходный код пока не опубликован, а живой версии ещё нет.",
 
   technologies: [
     "React",
@@ -25,19 +25,10 @@ export const flowersLife: Project = {
     "REST API",
   ],
 
-  previewImage:
-    "/projects/flowers-life/preview.webp",
-
-  gallery: [
-    "/projects/flowers-life/01.webp",
-    "/projects/flowers-life/02.webp",
-    "/projects/flowers-life/03.webp",
-  ],
-
-  githubUrl:
-    "https://github.com/Anasikus/FlowersLifeSite",
-
-  liveUrl: undefined,
+  accent: {
+    from: "#f472b6",
+    to: "#a855f7",
+  },
 
   featured: true,
 };

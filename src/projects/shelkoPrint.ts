@@ -22,18 +22,20 @@ export const shelkoPrint: Project = {
     "PHP"
   ],
 
-  previewImage:
-    "/projects/shelkoPrint/preview.webp",
+  accent: {
+    from: "#22d3ee",
+    to: "#3b82f6",
+  },
+
+  previewImage: "/projects/shelko-print/cover.webp",
+
+  mobileImage: "/projects/shelko-print/mobile.webp",
 
   gallery: [
-    "/projects/shelkoPrint/01.webp",
-    "/projects/shelkoPrint/02.webp",
-    "/projects/shelkoPrint/03.webp",
-    "/projects/shelkoPrint/04.webp",
+    "/projects/shelko-print/shot-1.webp",
+    "/projects/shelko-print/shot-2.webp",
+    "/projects/shelko-print/shot-3.webp",
   ],
-
-  githubUrl:
-    undefined,
 
   liveUrl: "https://shelko-print.ru/",
 

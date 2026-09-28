@@ -81,12 +81,15 @@ const Projects = () => {
         </header>
 
         <div className={styles.projects}>
-          {featuredProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-            />
-          ))}
+          {featuredProjects.map(
+            (project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+              />
+            )
+          )}
         </div>
 
         <div className={styles.bottomLink}>

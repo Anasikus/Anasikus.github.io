@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { getLocalizedExperience } from "../../i18n/content/experience";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useScrollLock } from "../../hooks/useScrollLock";
 
 import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
 
@@ -75,8 +76,8 @@ const Experience = () => {
             );
 
           const card =
-            row.querySelector(
-              `.${styles.card}`
+            row.querySelectorAll(
+              `.${styles.card}, .${styles.cardLinks}`
             );
 
           const side =
@@ -129,22 +130,7 @@ const Experience = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (selectedIndex === null) {
-      return;
-    }
-
-    const previousOverflow =
-      document.body.style.overflow;
-
-    document.body.style.overflow =
-      "hidden";
-
-    return () => {
-      document.body.style.overflow =
-        previousOverflow;
-    };
-  }, [selectedIndex]);
+  useScrollLock(selectedIndex !== null);
 
   useEffect(() => {
     if (selectedIndex === null) {
@@ -311,6 +297,11 @@ const Experience = () => {
                       aria-hidden="true"
                     />
 
+                    <div
+                      className={
+                        styles.cardWrap
+                      }
+                    >
                     <button
                       type="button"
                       className={
@@ -402,10 +393,40 @@ const Experience = () => {
                           styles.cardCta
                         }
                       >
-                        Подробнее
+                        {t.experience.more}
                         <span>→</span>
                       </span>
                     </button>
+
+                    {item.links && (
+                      <div
+                        className={
+                          styles.cardLinks
+                        }
+                      >
+                        {item.links.map(
+                          (link) => (
+                            <a
+                              key={link.href}
+                              href={link.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={
+                                styles.linkPill
+                              }
+                            >
+                              {link.kind ===
+                              "github"
+                                ? "GitHub"
+                                : t.experience
+                                    .linkSite}
+                              <span>↗</span>
+                            </a>
+                          )
+                        )}
+                      </div>
+                    )}
+                    </div>
                   </li>
                 )
               )}
@@ -454,6 +475,7 @@ const Experience = () => {
         >
           <div
             className={styles.modal}
+            data-lenis-prevent
             role="dialog"
             aria-modal="true"
             aria-label={
@@ -526,6 +548,52 @@ const Experience = () => {
                   selectedExperience.description
                 }
               </p>
+
+              {selectedExperience.links && (
+                <div
+                  className={
+                    styles.modalTechnologies
+                  }
+                >
+                  <span
+                    className={
+                      styles.technologiesLabel
+                    }
+                  >
+                    {
+                      t.experience
+                        .linksLabel
+                    }
+                  </span>
+
+                  <div
+                    className={
+                      styles.modalLinks
+                    }
+                  >
+                    {selectedExperience.links.map(
+                      (link) => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={
+                            styles.linkPill
+                          }
+                        >
+                          {link.kind ===
+                          "github"
+                            ? "GitHub"
+                            : t.experience
+                                .linkSite}
+                          <span>↗</span>
+                        </a>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div
                 className={

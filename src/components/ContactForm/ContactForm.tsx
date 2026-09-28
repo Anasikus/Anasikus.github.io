@@ -236,7 +236,7 @@ const ContactForm = ({
         <textarea
           value={message}
           required
-          rows={5}
+          rows={3}
           placeholder={
             t.contact
               .formMessagePlaceholder

@@ -42,12 +42,12 @@
 
   font-size:
     clamp(
-      72px,
-      12vw,
-      180px
+      44px,
+      7.5vw,
+      110px
     );
 
-  line-height: 0.85;
+  line-height: 0.9;
 
   letter-spacing: -0.07em;
 }
@@ -183,10 +183,104 @@
    CARD
    ========================================================= */
 
-.card {
+/*
+ * Обёртка нужна, чтобы ссылки на репозиторий/сайт лежали ПОВЕРХ
+ * карточки, но не внутри <button> — вложенные интерактивные
+ * элементы в button недопустимы. Подъём при hover поэтому
+ * применяется к обёртке, чтобы карточка и ссылки двигались вместе.
+ */
+.cardWrap {
   position: relative;
 
   width: calc(50% - 56px);
+
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardWrap:hover,
+.cardWrap:focus-within {
+  transform: translateY(-6px);
+}
+
+.cardLinks {
+  position: absolute;
+
+  right: 26px;
+  bottom: 22px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+}
+
+.linkPill {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 12px;
+
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 100px;
+
+  background: rgba(168, 85, 247, 0.08);
+
+  color: $color-text;
+
+  font-size: 11px;
+
+  letter-spacing: 0.06em;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+
+  span {
+    color: $color-purple-light;
+
+    font-size: 12px;
+  }
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    background: rgba(168, 85, 247, 0.2);
+
+    color: $color-white;
+
+    transform: translateY(-2px);
+  }
+}
+
+.modalLinks {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  .linkPill {
+    padding: 9px 16px;
+
+    font-size: 13px;
+  }
+}
+
+.card {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
 
   padding: 32px;
 
@@ -206,15 +300,12 @@
   cursor: pointer;
 
   transition:
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.35s ease,
     box-shadow 0.35s ease;
 }
 
 .card:hover,
 .card:focus-visible {
-  transform: translateY(-6px);
-
   border-color: rgba(168, 85, 247, 0.5);
 
   box-shadow:
@@ -471,7 +562,7 @@
       100%
     );
 
-  max-height: 90vh;
+  max-height: 94vh;
 
   overflow-y: auto;
 
@@ -479,7 +570,7 @@
 
   box-sizing: border-box;
 
-  padding: 55px;
+  padding: 34px 44px 24px;
 
   border:
     1px solid
@@ -612,7 +703,7 @@
 
   gap: 20px;
 
-  margin-bottom: 45px;
+  margin-bottom: 26px;
 }
 
 .modalNumber {
@@ -644,9 +735,9 @@
 
   font-size:
     clamp(
-      38px,
-      6vw,
-      64px
+      32px,
+      4.5vw,
+      48px
     );
 
   line-height: 0.95;
@@ -657,7 +748,7 @@
 .modalPosition {
   display: block;
 
-  margin-top: 20px;
+  margin-top: 14px;
 
   color:
     $color-purple-light;
@@ -673,14 +764,14 @@
 .modalContent p {
   max-width: 560px;
 
-  margin: 40px 0 0;
+  margin: 22px 0 0;
 
   color:
     $color-text-secondary;
 
-  font-size: 16px;
+  font-size: 15px;
 
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
 /* =========================================================
@@ -688,9 +779,9 @@
    ========================================================= */
 
 .modalTechnologies {
-  margin-top: 45px;
+  margin-top: 24px;
 
-  padding-top: 30px;
+  padding-top: 18px;
 
   border-top:
     1px solid
@@ -700,7 +791,7 @@
 .technologiesLabel {
   display: block;
 
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 
   color:
     $color-text-secondary;
@@ -759,9 +850,9 @@
 
   justify-content: space-between;
 
-  margin-top: 55px;
+  margin-top: 26px;
 
-  padding-top: 25px;
+  padding-top: 16px;
 
   border-top:
     1px solid
@@ -833,7 +924,7 @@
 
   flex-shrink: 0;
 
-  margin-top: 20px;
+  margin-top: 12px;
 
   color:
     rgba(
@@ -912,7 +1003,7 @@
   }
 
   .heading h2 {
-    font-size: 72px;
+    font-size: 46px;
   }
 
   .heading p {
@@ -941,10 +1032,17 @@
     left: 20px;
   }
 
-  .card {
+  .cardWrap {
     width: 100%;
+  }
 
+  .card {
     padding: 26px;
+  }
+
+  .cardLinks {
+    right: 20px;
+    bottom: 18px;
   }
 
   .nowRow {
@@ -981,21 +1079,21 @@
   }
 
   .modalHeader {
-    margin-bottom: 35px;
+    margin-bottom: 22px;
   }
 
   .modalContent h3 {
-    font-size: 42px;
+    font-size: 34px;
   }
 
   .modalContent p {
-    margin-top: 30px;
+    margin-top: 20px;
 
     font-size: 15px;
   }
 
   .modalFooter {
-    margin-top: 40px;
+    margin-top: 24px;
   }
 
   .keyboardHint {
@@ -1014,7 +1112,7 @@
   }
 
   .heading h2 {
-    font-size: 58px;
+    font-size: 40px;
   }
 
   .heading p {
@@ -1022,7 +1120,7 @@
   }
 
   .modalContent h3 {
-    font-size: 36px;
+    font-size: 30px;
   }
 
   .modal {

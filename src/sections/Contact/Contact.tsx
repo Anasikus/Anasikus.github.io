@@ -1,9 +1,15 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ComponentType,
+} from "react";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { socialLinks } from "../../data/socialLinks";
+import { EMAIL, PHONE } from "../../data/contactInfo";
 
 import { useLanguage } from "../../i18n/useLanguage";
 import { useMagnetic } from "../../hooks/useMagnetic";
@@ -11,18 +17,24 @@ import { useMagnetic } from "../../hooks/useMagnetic";
 import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
+import {
+  EmailIcon,
+  PhoneIcon,
+  TelegramIcon,
+  VkIcon,
+} from "../../components/SocialIcons/SocialIcons";
 
 import styles from "./Contact.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const emailLink = socialLinks.find(
-  (link) => link.name === "Email"
-);
-
-const email =
-  emailLink?.url.replace("mailto:", "") ??
-  "";
+const footerIcons: Record<
+  string,
+  ComponentType
+> = {
+  VK: VkIcon,
+  Telegram: TelegramIcon,
+};
 
 const Contact = () => {
   const { t } = useLanguage();
@@ -30,16 +42,16 @@ const Contact = () => {
   const sectionRef =
     useRef<HTMLElement | null>(null);
 
-  const copyButtonRef =
-    useMagnetic<HTMLButtonElement>();
-
   const toTopRef =
     useMagnetic<HTMLButtonElement>();
 
-  const [copyState, setCopyState] =
-    useState<
-      "idle" | "copied" | "error"
-    >("idle");
+  const [toast, setToast] = useState<{
+    id: number;
+    text: string;
+    isError: boolean;
+  } | null>(null);
+
+  const toastTimer = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -69,25 +81,44 @@ const Contact = () => {
     };
   }, []);
 
-  const handleCopyEmail = async () => {
-    if (!email) {
-      return;
+  const showToast = (
+    text: string,
+    isError = false
+  ) => {
+    if (toastTimer.current !== null) {
+      window.clearTimeout(toastTimer.current);
     }
 
+    setToast({ id: Date.now(), text, isError });
+
+    toastTimer.current = window.setTimeout(
+      () => setToast(null),
+      2200
+    );
+  };
+
+  useLayoutEffect(
+    () => () => {
+      if (toastTimer.current !== null) {
+        window.clearTimeout(toastTimer.current);
+      }
+    },
+    []
+  );
+
+  const copyValue = async (
+    value: string,
+    successText: string
+  ) => {
     try {
       await navigator.clipboard.writeText(
-        email
+        value
       );
 
-      setCopyState("copied");
+      showToast(successText);
     } catch {
-      setCopyState("error");
+      showToast(t.contact.copyError, true);
     }
-
-    setTimeout(
-      () => setCopyState("idle"),
-      2000
-    );
   };
 
   const handleScrollToTop = () => {
@@ -115,7 +146,7 @@ const Contact = () => {
         <h2
           className={`${styles.heading} ${styles.reveal}`}
         >
-          {t.contact.headingLine1}
+          {t.contact.headingLine1}{" "}
           <br />
           {t.contact.headingLine2}
         </h2>
@@ -126,89 +157,137 @@ const Contact = () => {
           {t.contact.description}
         </p>
 
-        <div className={styles.reveal}>
-          <ContactForm toEmail={email} />
-        </div>
-
-        <div
-          className={`${styles.directLabel} ${styles.reveal}`}
-        >
-          {t.contact.directLabel}
-        </div>
-
-        <div
-          className={`${styles.emailRow} ${styles.reveal}`}
-        >
-          <a
-            href={`mailto:${email}`}
-            className={styles.emailLink}
+        <div className={styles.grid}>
+          <div
+            className={`${styles.formColumn} ${styles.reveal}`}
           >
-            {email}
-          </a>
+            <ContactForm toEmail={EMAIL} />
+          </div>
 
-          <button
-            ref={copyButtonRef}
-            type="button"
-            className={styles.copyButton}
-            onClick={handleCopyEmail}
+          <aside
+            className={`${styles.infoColumn} ${styles.reveal}`}
           >
-            {copyState === "copied"
-              ? t.contact.copied
-              : copyState === "error"
-              ? t.contact.copyError
-              : t.contact.copy}
-          </button>
-        </div>
+            <span
+              className={styles.infoLabel}
+            >
+              {t.contact.directLabel}
+            </span>
 
-        <div
-          className={`${styles.links} ${styles.reveal}`}
-        >
-          {socialLinks.map((link) => {
-            const isEmail =
-              link.url.startsWith(
-                "mailto:"
-              );
+            <div className={styles.infoRow}>
+              <a
+                href={PHONE.href}
+                className={styles.infoItem}
+              >
+                <PhoneIcon />
+                <span>{PHONE.display}</span>
+              </a>
 
-            return (
-              <MagneticLink
-                key={link.name}
-                href={link.url}
-                target={
-                  isEmail
-                    ? undefined
-                    : "_blank"
-                }
-                rel={
-                  isEmail
-                    ? undefined
-                    : "noopener noreferrer"
-                }
-                className={
-                  styles.linkPill
+              <button
+                type="button"
+                className={styles.copyButton}
+                onClick={() =>
+                  copyValue(
+                    PHONE.display,
+                    t.contact.copyPhoneDone
+                  )
                 }
               >
-                {link.name}
-                <span>↗</span>
-              </MagneticLink>
-            );
-          })}
+                {t.contact.copy}
+              </button>
+            </div>
+
+            <div className={styles.infoRow}>
+              <a
+                href={`mailto:${EMAIL}`}
+                className={styles.infoItem}
+              >
+                <EmailIcon />
+                <span>{EMAIL}</span>
+              </a>
+
+              <button
+                type="button"
+                className={styles.copyButton}
+                onClick={() =>
+                  copyValue(
+                    EMAIL,
+                    t.contact.copyEmailDone
+                  )
+                }
+              >
+                {t.contact.copy}
+              </button>
+            </div>
+          </aside>
         </div>
       </div>
 
-      <div className={styles.footer}>
-        <span>
-          © {new Date().getFullYear()}{" "}
-          · {t.contact.footerCopy}
-        </span>
-
-        <button
-          ref={toTopRef}
-          type="button"
-          className={styles.toTop}
-          onClick={handleScrollToTop}
+      {toast && (
+        <div
+          key={toast.id}
+          className={`${styles.toast} ${
+            toast.isError
+              ? styles.toastError
+              : ""
+          }`}
+          role="status"
+          aria-live="polite"
         >
-          {t.contact.toTop}
-        </button>
+          {toast.text}
+        </div>
+      )}
+
+      <div className={styles.footer}>
+        <div className={styles.footerInner}>
+          <div className={styles.footerIcons}>
+            {socialLinks.map((link) => {
+              const Icon =
+                footerIcons[link.name];
+
+              return (
+                <MagneticLink
+                  key={link.name}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.name}
+                  className={
+                    styles.footerIconButton
+                  }
+                >
+                  {Icon && <Icon />}
+                </MagneticLink>
+              );
+            })}
+
+            <MagneticLink
+              href={`mailto:${EMAIL}`}
+              aria-label={
+                t.contact.emailIconAria
+              }
+              className={
+                styles.footerIconButton
+              }
+            >
+              <EmailIcon />
+            </MagneticLink>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <span className={styles.copyright}>
+              © {new Date().getFullYear()}{" "}
+              · {t.contact.footerCopy}
+            </span>
+            <button
+              ref={toTopRef}
+              type="button"
+              className={styles.toTop}
+              onClick={handleScrollToTop}
+            >
+              {t.contact.toTop}
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

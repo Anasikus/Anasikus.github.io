@@ -18,22 +18,30 @@ const Header = () => {
 
   const { t } = useLanguage();
 
+  /*
+   * Порядок ссылок совпадает с порядком разделов на странице
+   * (см. pages/Home/Home.tsx) — слева направо = сверху вниз.
+   */
   const navLinks = [
     {
       href: "/#about",
       label: t.header.navAbout,
     },
     {
+      href: "/#experience",
+      label: t.header.navExperience,
+    },
+    {
       href: "/#skills",
       label: t.header.navSkills,
     },
     {
-      href: "/#projects",
-      label: t.header.navProjects,
+      href: "/#stats",
+      label: t.header.navStats,
     },
     {
-      href: "/#experience",
-      label: t.header.navExperience,
+      href: "/#projects",
+      label: t.header.navProjects,
     },
     {
       href: "/#contact",
@@ -44,15 +52,6 @@ const Header = () => {
   const closeMenu = () =>
     setIsMenuOpen(false);
 
-  /*
-   * На главной странице якорные ссылки просто докручивают
-   * к разделу (без этого — без preventDefault — переход по
-   * ссылке на тот же путь+хэш браузер иногда обрабатывал
-   * как «остаться наверху», а не проскроллить к разделу).
-   * С других страниц ("/projects" и т.д.) — обычный переход
-   * на главную с хэшем, докрутку туда доделает useLenis
-   * при монтировании.
-   */
   const handleNavClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string
@@ -69,8 +68,8 @@ const Header = () => {
       href.indexOf("#")
     );
 
-    window.history.pushState(
-      null,
+    window.history.replaceState(
+      window.history.state,
       "",
       hash
     );

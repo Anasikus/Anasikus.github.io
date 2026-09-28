@@ -1,11 +1,25 @@
-import { useLayoutEffect, useRef } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { getLocalizedProjects } from "../../i18n/content/projects";
 import { getLocalizedTimeline } from "../../i18n/content/timeline";
+import {
+  DEFAULT_IMAGE_RATIO,
+  imageRatios,
+} from "../../data/timeline";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useScrollLock } from "../../hooks/useScrollLock";
 
 import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
+
+import PhotoTile from "./PhotoTile";
 
 import styles from "./About.module.scss";
 
@@ -16,7 +30,117 @@ const About = () => {
 
   const { t, language } = useLanguage();
 
+  const projectTitles = Object.fromEntries(
+    getLocalizedProjects(language).map((project) => [
+      project.id,
+      project.title,
+    ])
+  );
+
   const timeline = getLocalizedTimeline(language);
+
+  /*
+   * Плоский список всех фото по таймлайну (сертификаты/грамоты,
+   * прикреплённые к отдельным событиям) — нужен, чтобы лайтбокс
+   * мог листать стрелками ВСЕ фото подряд, а не только фото
+   * внутри одного события.
+   */
+  const photos = timeline.flatMap((item) =>
+    (item.images ?? []).map((src) => ({
+      src,
+      title: item.title,
+    }))
+  );
+
+  const [selectedPhotoIndex, setSelectedPhotoIndex] =
+    useState<number | null>(null);
+
+  const selectedPhoto =
+    selectedPhotoIndex !== null
+      ? photos[selectedPhotoIndex]
+      : null;
+
+  useScrollLock(selectedPhotoIndex !== null);
+
+  useEffect(() => {
+    if (selectedPhotoIndex === null) {
+      return;
+    }
+
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setSelectedPhotoIndex(null);
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+
+        setSelectedPhotoIndex((current) => {
+          if (current === null) {
+            return null;
+          }
+
+          return current === 0
+            ? photos.length - 1
+            : current - 1;
+        });
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+
+        setSelectedPhotoIndex((current) => {
+          if (current === null) {
+            return null;
+          }
+
+          return current === photos.length - 1
+            ? 0
+            : current + 1;
+        });
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [selectedPhotoIndex, photos.length]);
+
+  const handlePreviousPhoto = () => {
+    setSelectedPhotoIndex((current) => {
+      if (current === null) {
+        return null;
+      }
+
+      return current === 0
+        ? photos.length - 1
+        : current - 1;
+    });
+  };
+
+  const handleNextPhoto = () => {
+    setSelectedPhotoIndex((current) => {
+      if (current === null) {
+        return null;
+      }
+
+      return current === photos.length - 1
+        ? 0
+        : current + 1;
+    });
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -241,6 +365,7 @@ const About = () => {
   }, []);
 
   return (
+    <>
     <section
       ref={sectionRef}
       className={styles.section}
@@ -298,6 +423,89 @@ const About = () => {
                   {item.description}
                 </p>
 
+                {item.images &&
+                  item.images.length > 0 && (
+                    <div
+                      className={
+                        styles.photos
+                      }
+                    >
+                      {item.images.map(
+                        (image) => (
+                          <PhotoTile
+                            key={image}
+                            src={image}
+                            ratio={
+                              imageRatios[image] ??
+                              DEFAULT_IMAGE_RATIO
+                            }
+                            alt={item.title}
+                            openLabel={
+                              t.about
+                                .photoOpenAria
+                            }
+                            hint={
+                              t.about.photoHint
+                            }
+                            onOpen={() =>
+                              setSelectedPhotoIndex(
+                                photos.findIndex(
+                                  (photo) =>
+                                    photo.src ===
+                                    image
+                                )
+                              )
+                            }
+                          />
+                        )
+                      )}
+                    </div>
+                  )}
+
+                {item.links &&
+                  item.links.length > 0 && (
+                    <div
+                      className={
+                        styles.links
+                      }
+                    >
+                      {item.links.map(
+                        (link) =>
+                          link.kind ===
+                          "project" ? (
+                            <Link
+                              key={link.target}
+                              to={`/projects/${link.target}`}
+                              className={
+                                styles.linkPill
+                              }
+                            >
+                              {item.links &&
+                              item.links.length > 1
+                                ? projectTitles[
+                                    link.target
+                                  ]
+                                : t.about.viewProject}
+                              <span>→</span>
+                            </Link>
+                          ) : (
+                            <a
+                              key={link.target}
+                              href={link.target}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={
+                                styles.linkPill
+                              }
+                            >
+                              GitHub
+                              <span>↗</span>
+                            </a>
+                          )
+                      )}
+                    </div>
+                  )}
+
                 {item.technologies &&
                   item.technologies.length > 0 && (
                     <div
@@ -322,6 +530,81 @@ const About = () => {
         </div>
       </div>
     </section>
+
+    {selectedPhoto && (
+      <div
+        className={styles.lightboxOverlay}
+        onMouseDown={(event) => {
+          if (
+            event.target ===
+            event.currentTarget
+          ) {
+            setSelectedPhotoIndex(null);
+          }
+        }}
+      >
+        <div
+          className={styles.lightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedPhoto.title}
+        >
+          <button
+            type="button"
+            className={styles.lightboxClose}
+            onClick={() =>
+              setSelectedPhotoIndex(null)
+            }
+            aria-label={t.about.photoClose}
+          >
+            ×
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+            onClick={handlePreviousPhoto}
+            aria-label={t.about.photoPrev}
+          >
+            ←
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.lightboxNav} ${styles.lightboxNext}`}
+            onClick={handleNextPhoto}
+            aria-label={t.about.photoNext}
+          >
+            →
+          </button>
+
+          <div
+            className={
+              styles.lightboxImageWrap
+            }
+          >
+            <img
+              src={selectedPhoto.src}
+              alt={selectedPhoto.title}
+            />
+          </div>
+
+          <div className={styles.lightboxInfo}>
+            <h3>{selectedPhoto.title}</h3>
+
+            <span
+              className={
+                styles.lightboxCounter
+              }
+            >
+              {(selectedPhotoIndex ?? 0) + 1} /{" "}
+              {photos.length}
+            </span>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 
