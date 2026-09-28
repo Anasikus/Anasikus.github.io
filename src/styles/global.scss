@@ -9,7 +9,10 @@
 }
 
 html {
-  scroll-behavior: auto;
+  scrollbar-width: thin; 
+  scrollbar-color: 
+    $color-purple 
+    $color-bg;
 }
 
 body {
@@ -51,4 +54,26 @@ img {
 
 #root {
   min-height: 100vh;
+}
+
+::-webkit-scrollbar { 
+  width: 6px; 
+  height: 6px; 
+} 
+::-webkit-scrollbar-track { 
+  background: $color-bg; 
+} 
+::-webkit-scrollbar-thumb { 
+  border-radius: 100px; 
+  background: linear-gradient( 
+    to bottom, $color-purple-light, 
+    $color-purple 
+  ); 
+  border: 1px solid $color-bg; 
+} 
+::-webkit-scrollbar-thumb:hover { 
+  background: $color-purple-light; 
+} 
+::-webkit-scrollbar-corner { 
+  background: $color-bg; 
 }

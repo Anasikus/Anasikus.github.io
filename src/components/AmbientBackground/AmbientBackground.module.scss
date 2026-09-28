@@ -1,0 +1,241 @@
+.ambient {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+/*
+ * Маска из 4 слоёв: верхний — плавное появление точек ниже
+ * заголовка секции (0-380px полностью скрыто, к 640px — полностью
+ * видно); остальные три — "дыры" ровно в тех же местах, что и
+ * пятна .blobOne/.blobTwo/.blobThree ниже (те же vw/vh-формулы),
+ * чтобы точки гасли под цветным свечением и не превращались там
+ * в кашу. mask-composite: intersect перемножает слои — точка
+ * скрыта, если её скрывает ХОТЯ БЫ один слой.
+ */
+.grid {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 380px,
+      black 640px,
+      black 100%
+    ),
+    radial-gradient(
+      circle at 19vw calc(-16vh + 29vw),
+      transparent 0,
+      transparent 14vw,
+      white 27vw
+    ),
+    radial-gradient(
+      circle at calc(100% - 12vw) calc(100% + 8vh),
+      transparent 0,
+      transparent 12vw,
+      white 23vw
+    ),
+    radial-gradient(
+      circle at 56vw calc(38vh + 18vw),
+      transparent 0,
+      transparent 9vw,
+      white 18vw
+    );
+
+  mask-composite: add, intersect, intersect,
+    intersect;
+
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 380px,
+      black 640px,
+      black 100%
+    );
+}
+
+
+.blob {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(80px);
+
+  opacity: 0.7;
+
+  mix-blend-mode: screen;
+
+  will-change: transform;
+
+  /*
+   * Базовое положение — тот же var(), что участвует
+   * в keyframes ниже, со своим fallback на случай, если
+   * JS ещё не успел выставить значение (сразу после
+   * монтирования) или отключён.
+   */
+  transform:
+    translate(
+      var(--parallax-x, 0px),
+      var(--parallax-y, 0px)
+    );
+}
+
+/*
+ * Позиция пятен задана в vh/vw (доля ЭКРАНА), а не в %
+ * (доля контейнера) — секция вроде .about или .experience
+ * может быть высотой в несколько тысяч пикселей, и те же
+ * -12%/32% от такой высоты уводили бы пятно на тысячи
+ * пикселей от реального угла секции. vh/vw всегда считаются
+ * от вьюпорта, поэтому пятно остаётся в углу секции
+ * независимо от того, насколько она длинная.
+ */
+.blobOne {
+  top: -16vh;
+  left: -10vw;
+
+  width: 58vw;
+  height: 58vw;
+
+  max-width: 740px;
+  max-height: 740px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(168, 85, 247, 0.65),
+      transparent 70%
+    );
+
+  animation: driftOne 20s ease-in-out infinite;
+}
+
+.blobTwo {
+  right: -12vw;
+  bottom: -16vh;
+
+  width: 48vw;
+  height: 48vw;
+
+  max-width: 600px;
+  max-height: 600px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(124, 58, 237, 0.6),
+      transparent 70%
+    );
+
+  animation: driftTwo 24s ease-in-out infinite;
+}
+
+.blobThree {
+  top: 38vh;
+  left: 38vw;
+
+  width: 36vw;
+  height: 36vw;
+
+  max-width: 460px;
+  max-height: 460px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(192, 132, 252, 0.5),
+      transparent 70%
+    );
+
+  animation: driftThree 27s ease-in-out infinite;
+}
+
+/*
+ * Каждый кейфрейм сам ссылается на --parallax-x/y, поэтому
+ * «дыхание» (keyframes) и сдвиг за курсором (JS через
+ * CSS-переменную) складываются в один transform, а не
+ * конкурируют за него — браузер честно пересчитывает var()
+ * на каждый кадр, даже пока анимация уже идёт.
+ */
+@keyframes driftOne {
+  0%,
+  100% {
+    transform:
+      translate(
+        var(--parallax-x, 0px),
+        var(--parallax-y, 0px)
+      )
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(
+        calc(var(--parallax-x, 0px) + 6%),
+        calc(var(--parallax-y, 0px) + 8%)
+      )
+      scale(1.12);
+  }
+}
+
+@keyframes driftTwo {
+  0%,
+  100% {
+    transform:
+      translate(
+        var(--parallax-x, 0px),
+        var(--parallax-y, 0px)
+      )
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(
+        calc(var(--parallax-x, 0px) - 8%),
+        calc(var(--parallax-y, 0px) - 6%)
+      )
+      scale(1.08);
+  }
+}
+
+@keyframes driftThree {
+  0%,
+  100% {
+    transform:
+      translate(
+        var(--parallax-x, 0px),
+        var(--parallax-y, 0px)
+      )
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(
+        calc(var(--parallax-x, 0px) + 5%),
+        calc(var(--parallax-y, 0px) - 8%)
+      )
+      scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+
+    transform: none;
+  }
+}

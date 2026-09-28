@@ -1,25 +1,115 @@
+export interface ExperienceLink {
+  kind: "github" | "site";
+  href: string;
+}
+
 export interface ExperienceItem {
   period: string;
   title: string;
+  position: string;
   description: string;
   technologies: string[];
+  links?: ExperienceLink[];
 }
 
 export const experience: ExperienceItem[] = [
   {
-    period: "2025 — Present",
+    period: "09.2024 — 10.2024",
 
-    title: "Full-stack Developer",
+    title: "Ареал",
+
+    position: "Стажёр Full-stack разработчик",
 
     description:
-      "Development of client-server web applications using React, TypeScript, Node.js and relational databases.",
+      "Стажировка в качестве Full-stack разработчика. Работа над веб-приложениями, участие в разработке клиентской и серверной частей проекта, работа с базой данных и системой контроля версий.",
 
     technologies: [
-      "React",
-      "TypeScript",
+      "Vue.js",
+      "PostgreSQL",
       "Node.js",
+      "GitHub",
+    ],
+  },
+
+  {
+    period: "06.2025 — 07.2025",
+
+    title: "НПК ЯрЛи",
+
+    position: "Практикант Full-stack разработчик",
+
+    description:
+      "Разработка Todo-приложения во время производственной практики в IT-отделе компании «ЯрЛи». Реализация клиентской и серверной частей приложения, работа с базой данных и системой контроля версий.",
+
+    technologies: [
+      "MongoDB",
+      "React",
+      "Node.js",
+      "GitHub",
+    ],
+
+    links: [
+      {
+        kind: "github",
+        href: "https://github.com/Anasikus/todo-app",
+      },
+    ],
+  },
+
+  {
+    period: "09.2025 — 10.2025",
+
+    title: "Сайт-визитка",
+
+    position: "Full-stack разработчик",
+
+    description:
+      "Разработка сайта-визитки для преподавателя в рамках участия в конкурсе. Реализация клиентской и серверной частей проекта, работа с базой данных и пользовательским интерфейсом.",
+
+    technologies: [
       "MySQL",
-      "Git",
+      "PHP",
+      "JavaScript",
+      "HTML",
+      "CSS",
+    ],
+
+    links: [
+      {
+        kind: "site",
+        href: "https://anasikus.github.io/VizCard/",
+      },
+      {
+        kind: "github",
+        href: "https://github.com/Anasikus/VizCard",
+      },
+    ],
+  },
+
+  {
+    period: "09.2025 — 02.2026",
+
+    title: "ШелкоПринт",
+
+    position: "Full-stack разработчик",
+
+    description:
+      "Разработка заказного веб-проекта. Работа над клиентской и серверной частями приложения, реализация функциональности, взаимодействие с базой данных и сопровождение проекта.",
+
+    technologies: [
+      "MySQL",
+      "PHP",
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "GitHub",
+    ],
+
+    links: [
+      {
+        kind: "site",
+        href: "https://shelko-print.ru/",
+      },
     ],
   },
 ];

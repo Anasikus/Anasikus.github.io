@@ -4,7 +4,7 @@
 .section {
   position: relative;
 
-  padding: 180px 0 220px;
+  padding: 180px 0 160px;
 
   overflow: hidden;
 
@@ -12,6 +12,10 @@
 }
 
 .container {
+  position: relative;
+
+  z-index: 1;
+
   @include container;
 }
 
@@ -37,9 +41,9 @@
   margin: 0;
 
   font-size: clamp(
-    52px,
-    8vw,
-    120px
+    40px,
+    5.5vw,
+    84px
   );
 
   line-height: 0.92;
@@ -215,9 +219,9 @@
   margin: 0 0 28px;
 
   font-size: clamp(
-    30px,
-    4vw,
-    56px
+    26px,
+    3vw,
+    42px
   );
 
   line-height: 1;
@@ -235,6 +239,436 @@
   font-size: 16px;
 
   line-height: 1.8;
+}
+
+.photos {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 26px;
+
+  margin-top: 40px;
+  padding: 12px 0 8px;
+
+  perspective: 1100px;
+}
+
+/*
+ * Карточка документа: в покое чуть наклонена и светится
+ * фиолетовым, раз в несколько секунд по ней пробегает блик
+ * (чтобы взгляд цеплялся), при наведении выпрямляется,
+ * поднимается и в 3D тянется за курсором (--rx/--ry из JS).
+ */
+.photo {
+  --tilt: -2.5deg;
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
+
+  position: relative;
+
+  height: 270px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 14px;
+
+  background: $color-white;
+
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+
+  transform: rotate(var(--tilt))
+    rotateX(var(--rx))
+    rotateY(var(--ry));
+
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.55),
+    0 0 0 4px rgba(124, 58, 237, 0.08),
+    0 0 44px rgba(124, 58, 237, 0.3);
+
+  transition:
+    transform 0.25s ease-out,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+
+  &:nth-child(even) {
+    --tilt: 2.5deg;
+  }
+
+  &:hover,
+  &:focus-visible {
+    --tilt: 0deg;
+
+    border-color: $color-purple-light;
+
+    transform: translateY(-10px) scale(1.05)
+      rotateX(var(--rx)) rotateY(var(--ry));
+
+    box-shadow:
+      0 34px 70px rgba(0, 0, 0, 0.6),
+      0 0 0 4px rgba(168, 85, 247, 0.18),
+      0 0 70px rgba(168, 85, 247, 0.5);
+
+    outline: none;
+  }
+
+  img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  /* блик, следующий за курсором */
+  &::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: radial-gradient(
+      circle at var(--gx) var(--gy),
+      rgba(255, 255, 255, 0.55),
+      transparent 55%
+    );
+
+    opacity: 0;
+
+    mix-blend-mode: soft-light;
+
+    transition: opacity 0.3s ease;
+
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  /* периодический пробегающий блик */
+  &::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 40%;
+
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(168, 85, 247, 0.35),
+      transparent
+    );
+
+    transform: translateX(-160%) skewX(-18deg);
+
+    animation: photoShine 6s ease-in-out infinite;
+
+    pointer-events: none;
+
+    z-index: 1;
+  }
+
+  &:nth-child(even)::before {
+    animation-delay: 1.8s;
+  }
+}
+
+.photoHint {
+  position: absolute;
+
+  left: 50%;
+  bottom: 12px;
+
+  z-index: 2;
+
+  padding: 7px 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+
+  background: rgba(5, 5, 7, 0.78);
+
+  backdrop-filter: blur(8px);
+
+  color: $color-white;
+
+  font-size: 11px;
+
+  letter-spacing: 0.08em;
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  transform: translate(-50%, 8px);
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  pointer-events: none;
+}
+
+.photo:hover .photoHint,
+.photo:focus-visible .photoHint {
+  opacity: 1;
+
+  transform: translate(-50%, 0);
+}
+
+@keyframes photoShine {
+  0%,
+  65% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+
+  100% {
+    transform: translateX(420%) skewX(-18deg);
+  }
+}
+
+.links {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 28px;
+}
+
+.linkPill {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 100px;
+
+  background: rgba(168, 85, 247, 0.08);
+
+  color: $color-text;
+
+  font-size: 13px;
+
+  letter-spacing: 0.04em;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+
+  span {
+    color: $color-purple-light;
+
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    background: rgba(168, 85, 247, 0.2);
+
+    color: $color-white;
+
+    transform: translateY(-2px);
+
+    span {
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 200;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  background: rgba(5, 5, 7, 0.92);
+
+  backdrop-filter: blur(8px);
+}
+
+.lightbox {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 24px;
+
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+}
+
+.lightboxImageWrap {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  max-height: calc(100vh - 170px);
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  border: 1px solid $color-border;
+
+  background: $color-white;
+
+  img {
+    display: block;
+
+    max-width: 100%;
+    max-height: calc(100vh - 170px);
+
+    object-fit: contain;
+  }
+}
+
+.lightboxInfo {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 6px;
+
+  text-align: center;
+
+  h3 {
+    margin: 0;
+
+    font-size: 18px;
+  }
+}
+
+.lightboxCounter {
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.lightboxClose,
+.lightboxNav {
+  position: fixed;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid $color-border;
+  border-radius: 50%;
+
+  background: rgba(11, 8, 18, 0.8);
+
+  color: $color-white;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    color: $color-purple-light;
+  }
+}
+
+.lightboxClose {
+  top: 24px;
+  right: 24px;
+
+  width: 48px;
+  height: 48px;
+
+  font-size: 26px;
+}
+
+.lightboxNav {
+  top: 50%;
+
+  width: 56px;
+  height: 56px;
+
+  font-size: 22px;
+
+  transform: translateY(-50%);
+}
+
+.lightboxPrev {
+  left: 24px;
+}
+
+.lightboxNext {
+  right: 24px;
+}
+
+@media (max-width: 768px) {
+  .lightboxOverlay {
+    padding: 20px;
+  }
+
+  .photo {
+    height: 200px;
+  }
+
+  .lightboxNav {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lightboxPrev {
+    left: 8px;
+  }
+
+  .lightboxNext {
+    right: 8px;
+  }
+
+  .lightboxClose {
+    top: 12px;
+    right: 12px;
+  }
 }
 
 .technologies {
@@ -321,7 +755,7 @@
   }
 
   .heading h2 {
-    font-size: 54px;
+    font-size: 42px;
   }
 
   .heading p {
@@ -354,7 +788,7 @@
   }
 
   .content h3 {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .content p {

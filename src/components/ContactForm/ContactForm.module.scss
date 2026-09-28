@@ -1,0 +1,195 @@
+@use "../../styles/variables" as *;
+
+.form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  max-width: 640px;
+}
+
+.row {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+
+  flex: 1 1 220px;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+/*
+ * Поле сообщения — прямой ребёнок .form (flex column). Из-за
+ * flex: 1 1 220px оно занимало 220px ВЫСОТЫ и оставляло пустую
+ * дыру под textarea, поэтому там basis сбрасывается.
+ */
+.form > .field {
+  flex: 0 0 auto;
+}
+
+.field input,
+.field textarea {
+  padding: 11px 14px;
+
+  border: 1px solid $color-border;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  color: $color-white;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  letter-spacing: normal;
+
+  text-transform: none;
+
+  resize: vertical;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+
+  border-color: rgba(168, 85, 247, 0.6);
+
+  background: rgba(168, 85, 247, 0.05);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: rgba(252, 165, 165, 0.6);
+}
+
+.fieldError {
+  color: #fca5a5;
+
+  font-size: 11px;
+
+  letter-spacing: normal;
+
+  text-transform: none;
+}
+
+.honeypot {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.footer {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 6px;
+}
+
+.submit {
+  padding: 14px 28px;
+
+  border: 1px solid
+    rgba(168, 85, 247, 0.5);
+  border-radius: 100px;
+
+  background: rgba(168, 85, 247, 0.1);
+
+  color: $color-white;
+
+  font-size: 13px;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover:not(:disabled) {
+    border-color: $color-purple-light;
+
+    background: rgba(168, 85, 247, 0.2);
+
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+  }
+}
+
+.statusSuccess {
+  color: #86efac;
+
+  font-size: 13px;
+}
+
+.statusError {
+  color: #fca5a5;
+
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+
+    gap: 20px;
+  }
+
+  /*
+   * .field { flex: 1 1 220px } задаёт 220px по ГЛАВНОЙ оси
+   * flex-контейнера. Пока .row — row (десктоп), это ширина;
+   * как только .row становится column (моб.), тот же 220px
+   * превращается в ВЫСОТУ поля — отсюда огромные пустые
+   * промежутки между полями. Сбрасываем basis на auto.
+   */
+  .field {
+    flex-basis: auto;
+  }
+}

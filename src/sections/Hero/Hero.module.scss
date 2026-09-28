@@ -93,9 +93,9 @@
   max-width: 1000px;
 
   font-size: clamp(
-    56px,
-    8vw,
-    130px
+    44px,
+    6vw,
+    96px
   );
 
   line-height: 0.95;
@@ -147,16 +147,50 @@
   bottom: 32px;
   left: 40px;
 
+}
+
+.scrollButton {
   display: flex;
   align-items: center;
 
   gap: 16px;
+
+  padding: 10px 18px 10px 14px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  background: rgba(5, 5, 7, 0.4);
+
+  backdrop-filter: blur(8px);
 
   color: $color-text-secondary;
 
   font-size: 10px;
 
   letter-spacing: 0.15em;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.6);
+
+    color: $color-white;
+  }
+}
+
+.scrollHidden {
+  opacity: 0;
+
+  transform: translateY(12px);
+
+  pointer-events: none;
 }
 
 .arrow {
@@ -179,9 +213,9 @@
 
   .title {
     font-size: clamp(
-      48px,
-      14vw,
-      80px
+      40px,
+      12vw,
+      64px
     );
   }
 

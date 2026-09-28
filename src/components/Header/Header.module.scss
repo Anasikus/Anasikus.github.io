@@ -13,6 +13,21 @@
 
   padding: 24px 0;
 
+  background: rgba(5, 5, 7, 0.55);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/*
+ * @include container ограничивает шириной контента и центрует —
+ * применён к внутренней обёртке, а не к .header, иначе сам
+ * .header (и его фон/граница выше) тоже сжался бы до 1400px
+ * и не читался бы как полноширинная панель.
+ */
+.inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,6 +58,14 @@
   }
 }
 
+.actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
 .github {
   color: $color-text;
 
@@ -52,5 +75,103 @@
 
   &:hover {
     color: $color-purple-light;
+  }
+}
+
+.burger {
+  display: none;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 5px;
+
+  width: 22px;
+
+  padding: 4px 0;
+
+  cursor: pointer;
+}
+
+.burgerLine,
+.burgerLineOpen {
+  display: block;
+
+  height: 2px;
+
+  background: $color-white;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    width 0.3s ease;
+}
+
+.burgerLine {
+  width: 22px;
+
+  &:last-child {
+    width: 14px;
+  }
+}
+
+.burgerLineOpen {
+  width: 22px;
+
+  &:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  &:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+}
+
+.mobileNav {
+  position: absolute;
+
+  top: 100%;
+  left: 0;
+
+  display: flex;
+
+  width: 100%;
+
+  flex-direction: column;
+
+  padding: 8px 0 20px;
+
+  border-top: 1px solid $color-border;
+
+  background: $color-bg-secondary;
+
+  a {
+    padding: 12px 20px;
+
+    color: $color-text-secondary;
+
+    font-size: 15px;
+
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 13px;
+  }
+
+  .navigation,
+  .github {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
   }
 }

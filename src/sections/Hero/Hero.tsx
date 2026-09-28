@@ -1,9 +1,16 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+
+import { useLanguage } from "../../i18n/useLanguage";
+import { scrollToSection } from "../../utils/scrollToSection";
+
+import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
+import FlowField from "../../components/FlowField/FlowField";
 
 import styles from "./Hero.module.scss";
 
 const Hero = () => {
+  const { t } = useLanguage();
   const heroRef = useRef<HTMLElement | null>(null);
 
   const introRef = useRef<HTMLDivElement | null>(null);
@@ -12,6 +19,26 @@ const Hero = () => {
   const metaRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
+
+  const [scrolled, setScrolled] = useState(false);
+
+  /*
+   * Подсказка «Прокрутить» нужна только пока пользователь ещё на
+   * первом экране — стоит ему сдвинуться, она мягко исчезает.
+   */
+  useEffect(() => {
+    const handleScroll = () =>
+      setScrolled(window.scrollY > 80);
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -109,6 +136,9 @@ const Hero = () => {
       ref={heroRef}
       className={styles.hero}
     >
+      <AmbientBackground />
+      <FlowField />
+
       <div className={styles.background} />
 
       <div
@@ -126,7 +156,7 @@ const Hero = () => {
           </span>
 
           <span className={styles.subtitle}>
-            FULL-STACK РАЗРАБОТКА
+            {t.hero.badge}
           </span>
         </div>
 
@@ -134,18 +164,16 @@ const Hero = () => {
           ref={titleRef}
           className={styles.title}
         >
-          Создаю цифровые
+          {t.hero.titleLine1}
           <br />
-          продукты.
+          {t.hero.titleLine2}
         </h1>
 
         <p
           ref={descriptionRef}
           className={styles.description}
         >
-          Разрабатываю современные веб-приложения,
-          соединяя функциональность, технологичность
-          и визуальную составляющую.
+          {t.hero.description}
         </p>
       </div>
 
@@ -153,11 +181,19 @@ const Hero = () => {
         ref={scrollRef}
         className={styles.scroll}
       >
-        <span>ПРОКРУТИТЬ</span>
+        <button
+          type="button"
+          className={`${styles.scrollButton} ${
+            scrolled ? styles.scrollHidden : ""
+          }`}
+          onClick={() => scrollToSection("#about")}
+          aria-label={t.hero.scrollAria}
+          tabIndex={scrolled ? -1 : 0}
+        >
+          <span>{t.hero.scroll}</span>
 
-        <span className={styles.arrow}>
-          ↓
-        </span>
+          <span className={styles.arrow}>↓</span>
+        </button>
       </div>
     </section>
   );

@@ -1,0 +1,413 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  position: relative;
+
+  padding: 88px 0 0;
+
+  overflow: hidden;
+
+  background: $color-bg-secondary;
+}
+
+.container {
+  position: relative;
+
+  z-index: 1;
+
+  padding-bottom: 32px;
+
+  @include container;
+}
+
+.reveal {
+  will-change: transform, opacity;
+}
+
+.label {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: $color-purple-light;
+
+  font-size: 12px;
+
+  letter-spacing: 0.18em;
+}
+
+.heading {
+  margin: 0;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      52px
+    );
+
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+
+  /* на широком экране заголовок в одну строку — экономим высоту */
+  @media (min-width: 900px) {
+    br {
+      display: none;
+    }
+  }
+}
+
+.description {
+  max-width: 760px;
+
+  margin: 16px 0 0;
+
+  color: $color-text-secondary;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   FORM + INFO CARD
+   ========================================================= */
+
+.grid {
+  display: grid;
+
+  grid-template-columns: 1fr 420px;
+
+  gap: 48px;
+
+  margin-top: 28px;
+
+  align-items: start;
+}
+
+.formColumn {
+  min-width: 0;
+}
+
+.infoColumn {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 24px 26px;
+
+  border: 1px solid $color-border;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.infoLabel {
+  color: $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+.infoRow {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 12px 0;
+
+  border-top: 1px solid $color-border;
+}
+
+.infoItem {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+
+  color: $color-text;
+
+  font-size: 15px;
+
+  letter-spacing: -0.01em;
+
+  transition: color 0.3s ease;
+
+  span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+  svg {
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    color: $color-purple-light;
+  }
+
+  &:hover {
+    color: $color-purple-light;
+  }
+}
+
+.copyButton {
+  flex-shrink: 0;
+
+  padding: 8px 16px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  color: $color-text-secondary;
+
+  font-size: 11px;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.6);
+
+    background: rgba(168, 85, 247, 0.1);
+
+    color: $color-white;
+  }
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 40px;
+
+  z-index: 300;
+
+  width: max-content;
+  max-width: calc(100vw - 32px);
+
+  padding: 12px 22px;
+
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  border-radius: 100px;
+
+  background: rgba(11, 8, 18, 0.92);
+
+  backdrop-filter: blur(12px);
+
+  color: $color-white;
+
+  font-size: 14px;
+
+  box-shadow: 0 16px 50px rgba(76, 29, 149, 0.4);
+
+  transform: translateX(-50%);
+
+  animation: toastIn 0.3s ease;
+}
+
+.toastError {
+  border-color: rgba(252, 165, 165, 0.6);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+
+    transform: translate(-50%, 12px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translate(-50%, 0);
+  }
+}
+
+/* =========================================================
+   FOOTER BAR
+   ========================================================= */
+
+.footer {
+  position: relative;
+
+  z-index: 1;
+
+  margin-top: 24px;
+
+  padding: 34px 0 calc(110px + env(safe-area-inset-bottom, 0px));
+
+  background: rgba(5, 5, 7, 0.55);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footerIcons {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+}
+
+.footerIconButton {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid $color-border;
+  border-radius: 50%;
+
+  color: $color-text;
+
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    color: $color-purple-light;
+
+    transform: translateY(-3px);
+  }
+}
+
+.footerInner {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 30px;
+
+  @include container;
+}
+
+.footerBottom {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  letter-spacing: 0.04em;
+}
+
+.toTop {
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition: color 0.3s ease;
+}
+
+.toTop:hover {
+  color: $color-purple-light;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoColumn {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 90px 0 0;
+  }
+
+  .container {
+    padding-bottom: 24px;
+  }
+
+  .description {
+    margin-top: 14px;
+
+    font-size: 15px;
+  }
+
+  .grid {
+    margin-top: 24px;
+
+    gap: 24px;
+  }
+
+  /* на мобильном кнопка «Скопировать» уходит под номер/почту */
+  .infoRow {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  .footer {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .footerBottom {
+    flex-direction: column;
+
+    gap: 12px;
+  }
+}
