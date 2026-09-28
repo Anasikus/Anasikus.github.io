@@ -43,5 +43,5 @@ export const togerher: Project = {
 
   liveUrl: "https://anasikus.github.io/project-vmeste/",
 
-  featured: true,
+  featured: false,
 };

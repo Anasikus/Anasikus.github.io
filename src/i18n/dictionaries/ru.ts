@@ -146,7 +146,7 @@ const ru = {
     copyEmailDone: "Почта скопирована",
     copyError: "Не удалось скопировать",
     emailIconAria: "Написать на почту",
-    footerCopy: "Портфолио разработчика",
+    footerCopy: "Портфолио Давыдовой Анастасии ",
     toTop: "Наверх ↑",
   },
 
