@@ -9,17 +9,27 @@
 }
 
 html {
-  scrollbar-width: thin; 
-  scrollbar-color: 
-    $color-purple 
+  width: 100%;
+
+  overflow-x: hidden;
+
+  overscroll-behavior-x: none;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    $color-purple
     $color-bg;
 }
 
 body {
+  width: 100%;
+
   background: $color-bg;
   color: $color-white;
 
   overflow-x: hidden;
+
+  overscroll-behavior-x: none;
 
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
