@@ -87,6 +87,11 @@
 
   background-size: 80px 80px;
 
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black,
+    transparent 70%
+  );
   mask-image: linear-gradient(
     to bottom,
     black,

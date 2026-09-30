@@ -127,6 +127,7 @@
 
   background: rgba(5, 5, 7, 0.72);
 
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 
   color: $color-text;

@@ -192,6 +192,11 @@
 
   background-size: 36px 36px;
 
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    black,
+    transparent 75%
+  );
   mask-image: radial-gradient(
     circle at center,
     black,
@@ -206,6 +211,7 @@
 
   width: min(80%, 480px);
 
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 

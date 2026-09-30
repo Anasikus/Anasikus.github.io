@@ -15,6 +15,7 @@
 
   background: rgba(5, 5, 7, 0.93);
 
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 
   animation: fadeIn 0.25s ease;

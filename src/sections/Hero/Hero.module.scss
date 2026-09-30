@@ -4,6 +4,9 @@
 .hero {
   position: relative;
 
+  /* svh — если браузер совсем старый и его не понимает, эта
+     строка просто игнорируется, а высоту задаёт vh выше */
+  min-height: 100vh;
   min-height: 100svh;
 
   overflow: hidden;
@@ -162,6 +165,7 @@
 
   background: rgba(5, 5, 7, 0.4);
 
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 
   color: $color-text-secondary;

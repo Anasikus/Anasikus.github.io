@@ -5,9 +5,14 @@ import {
 import App from "./App";
 
 import Home from "./pages/Home/Home";
-import Projects from "./pages/Projects/Projects";
-import ProjectDetails from "./pages/ProjectDetails/ProjectDetails";
 
+/*
+ * Главная страница нужна сразу всем посетителям, поэтому
+ * остаётся в основном бандле. А вот список проектов и страницу
+ * отдельного проекта подгружаем отдельным файлом — по клику,
+ * а не вместе с первой загрузкой сайта. Это заметно ускоряет
+ * самый первый экран на медленном интернете.
+ */
 export const router =
   createBrowserRouter([
     {
@@ -22,12 +27,24 @@ export const router =
 
         {
           path: "projects",
-          element: <Projects />,
+          lazy: async () => {
+            const { default: Component } = await import(
+              "./pages/Projects/Projects"
+            );
+
+            return { Component };
+          },
         },
 
         {
           path: "projects/:id",
-          element: <ProjectDetails />,
+          lazy: async () => {
+            const { default: Component } = await import(
+              "./pages/ProjectDetails/ProjectDetails"
+            );
+
+            return { Component };
+          },
         },
       ],
     },

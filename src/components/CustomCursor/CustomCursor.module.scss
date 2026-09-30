@@ -41,6 +41,7 @@
   background:
     rgba(124, 58, 237, 0.05);
 
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 
   mix-blend-mode: difference;
