@@ -1,17 +1,38 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import gsap from "gsap";
 
 import { useLanguage } from "../../i18n/useLanguage";
 import { scrollToSection } from "../../utils/scrollToSection";
 
 import AmbientBackground from "../../components/AmbientBackground/AmbientBackground";
-import FlowField from "../../components/FlowField/FlowField";
 
 import styles from "./Hero.module.scss";
+
+/*
+ * Анимированные линии — самая тяжёлая, но чисто декоративная
+ * часть главного экрана (см. FlowField.tsx). Чтобы они не
+ * соревновались за процессор и канал с текстом заголовка и не
+ * задерживали первый экран, их код лежит отдельным файлом
+ * (lazy) и запрашивается только тогда, когда браузер свободен —
+ * после того как всё остальное уже показано.
+ */
+const FlowField = lazy(
+  () => import("../../components/FlowField/FlowField")
+);
 
 const Hero = () => {
   const { t } = useLanguage();
   const heroRef = useRef<HTMLElement | null>(null);
+
+  const [showLines, setShowLines] =
+    useState(false);
 
   const introRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -21,6 +42,31 @@ const Hero = () => {
   const glowRef = useRef<HTMLDivElement | null>(null);
 
   const [scrolled, setScrolled] = useState(false);
+
+  /*
+   * Ждём, пока браузер освободится после первой отрисовки (или
+   * не больше 2 секунд, чтобы линии всё равно появились, если
+   * браузер вечно "занят"), и только тогда запрашиваем файл
+   * с линиями и показываем их — текст и кнопки первого экрана
+   * от них никак не зависят.
+   */
+  useEffect(() => {
+    const requestIdle =
+      window.requestIdleCallback ??
+      ((callback: () => void) =>
+        window.setTimeout(callback, 300));
+
+    const cancelIdle =
+      window.cancelIdleCallback ??
+      window.clearTimeout;
+
+    const id = requestIdle(
+      () => setShowLines(true),
+      { timeout: 2000 }
+    );
+
+    return () => cancelIdle(id);
+  }, []);
 
   /*
    * Подсказка «Прокрутить» нужна только пока пользователь ещё на
@@ -137,7 +183,12 @@ const Hero = () => {
       className={styles.hero}
     >
       <AmbientBackground />
-      <FlowField />
+
+      {showLines && (
+        <Suspense fallback={null}>
+          <FlowField />
+        </Suspense>
+      )}
 
       <div className={styles.background} />
 
