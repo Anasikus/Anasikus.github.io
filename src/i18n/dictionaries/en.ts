@@ -8,6 +8,7 @@ const en: UiDictionary = {
     navStats: "Stats",
     navProjects: "Projects",
     navExperience: "Experience",
+    navReviews: "Reviews",
     navContact: "Contact",
     openMenu: "Open menu",
     closeMenu: "Close menu",
@@ -103,8 +104,36 @@ const en: UiDictionary = {
     imageCounter: "{current} of {total}",
   },
 
+  reviews: {
+    label: "07 / REVIEWS",
+    headingLine1: "What people",
+    headingLine2: "I've worked with say.",
+    description:
+      "Reviews from clients. If we've worked together, I'd be glad if you left one.",
+    empty:
+      "Nothing here yet — be the first to leave a review.",
+    loadError:
+      "Couldn't load reviews. Try refreshing the page.",
+    addButton: "Leave a review",
+    cancelButton: "Cancel",
+    formName: "Name",
+    formNamePlaceholder: "How should I address you",
+    formRating: "Rating",
+    formProject: "Project (optional)",
+    formProjectNone: "No project",
+    formText: "Review",
+    formTextPlaceholder:
+      "Tell me how the work went",
+    formSubmit: "Submit for review",
+    formSubmitting: "Sending…",
+    formSuccess:
+      "Thank you! Your review was sent and will appear once approved.",
+    formError:
+      "Couldn't send the review. Please try again later.",
+  },
+
   video: {
-    label: "07 / VIDEO",
+    label: "08 / VIDEO",
     headingLine1: "A few words",
     headingLine2: "from me, in person.",
     description:
@@ -112,7 +141,7 @@ const en: UiDictionary = {
   },
 
   contact: {
-    label: "08 / CONTACT",
+    label: "09 / CONTACT",
     headingLine1: "Ready to discuss",
     headingLine2: "your project.",
     description:

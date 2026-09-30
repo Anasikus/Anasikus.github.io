@@ -1,0 +1,44 @@
+@use "../../styles/variables" as *;
+
+.stars {
+  display: inline-flex;
+
+  gap: 4px;
+}
+
+.star {
+  padding: 0;
+
+  border: none;
+  background: none;
+
+  color: rgba(255, 255, 255, 0.18);
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: default;
+
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.filled {
+  color: $color-purple-light;
+}
+
+button.star {
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-purple-light;
+
+    transform: scale(1.12);
+
+    outline: none;
+  }
+}
+
+.sm .star {
+  font-size: 15px;
+}

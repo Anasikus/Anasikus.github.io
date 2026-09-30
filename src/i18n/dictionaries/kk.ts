@@ -8,6 +8,7 @@ const kk: UiDictionary = {
     navStats: "Статистика",
     navProjects: "Жобалар",
     navExperience: "Тәжірибе",
+    navReviews: "Пікірлер",
     navContact: "Байланыс",
     openMenu: "Мәзірді ашу",
     closeMenu: "Мәзірді жабу",
@@ -103,8 +104,36 @@ const kk: UiDictionary = {
     imageCounter: "{current} / {total}",
   },
 
+  reviews: {
+    label: "07 / ПІКІРЛЕР",
+    headingLine1: "Бірге жұмыс істегендер",
+    headingLine2: "не дейді.",
+    description:
+      "Клиенттер мен тапсырыс берушілердің пікірлері. Бірге жұмыс істеген болсақ, өз пікіріңізді қалдырсаңыз қуанамын.",
+    empty:
+      "Әзірге мұнда бос — бірінші болып пікір қалдырыңыз.",
+    loadError:
+      "Пікірлер жүктелмеді. Бетті жаңартып көріңіз.",
+    addButton: "Пікір қалдыру",
+    cancelButton: "Бас тарту",
+    formName: "Аты",
+    formNamePlaceholder: "Сізге қалай жүгінейік",
+    formRating: "Баға",
+    formProject: "Жоба (қаласаңыз)",
+    formProjectNone: "Жобасыз",
+    formText: "Пікір",
+    formTextPlaceholder:
+      "Жұмыс қалай өткенін айтып беріңіз",
+    formSubmit: "Тексеруге жіберу",
+    formSubmitting: "Жіберілуде…",
+    formSuccess:
+      "Рақмет! Пікір жіберілді, тексерістен кейін сайтта көрінеді.",
+    formError:
+      "Пікірді жіберу мүмкін болмады. Сәл кейінірек қайталап көріңіз.",
+  },
+
   video: {
-    label: "07 / БЕЙНЕ",
+    label: "08 / БЕЙНЕ",
     headingLine1: "Өзім туралы",
     headingLine2: "бірнеше сөз.",
     description:
@@ -112,7 +141,7 @@ const kk: UiDictionary = {
   },
 
   contact: {
-    label: "08 / БАЙЛАНЫС",
+    label: "09 / БАЙЛАНЫС",
     headingLine1: "Сіздің тапсырманы",
     headingLine2: "талқылауға дайынмын.",
     description:

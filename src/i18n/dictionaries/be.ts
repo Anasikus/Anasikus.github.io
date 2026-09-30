@@ -8,6 +8,7 @@ const be: UiDictionary = {
     navStats: "Статыстыка",
     navProjects: "Праекты",
     navExperience: "Досвед",
+    navReviews: "Адгукі",
     navContact: "Кантакты",
     openMenu: "Адкрыць меню",
     closeMenu: "Закрыць меню",
@@ -103,8 +104,36 @@ const be: UiDictionary = {
     imageCounter: "{current} з {total}",
   },
 
+  reviews: {
+    label: "07 / АДГУКІ",
+    headingLine1: "Што кажуць тыя,",
+    headingLine2: "з кім я працавала.",
+    description:
+      "Адгукі кліентаў і заказчыкаў. Калі мы працавалі разам — буду рада, калі пакінеце свой.",
+    empty:
+      "Пакуль тут пуста — станьце першым, хто пакіне адгук.",
+    loadError:
+      "Не атрымалася загрузіць адгукі. Паспрабуйце абнавіць старонку.",
+    addButton: "Пакінуць адгук",
+    cancelButton: "Адмена",
+    formName: "Імя",
+    formNamePlaceholder: "Як да вас звяртацца",
+    formRating: "Ацэнка",
+    formProject: "Праект (па жаданні)",
+    formProjectNone: "Без праекта",
+    formText: "Адгук",
+    formTextPlaceholder:
+      "Раскажыце, як прайшла праца",
+    formSubmit: "Адправіць на праверку",
+    formSubmitting: "Адпраўляю…",
+    formSuccess:
+      "Дзякуй! Адгук адпраўлены і з'явіцца на сайце пасля праверкі.",
+    formError:
+      "Не атрымалася адправіць адгук. Паспрабуйце яшчэ раз крыху пазней.",
+  },
+
   video: {
-    label: "07 / ВІДЭА",
+    label: "08 / ВІДЭА",
     headingLine1: "Некалькі слоў",
     headingLine2: "ад мяне асабіста.",
     description:
@@ -112,7 +141,7 @@ const be: UiDictionary = {
   },
 
   contact: {
-    label: "08 / КАНТАКТЫ",
+    label: "09 / КАНТАКТЫ",
     headingLine1: "Гатовая абмеркаваць",
     headingLine2: "вашу задачу.",
     description:

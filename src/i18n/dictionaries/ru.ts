@@ -12,6 +12,7 @@ const ru = {
     navStats: "Статистика",
     navProjects: "Проекты",
     navExperience: "Опыт",
+    navReviews: "Отзывы",
     navContact: "Контакты",
     openMenu: "Открыть меню",
     closeMenu: "Закрыть меню",
@@ -107,8 +108,36 @@ const ru = {
     imageCounter: "{current} из {total}",
   },
 
+  reviews: {
+    label: "07 / ОТЗЫВЫ",
+    headingLine1: "Что говорят",
+    headingLine2: "те, с кем я работала.",
+    description:
+      "Отзывы клиентов и заказчиков. Если мы работали вместе — буду рада, если оставите свой.",
+    empty:
+      "Пока здесь пусто — станьте первым, кто оставит отзыв.",
+    loadError:
+      "Не удалось загрузить отзывы. Попробуйте обновить страницу.",
+    addButton: "Оставить отзыв",
+    cancelButton: "Отмена",
+    formName: "Имя",
+    formNamePlaceholder: "Как к вам обращаться",
+    formRating: "Оценка",
+    formProject: "Проект (по желанию)",
+    formProjectNone: "Без проекта",
+    formText: "Отзыв",
+    formTextPlaceholder:
+      "Расскажите, как прошла работа",
+    formSubmit: "Отправить на проверку",
+    formSubmitting: "Отправляю…",
+    formSuccess:
+      "Спасибо! Отзыв отправлен и появится на сайте после проверки.",
+    formError:
+      "Не удалось отправить отзыв. Попробуйте ещё раз чуть позже.",
+  },
+
   video: {
-    label: "07 / ВИДЕО",
+    label: "08 / ВИДЕО",
     headingLine1: "Пара слов",
     headingLine2: "от меня лично.",
     description:
@@ -116,7 +145,7 @@ const ru = {
   },
 
   contact: {
-    label: "08 / КОНТАКТЫ",
+    label: "09 / КОНТАКТЫ",
     headingLine1: "Готова обсудить",
     headingLine2: "вашу задачу.",
     description:

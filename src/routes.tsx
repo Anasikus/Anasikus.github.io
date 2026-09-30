@@ -46,6 +46,17 @@ export const router =
             return { Component };
           },
         },
+
+        {
+          path: "admin",
+          lazy: async () => {
+            const { default: Component } = await import(
+              "./pages/Admin/Admin"
+            );
+
+            return { Component };
+          },
+        },
       ],
     },
   ]);

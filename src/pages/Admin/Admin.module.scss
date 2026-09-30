@@ -1,0 +1,330 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.page {
+  min-height: 100vh;
+
+  padding: 150px 0 120px;
+}
+
+.container {
+  @include container;
+
+  max-width: 900px;
+}
+
+.top {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+.signOut {
+  padding: 10px 20px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  background: none;
+
+  color: $color-text-secondary;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    border-color: $color-purple-light;
+
+    color: $color-white;
+  }
+}
+
+/* ---------- вход ---------- */
+
+.loginForm {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+  max-width: 360px;
+
+  margin-top: 24px;
+}
+
+.field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  input {
+    padding: 11px 14px;
+
+    border: 1px solid $color-border;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.02);
+
+    color: $color-white;
+
+    font-family: inherit;
+    font-size: 15px;
+    text-transform: none;
+
+    &:focus {
+      outline: none;
+
+      border-color: rgba(168, 85, 247, 0.6);
+    }
+  }
+}
+
+.submit {
+  padding: 13px 24px;
+
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  border-radius: 100px;
+
+  background: rgba(168, 85, 247, 0.1);
+
+  color: $color-white;
+
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: $color-purple-light;
+
+    background: rgba(168, 85, 247, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+  }
+}
+
+.errorText {
+  color: #fca5a5;
+
+  font-size: 13px;
+}
+
+/* ---------- фильтры ---------- */
+
+.filters {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 32px;
+}
+
+.filter {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 9px 16px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  background: none;
+
+  color: $color-text-secondary;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+
+  span {
+    color: rgba(255, 255, 255, 0.35);
+
+    font-size: 11px;
+  }
+
+  &:hover {
+    color: $color-white;
+  }
+}
+
+.filterActive {
+  border-color: $color-purple-light;
+
+  background: rgba(168, 85, 247, 0.14);
+
+  color: $color-white;
+
+  span {
+    color: $color-purple-light;
+  }
+}
+
+/* ---------- список ---------- */
+
+.list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.card {
+  padding: 22px;
+
+  border: 1px solid $color-border;
+  border-left: 3px solid $color-border;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.card.pending {
+  border-left-color: #facc15;
+}
+
+.card.approved {
+  border-left-color: #86efac;
+}
+
+.card.rejected {
+  border-left-color: #fca5a5;
+
+  opacity: 0.6;
+}
+
+.cardTop {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.status {
+  color: $color-text-secondary;
+
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.text {
+  margin: 0 0 14px;
+
+  color: $color-text;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+.meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 16px;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  strong {
+    color: $color-white;
+  }
+}
+
+.actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.actions button {
+  padding: 8px 16px;
+
+  border: 1px solid $color-border;
+  border-radius: 100px;
+
+  background: none;
+
+  color: $color-text-secondary;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+
+  &:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+  }
+}
+
+.approve:hover:not(:disabled) {
+  border-color: #86efac;
+
+  color: #86efac;
+
+  background: rgba(134, 239, 172, 0.1);
+}
+
+.reject:hover:not(:disabled) {
+  border-color: #fbbf24;
+
+  color: #fbbf24;
+
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.remove:hover:not(:disabled) {
+  border-color: #fca5a5;
+
+  color: #fca5a5;
+
+  background: rgba(252, 165, 165, 0.1);
+}

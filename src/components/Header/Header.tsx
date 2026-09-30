@@ -7,6 +7,7 @@ import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import { scrollToSection } from "../../utils/scrollToSection";
 
 import { useLanguage } from "../../i18n/useLanguage";
+import { isSupabaseConfigured } from "../../lib/supabaseClient";
 
 import styles from "./Header.module.scss";
 
@@ -43,6 +44,21 @@ const Header = () => {
       href: "/#projects",
       label: t.header.navProjects,
     },
+
+    /*
+     * Раздел "Отзывы" сам скрывается, пока не настроен Supabase
+     * (см. supabase/README.md) — ссылка на него появляется в
+     * меню только вместе с самим разделом.
+     */
+    ...(isSupabaseConfigured
+      ? [
+          {
+            href: "/#reviews",
+            label: t.header.navReviews,
+          },
+        ]
+      : []),
+
     {
       href: "/#contact",
       label: t.header.navContact,

@@ -4,6 +4,7 @@ import Skills from "../../sections/Skills/Skills";
 import Stats from "../../sections/Stats/Stats";
 import Projects from "../../sections/Projects/Projects";
 import Experience from "../../sections/Experience/Experience";
+import Reviews from "../../sections/Reviews/Reviews";
 import VideoIntro from "../../sections/VideoIntro/VideoIntro";
 import Contact from "../../sections/Contact/Contact";
 
@@ -19,6 +20,7 @@ const Home = () => {
       <Stats />
 
       <Projects />
+      <Reviews />
       <VideoIntro />
       <Contact />
     </main>
