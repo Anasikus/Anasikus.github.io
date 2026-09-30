@@ -293,6 +293,9 @@ const Reviews = () => {
       ).matches
   );
 
+  const sectionRef =
+    useRef<HTMLElement | null>(null);
+
   const projects = getLocalizedProjects(
     language
   );
@@ -353,39 +356,70 @@ const Reviews = () => {
     rows[index % rowCount]?.push(review);
   });
 
+  /*
+   * Запрос к Supabase раньше уходил сразу при открытии сайта —
+   * даже если посетитель до "Отзывов" не долистает. На медленном
+   * интернете он соревновался за канал с тем, что действительно
+   * нужно для первого экрана (тот же приём уже применён к
+   * статистике по GitHub — см. Stats.tsx). Ждём, пока раздел не
+   * окажется рядом с экраном.
+   */
   useEffect(() => {
     if (!supabase) {
       return;
     }
 
+    const section = sectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
     let cancelled = false;
 
-    supabase
-      .from("reviews")
-      .select(
-        "id, created_at, name, rating, text, project_id, status"
-      )
-      .eq("status", "approved")
-      .order("created_at", {
-        ascending: false,
-      })
-      .then(({ data, error }) => {
-        if (cancelled) {
-          return;
+    const load = () => {
+      supabase
+        ?.from("reviews")
+        .select(
+          "id, created_at, name, rating, text, project_id, status"
+        )
+        .eq("status", "approved")
+        .order("created_at", {
+          ascending: false,
+        })
+        .then(({ data, error }) => {
+          if (cancelled) {
+            return;
+          }
+
+          if (error) {
+            setLoadState("error");
+
+            return;
+          }
+
+          setReviews(
+            (data ?? []) as Review[]
+          );
+          setLoadState("loaded");
+        });
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          load();
+          observer.disconnect();
         }
+      },
+      { rootMargin: "400px 0px" }
+    );
 
-        if (error) {
-          setLoadState("error");
-
-          return;
-        }
-
-        setReviews((data ?? []) as Review[]);
-        setLoadState("loaded");
-      });
+    observer.observe(section);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
   }, []);
 
@@ -464,6 +498,7 @@ const Reviews = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="reviews"
       className={styles.section}
     >
