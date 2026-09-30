@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -30,6 +31,217 @@ type SubmitState = "idle" | "sending" | "success" | "error";
 const TEXT_MIN = 10;
 const TEXT_MAX = 1000;
 const NAME_MAX = 80;
+
+/* На одну строку — до 10 отзывов, строк не больше трёх. */
+const ROW_CAPACITY = 10;
+const MAX_ROWS = 3;
+
+/* Скорость прокрутки — px/сек, и нижняя граница длительности,
+   чтобы лента с парой карточек не носилась слишком быстро. */
+const SCROLL_SPEED = 45;
+const MIN_DURATION = 14;
+
+interface ReviewCardProps {
+  review: Review;
+  projectTitle?: string;
+}
+
+const ReviewCard = ({
+  review,
+  projectTitle,
+}: ReviewCardProps) => (
+  <article className={styles.marqueeCard}>
+    <StarRating
+      value={review.rating}
+      size="sm"
+    />
+
+    <p className={styles.marqueeText}>
+      {review.text}
+    </p>
+
+    <div className={styles.meta}>
+      <span className={styles.name}>
+        {review.name}
+      </span>
+
+      {projectTitle && (
+        <Link
+          to={`/projects/${review.project_id}`}
+          className={styles.projectTag}
+        >
+          {projectTitle}
+        </Link>
+      )}
+    </div>
+  </article>
+);
+
+interface MarqueeRowProps {
+  reviews: Review[];
+  reverse: boolean;
+  projectTitles: Record<string, string>;
+  knownProjectIds: Set<string>;
+}
+
+/*
+ * Одна строка отзывов. Пока все карточки помещаются в ширину —
+ * стоят неподвижно по центру. Как только не помещаются — едет
+ * туда-обратно (CSS animation-direction: alternate), никогда не
+ * "перескакивая" обратно к началу — в отличие от привычного трюка
+ * с бесконечной лентой (двойной контент + translateX(-50%)), тут
+ * нечему рассинхронизироваться и не с чем "срываться": дистанция
+ * и скорость честно посчитаны из реальной ширины содержимого, а
+ * сами отзывы никогда не дублируются в разметке.
+ */
+const MarqueeRow = ({
+  reviews,
+  reverse,
+  projectTitles,
+  knownProjectIds,
+}: MarqueeRowProps) => {
+  const rowRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const trackRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const [overflow, setOverflow] =
+    useState(0);
+
+  const [hovered, setHovered] =
+    useState(false);
+
+  const [locked, setLocked] =
+    useState(false);
+
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    const track = trackRef.current;
+
+    if (!row || !track) {
+      return;
+    }
+
+    const measure = () => {
+      setOverflow(
+        Math.max(
+          0,
+          track.scrollWidth - row.clientWidth
+        )
+      );
+    };
+
+    measure();
+
+    const observer = new ResizeObserver(
+      measure
+    );
+
+    observer.observe(row);
+    observer.observe(track);
+
+    return () => observer.disconnect();
+  }, [reviews.length]);
+
+  useEffect(() => {
+    if (!locked) {
+      return;
+    }
+
+    const handleClickOutside = (
+      event: MouseEvent
+    ) => {
+      if (
+        rowRef.current &&
+        !rowRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setLocked(false);
+      }
+    };
+
+    document.addEventListener(
+      "click",
+      handleClickOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "click",
+        handleClickOutside
+      );
+  }, [locked]);
+
+  const isScrolling = overflow > 0;
+
+  const isPaused = hovered || locked;
+
+  const duration = Math.max(
+    overflow / SCROLL_SPEED,
+    MIN_DURATION
+  );
+
+  return (
+    <div
+      ref={rowRef}
+      className={`${styles.marqueeRow} ${
+        isScrolling ? styles.masked : ""
+      }`}
+    >
+      <div
+        ref={trackRef}
+        className={`${styles.track} ${
+          isScrolling
+            ? styles.trackScrolling
+            : styles.trackStatic
+        } ${
+          reverse ? styles.trackReverse : ""
+        } ${
+          isScrolling && isPaused
+            ? styles.trackPaused
+            : ""
+        }`}
+        style={
+          isScrolling
+            ? ({
+                "--scroll-distance": `${overflow}px`,
+                "--scroll-duration": `${duration}s`,
+              } as CSSProperties)
+            : undefined
+        }
+        onMouseEnter={() =>
+          isScrolling && setHovered(true)
+        }
+        onMouseLeave={() =>
+          setHovered(false)
+        }
+        onClick={() =>
+          isScrolling &&
+          setLocked((value) => !value)
+        }
+      >
+        {reviews.map((review) => (
+          <ReviewCard
+            key={review.id}
+            review={review}
+            projectTitle={
+              review.project_id &&
+              knownProjectIds.has(
+                review.project_id
+              )
+                ? projectTitles[
+                    review.project_id
+                  ]
+                : undefined
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 /*
  * Раздел сам скрывается, пока не настроен Supabase (см.
@@ -74,62 +286,12 @@ const Reviews = () => {
   const [projectOnly, setProjectOnly] =
     useState(false);
 
-  /*
-   * Отзывов может стать много, поэтому вместо статичной сетки —
-   * две бегущие навстречу друг другу ленты (см. renderRow ниже).
-   * hoverRow гасится сам при уходе курсора, lockedRow — «залип»
-   * после клика и снимается только повторным кликом или кликом
-   * снаружи (см. эффект ниже). Пока это не важно (человеку с
-   * настройкой "меньше анимации" или пока отзывов совсем мало),
-   * показываем обычную сетку без движения.
-   */
-  const [hoverRow, setHoverRow] = useState<
-    "A" | "B" | null
-  >(null);
-
-  const [lockedRow, setLockedRow] = useState<
-    "A" | "B" | null
-  >(null);
-
   const [prefersReducedMotion] = useState(
     () =>
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches
   );
-
-  const marqueeRef =
-    useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!lockedRow) {
-      return;
-    }
-
-    const handleClickOutside = (
-      event: MouseEvent
-    ) => {
-      if (
-        marqueeRef.current &&
-        !marqueeRef.current.contains(
-          event.target as Node
-        )
-      ) {
-        setLockedRow(null);
-      }
-    };
-
-    document.addEventListener(
-      "click",
-      handleClickOutside
-    );
-
-    return () =>
-      document.removeEventListener(
-        "click",
-        handleClickOutside
-      );
-  }, [lockedRow]);
 
   const projects = getLocalizedProjects(
     language
@@ -162,140 +324,34 @@ const Reviews = () => {
       (!projectOnly || review.project_id)
   );
 
-  const rowA = filteredReviews.filter(
-    (_, index) => index % 2 === 0
+  /*
+   * Число строк растёт вместе с числом отзывов: до 10 — одна
+   * строка, до 20 — две, дальше — три и больше не прибавляем.
+   * Раскладываем по кругу, чтобы новые и старые отзывы не
+   * скапливались в одной строке.
+   */
+  const rowCount =
+    filteredReviews.length === 0
+      ? 0
+      : Math.min(
+          MAX_ROWS,
+          Math.max(
+            1,
+            Math.ceil(
+              filteredReviews.length /
+                ROW_CAPACITY
+            )
+          )
+        );
+
+  const rows: Review[][] = Array.from(
+    { length: rowCount },
+    () => []
   );
 
-  const rowB = filteredReviews.filter(
-    (_, index) => index % 2 === 1
-  );
-
-  /* Чем меньше отзывов в ленте, тем быстрее она крутится —
-     держим примерно одинаковую скорость движения. */
-  const rowDuration = (count: number) =>
-    Math.max(count * 7, 18);
-
-  const renderCard = (review: Review) => (
-    <article className={styles.marqueeCard}>
-      <StarRating
-        value={review.rating}
-        size="sm"
-      />
-
-      <p className={styles.marqueeText}>
-        {review.text}
-      </p>
-
-      <div className={styles.meta}>
-        <span className={styles.name}>
-          {review.name}
-        </span>
-
-        {review.project_id &&
-          knownProjectIds.has(
-            review.project_id
-          ) && (
-            <Link
-              to={`/projects/${review.project_id}`}
-              className={
-                styles.projectTag
-              }
-            >
-              {
-                projectTitles[
-                  review.project_id
-                ]
-              }
-            </Link>
-          )}
-      </div>
-    </article>
-  );
-
-  const renderRow = (
-    rowReviews: Review[],
-    rowKey: "A" | "B",
-    direction: "left" | "right"
-  ) => {
-    if (rowReviews.length === 0) {
-      return null;
-    }
-
-    const isPaused =
-      hoverRow === rowKey ||
-      lockedRow === rowKey;
-
-    return (
-      <div className={styles.marqueeRow}>
-        <div
-          className={`${styles.track} ${
-            direction === "right"
-              ? styles.trackRight
-              : ""
-          } ${
-            isPaused
-              ? styles.trackPaused
-              : ""
-          }`}
-          style={
-            {
-              "--marquee-duration": `${rowDuration(
-                rowReviews.length
-              )}s`,
-            } as CSSProperties
-          }
-          onMouseEnter={() =>
-            setHoverRow(rowKey)
-          }
-          onMouseLeave={() =>
-            setHoverRow((current) =>
-              current === rowKey
-                ? null
-                : current
-            )
-          }
-          onFocus={() =>
-            setHoverRow(rowKey)
-          }
-          onBlur={() =>
-            setHoverRow((current) =>
-              current === rowKey
-                ? null
-                : current
-            )
-          }
-          onClick={() =>
-            setLockedRow((current) =>
-              current === rowKey
-                ? null
-                : rowKey
-            )
-          }
-        >
-          {/*
-           * Лента показана дважды подряд, чтобы прокрутка на
-           * -50% выглядела бесконечной без рывка на стыке.
-           * Второй показ спрятан от читалок экрана — это те же
-           * самые отзывы, не новые.
-           */}
-          {rowReviews.map((review) => (
-            <div key={review.id}>
-              {renderCard(review)}
-            </div>
-          ))}
-
-          {rowReviews.map((review) => (
-            <div
-              key={`${review.id}-dup`}
-              aria-hidden="true"
-            >
-              {renderCard(review)}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  filteredReviews.forEach((review, index) => {
+    rows[index % rowCount]?.push(review);
+  });
 
   useEffect(() => {
     if (!supabase) {
@@ -614,17 +670,22 @@ const Reviews = () => {
                 styles.marqueeWrap
               }
             >
-              <div ref={marqueeRef}>
-                {renderRow(
-                  rowA,
-                  "A",
-                  "left"
-                )}
-                {renderRow(
-                  rowB,
-                  "B",
-                  "right"
-                )}
+              <div>
+                {rows.map((row, index) => (
+                  <MarqueeRow
+                    key={index}
+                    reviews={row}
+                    reverse={
+                      index % 2 === 1
+                    }
+                    projectTitles={
+                      projectTitles
+                    }
+                    knownProjectIds={
+                      knownProjectIds
+                    }
+                  />
+                ))}
               </div>
             </Reveal>
           )}

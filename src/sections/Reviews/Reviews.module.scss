@@ -183,7 +183,14 @@
 
   width: 100%;
 
-  /* края растворяются, а не обрезаются жёсткой линией */
+  & + & {
+    margin-top: 20px;
+  }
+}
+
+/* края растворяются, а не обрезаются жёсткой линией — только
+   пока в строке реально есть что прокручивать */
+.masked {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
@@ -198,10 +205,6 @@
     black 94%,
     transparent
   );
-
-  & + & {
-    margin-top: 20px;
-  }
 }
 
 .track {
@@ -209,45 +212,55 @@
 
   gap: 20px;
 
-  width: max-content;
   padding: 6px 0;
+}
+
+/* Помещаются все — просто стоят по центру, никакого движения. */
+.trackStatic {
+  width: 100%;
+
+  justify-content: center;
+}
+
+/*
+ * Не помещаются — едут туда-обратно (CSS animation-direction:
+ * alternate). Дистанция и скорость посчитаны из настоящей ширины
+ * содержимого (см. MarqueeRow в Reviews.tsx), поэтому в конце
+ * пути лента плавно разворачивается, а не дёргается назад к
+ * началу — отзывы нигде не дублируются в разметке ради петли.
+ */
+.trackScrolling {
+  width: max-content;
 
   cursor: pointer;
 
-  animation: marqueeLeft
-    var(--marquee-duration, 30s) linear
-    infinite;
-
-  &:focus-visible {
-    outline: none;
-  }
+  animation-name: marqueeScroll;
+  animation-duration: var(
+    --scroll-duration,
+    20s
+  );
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-.trackRight {
-  animation-name: marqueeRight;
+.trackReverse {
+  animation-direction: alternate-reverse;
 }
 
 .trackPaused {
   animation-play-state: paused;
 }
 
-@keyframes marqueeLeft {
+@keyframes marqueeScroll {
   from {
     transform: translateX(0);
   }
 
   to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes marqueeRight {
-  from {
-    transform: translateX(-50%);
-  }
-
-  to {
-    transform: translateX(0);
+    transform: translateX(
+      calc(-1 * var(--scroll-distance, 0px))
+    );
   }
 }
 
@@ -304,7 +317,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track {
+  .trackScrolling {
     animation: none;
   }
 }
