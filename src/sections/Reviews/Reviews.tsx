@@ -1,6 +1,8 @@
 import {
   useEffect,
+  useRef,
   useState,
+  type CSSProperties,
   type FormEvent,
 } from "react";
 
@@ -72,6 +74,63 @@ const Reviews = () => {
   const [projectOnly, setProjectOnly] =
     useState(false);
 
+  /*
+   * Отзывов может стать много, поэтому вместо статичной сетки —
+   * две бегущие навстречу друг другу ленты (см. renderRow ниже).
+   * hoverRow гасится сам при уходе курсора, lockedRow — «залип»
+   * после клика и снимается только повторным кликом или кликом
+   * снаружи (см. эффект ниже). Пока это не важно (человеку с
+   * настройкой "меньше анимации" или пока отзывов совсем мало),
+   * показываем обычную сетку без движения.
+   */
+  const [hoverRow, setHoverRow] = useState<
+    "A" | "B" | null
+  >(null);
+
+  const [lockedRow, setLockedRow] = useState<
+    "A" | "B" | null
+  >(null);
+
+  const [prefersReducedMotion] = useState(
+    () =>
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+  );
+
+  const marqueeRef =
+    useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!lockedRow) {
+      return;
+    }
+
+    const handleClickOutside = (
+      event: MouseEvent
+    ) => {
+      if (
+        marqueeRef.current &&
+        !marqueeRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setLockedRow(null);
+      }
+    };
+
+    document.addEventListener(
+      "click",
+      handleClickOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "click",
+        handleClickOutside
+      );
+  }, [lockedRow]);
+
   const projects = getLocalizedProjects(
     language
   );
@@ -102,6 +161,141 @@ const Reviews = () => {
         review.rating === ratingFilter) &&
       (!projectOnly || review.project_id)
   );
+
+  const rowA = filteredReviews.filter(
+    (_, index) => index % 2 === 0
+  );
+
+  const rowB = filteredReviews.filter(
+    (_, index) => index % 2 === 1
+  );
+
+  /* Чем меньше отзывов в ленте, тем быстрее она крутится —
+     держим примерно одинаковую скорость движения. */
+  const rowDuration = (count: number) =>
+    Math.max(count * 7, 18);
+
+  const renderCard = (review: Review) => (
+    <article className={styles.marqueeCard}>
+      <StarRating
+        value={review.rating}
+        size="sm"
+      />
+
+      <p className={styles.marqueeText}>
+        {review.text}
+      </p>
+
+      <div className={styles.meta}>
+        <span className={styles.name}>
+          {review.name}
+        </span>
+
+        {review.project_id &&
+          knownProjectIds.has(
+            review.project_id
+          ) && (
+            <Link
+              to={`/projects/${review.project_id}`}
+              className={
+                styles.projectTag
+              }
+            >
+              {
+                projectTitles[
+                  review.project_id
+                ]
+              }
+            </Link>
+          )}
+      </div>
+    </article>
+  );
+
+  const renderRow = (
+    rowReviews: Review[],
+    rowKey: "A" | "B",
+    direction: "left" | "right"
+  ) => {
+    if (rowReviews.length === 0) {
+      return null;
+    }
+
+    const isPaused =
+      hoverRow === rowKey ||
+      lockedRow === rowKey;
+
+    return (
+      <div className={styles.marqueeRow}>
+        <div
+          className={`${styles.track} ${
+            direction === "right"
+              ? styles.trackRight
+              : ""
+          } ${
+            isPaused
+              ? styles.trackPaused
+              : ""
+          }`}
+          style={
+            {
+              "--marquee-duration": `${rowDuration(
+                rowReviews.length
+              )}s`,
+            } as CSSProperties
+          }
+          onMouseEnter={() =>
+            setHoverRow(rowKey)
+          }
+          onMouseLeave={() =>
+            setHoverRow((current) =>
+              current === rowKey
+                ? null
+                : current
+            )
+          }
+          onFocus={() =>
+            setHoverRow(rowKey)
+          }
+          onBlur={() =>
+            setHoverRow((current) =>
+              current === rowKey
+                ? null
+                : current
+            )
+          }
+          onClick={() =>
+            setLockedRow((current) =>
+              current === rowKey
+                ? null
+                : rowKey
+            )
+          }
+        >
+          {/*
+           * Лента показана дважды подряд, чтобы прокрутка на
+           * -50% выглядела бесконечной без рывка на стыке.
+           * Второй показ спрятан от читалок экрана — это те же
+           * самые отзывы, не новые.
+           */}
+          {rowReviews.map((review) => (
+            <div key={review.id}>
+              {renderCard(review)}
+            </div>
+          ))}
+
+          {rowReviews.map((review) => (
+            <div
+              key={`${review.id}-dup`}
+              aria-hidden="true"
+            >
+              {renderCard(review)}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (!supabase) {
@@ -340,75 +534,100 @@ const Reviews = () => {
             </p>
           )}
 
-        {filteredReviews.length > 0 && (
-          <div className={styles.grid}>
-            {filteredReviews.map(
-              (review, index) => (
-                <Reveal
-                  key={review.id}
-                  delay={
-                    (index % 3) * 90
-                  }
-                  className={styles.cell}
-                >
-                  <article
+        {filteredReviews.length > 0 &&
+          prefersReducedMotion && (
+            <div className={styles.grid}>
+              {filteredReviews.map(
+                (review, index) => (
+                  <Reveal
+                    key={review.id}
+                    delay={
+                      (index % 3) * 90
+                    }
                     className={
-                      styles.card
+                      styles.cell
                     }
                   >
-                    <StarRating
-                      value={
-                        review.rating
-                      }
-                      size="sm"
-                    />
-
-                    <p
+                    <article
                       className={
-                        styles.text
+                        styles.card
                       }
                     >
-                      {review.text}
-                    </p>
+                      <StarRating
+                        value={
+                          review.rating
+                        }
+                        size="sm"
+                      />
 
-                    <div
-                      className={
-                        styles.meta
-                      }
-                    >
-                      <span
+                      <p
                         className={
-                          styles.name
+                          styles.text
                         }
                       >
-                        {review.name}
-                      </span>
+                        {review.text}
+                      </p>
 
-                      {review.project_id &&
-                        knownProjectIds.has(
-                          review.project_id
-                        ) && (
-                          <Link
-                            to={`/projects/${review.project_id}`}
-                            className={
-                              styles.projectTag
-                            }
-                          >
-                            {
-                              projectTitles[
-                                review
-                                  .project_id
-                              ]
-                            }
-                          </Link>
-                        )}
-                    </div>
-                  </article>
-                </Reveal>
-              )
-            )}
-          </div>
-        )}
+                      <div
+                        className={
+                          styles.meta
+                        }
+                      >
+                        <span
+                          className={
+                            styles.name
+                          }
+                        >
+                          {review.name}
+                        </span>
+
+                        {review.project_id &&
+                          knownProjectIds.has(
+                            review.project_id
+                          ) && (
+                            <Link
+                              to={`/projects/${review.project_id}`}
+                              className={
+                                styles.projectTag
+                              }
+                            >
+                              {
+                                projectTitles[
+                                  review
+                                    .project_id
+                                ]
+                              }
+                            </Link>
+                          )}
+                      </div>
+                    </article>
+                  </Reveal>
+                )
+              )}
+            </div>
+          )}
+
+        {filteredReviews.length > 0 &&
+          !prefersReducedMotion && (
+            <Reveal
+              className={
+                styles.marqueeWrap
+              }
+            >
+              <div ref={marqueeRef}>
+                {renderRow(
+                  rowA,
+                  "A",
+                  "left"
+                )}
+                {renderRow(
+                  rowB,
+                  "B",
+                  "right"
+                )}
+              </div>
+            </Reveal>
+          )}
 
         <Reveal
           className={styles.formWrap}

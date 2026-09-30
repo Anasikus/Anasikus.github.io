@@ -172,6 +172,143 @@
   white-space: pre-wrap;
 }
 
+/* ---------- бегущие навстречу друг другу ленты ---------- */
+
+.marqueeWrap {
+  margin-bottom: 56px;
+}
+
+.marqueeRow {
+  overflow: hidden;
+
+  width: 100%;
+
+  /* края растворяются, а не обрезаются жёсткой линией */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+
+  & + & {
+    margin-top: 20px;
+  }
+}
+
+.track {
+  display: flex;
+
+  gap: 20px;
+
+  width: max-content;
+  padding: 6px 0;
+
+  cursor: pointer;
+
+  animation: marqueeLeft
+    var(--marquee-duration, 30s) linear
+    infinite;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.trackRight {
+  animation-name: marqueeRight;
+}
+
+.trackPaused {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.marqueeCard {
+  display: flex;
+
+  flex: 0 0 auto;
+  flex-direction: column;
+
+  gap: 16px;
+
+  width: 340px;
+  padding: 28px;
+
+  border: 1px solid $color-border;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.35);
+
+    background: rgba(168, 85, 247, 0.04);
+  }
+}
+
+.marqueeText {
+  flex: 1;
+  margin: 0;
+
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  color: $color-text;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+@media (max-width: 700px) {
+  .marqueeCard {
+    width: 280px;
+
+    padding: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}
+
 .meta {
   display: flex;
 
