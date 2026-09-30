@@ -66,6 +66,12 @@ const Reviews = () => {
 
   const [tried, setTried] = useState(false);
 
+  const [ratingFilter, setRatingFilter] =
+    useState<number | null>(null);
+
+  const [projectOnly, setProjectOnly] =
+    useState(false);
+
   const projects = getLocalizedProjects(
     language
   );
@@ -79,6 +85,22 @@ const Reviews = () => {
 
   const knownProjectIds = new Set(
     projects.map((project) => project.id)
+  );
+
+  /*
+   * Оценки, которые реально встречаются среди отзывов — чтобы
+   * не показывать пилюлю "1★", если единиц никто не ставил
+   * (тот же приём, что и с категориями на странице /projects).
+   */
+  const availableRatings = Array.from(
+    new Set(reviews.map((review) => review.rating))
+  ).sort((a, b) => b - a);
+
+  const filteredReviews = reviews.filter(
+    (review) =>
+      (ratingFilter === null ||
+        review.rating === ratingFilter) &&
+      (!projectOnly || review.project_id)
   );
 
   useEffect(() => {
@@ -232,8 +254,95 @@ const Reviews = () => {
         )}
 
         {reviews.length > 0 && (
+          <div
+            className={styles.filters}
+            role="tablist"
+          >
+            {[null, ...availableRatings].map(
+              (ratingValue) => (
+                <button
+                  key={ratingValue ?? "all"}
+                  type="button"
+                  role="tab"
+                  aria-selected={
+                    ratingFilter ===
+                    ratingValue
+                  }
+                  className={`${
+                    styles.filter
+                  } ${
+                    ratingFilter ===
+                    ratingValue
+                      ? styles.filterActive
+                      : ""
+                  }`}
+                  onClick={() =>
+                    setRatingFilter(
+                      ratingValue
+                    )
+                  }
+                >
+                  {ratingValue === null
+                    ? t.reviews.filterAll
+                    : `${ratingValue} ★`}
+
+                  <span>
+                    {ratingValue === null
+                      ? reviews.length
+                      : reviews.filter(
+                          (review) =>
+                            review.rating ===
+                            ratingValue
+                        ).length}
+                  </span>
+                </button>
+              )
+            )}
+
+            <button
+              type="button"
+              role="tab"
+              aria-selected={projectOnly}
+              className={`${
+                styles.filter
+              } ${
+                projectOnly
+                  ? styles.filterActive
+                  : ""
+              }`}
+              onClick={() =>
+                setProjectOnly(
+                  (value) => !value
+                )
+              }
+            >
+              {
+                t.reviews
+                  .filterProjectOnly
+              }
+
+              <span>
+                {
+                  reviews.filter(
+                    (review) =>
+                      review.project_id
+                  ).length
+                }
+              </span>
+            </button>
+          </div>
+        )}
+
+        {reviews.length > 0 &&
+          filteredReviews.length === 0 && (
+            <p className={styles.empty}>
+              {t.reviews.emptyFiltered}
+            </p>
+          )}
+
+        {filteredReviews.length > 0 && (
           <div className={styles.grid}>
-            {reviews.map(
+            {filteredReviews.map(
               (review, index) => (
                 <Reveal
                   key={review.id}

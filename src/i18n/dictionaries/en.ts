@@ -112,8 +112,12 @@ const en: UiDictionary = {
       "Reviews from clients. If we've worked together, I'd be glad if you left one.",
     empty:
       "Nothing here yet — be the first to leave a review.",
+    emptyFiltered:
+      "Nothing matches this filter yet.",
     loadError:
       "Couldn't load reviews. Try refreshing the page.",
+    filterAll: "All",
+    filterProjectOnly: "With a project only",
     addButton: "Leave a review",
     cancelButton: "Cancel",
     formName: "Name",
