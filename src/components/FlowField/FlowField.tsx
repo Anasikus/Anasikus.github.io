@@ -160,6 +160,17 @@ const FlowField = () => {
       return;
     }
 
+    /*
+     * На touch-устройствах курсора нет, поэтому и вихрь вокруг
+     * него, и сам смысл гонять анимацию 60 раз в секунду ради
+     * эффекта, который никто не увидит в движении, отпадают —
+     * это была одна из самых тяжёлых частей главного экрана на
+     * телефоне. Рисуем один статичный кадр вместо цикла.
+     */
+    const isCoarsePointer = window.matchMedia(
+      "(pointer: coarse)"
+    ).matches;
+
     const dpr = Math.min(
       window.devicePixelRatio || 1,
       2
@@ -302,7 +313,9 @@ const FlowField = () => {
       return Math.atan2(dirY, dirX);
     };
 
-    const tick = (time: number) => {
+    const renderFrame = (
+      time: number
+    ) => {
       if (targetPointer) {
         pointer = pointer
           ? {
@@ -388,11 +401,21 @@ const FlowField = () => {
       }
 
       ctx.globalAlpha = 1;
+    };
+
+    const tick = (time: number) => {
+      renderFrame(time);
 
       rafId = requestAnimationFrame(tick);
     };
 
     const startLoop = () => {
+      if (isCoarsePointer) {
+        renderFrame(0);
+
+        return;
+      }
+
       if (rafId !== null) {
         return;
       }
@@ -427,7 +450,13 @@ const FlowField = () => {
     buildLines();
 
     const resizeObserver = new ResizeObserver(
-      () => buildLines()
+      () => {
+        buildLines();
+
+        if (isCoarsePointer) {
+          renderFrame(0);
+        }
+      }
     );
 
     resizeObserver.observe(container);
@@ -451,17 +480,21 @@ const FlowField = () => {
      * (клики должны проходить сквозь него к контенту), поэтому
      * сам он события не получит — слушаем на window, а нужные
      * координаты пересчитываем относительно контейнера вручную.
+     * На touch-устройствах курсора не бывает, поэтому вихрь
+     * вокруг него не нужен — слушатели не вешаем совсем.
      */
-    window.addEventListener(
-      "pointermove",
-      handlePointerMove,
-      { passive: true }
-    );
+    if (!isCoarsePointer) {
+      window.addEventListener(
+        "pointermove",
+        handlePointerMove,
+        { passive: true }
+      );
 
-    window.addEventListener(
-      "pointerleave",
-      handlePointerLeave
-    );
+      window.addEventListener(
+        "pointerleave",
+        handlePointerLeave
+      );
+    }
 
     return () => {
       window.removeEventListener(

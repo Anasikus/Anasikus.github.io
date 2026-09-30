@@ -87,31 +87,60 @@ const Stats = () => {
 
   const [status, setStatus] = useState<Status>("loading");
 
+  /*
+   * Запросы к api.github.com (по одному на репозиторий) не самые
+   * быстрые и раньше уходили сразу при открытии сайта — даже
+   * если посетитель до этого раздела так и не долистает.
+   * На медленном мобильном интернете они соревновались за канал
+   * с действительно нужными для первого экрана файлами. Теперь
+   * ждём, пока раздел не окажется рядом с экраном.
+   */
   useLayoutEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
     let cancelled = false;
 
-    fetchTechStats()
-      .then((result) => {
-        if (cancelled) {
-          return;
-        }
+    const load = () => {
+      fetchTechStats()
+        .then((result) => {
+          if (cancelled) {
+            return;
+          }
 
-        setStats(result);
+          setStats(result);
 
-        setStatus(
-          result.languages.length === 0
-            ? "error"
-            : "ready"
-        );
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setStatus("error");
+          setStatus(
+            result.languages.length === 0
+              ? "error"
+              : "ready"
+          );
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setStatus("error");
+          }
+        });
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          load();
+          observer.disconnect();
         }
-      });
+      },
+      { rootMargin: "400px 0px" }
+    );
+
+    observer.observe(section);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
   }, []);
 

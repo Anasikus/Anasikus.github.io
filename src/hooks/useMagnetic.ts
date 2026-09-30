@@ -29,7 +29,17 @@ export const useMagnetic = <
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-    if (prefersReducedMotion) {
+    /*
+     * "Магнитный" сдвиг рассчитан на курсор мыши — на
+     * touch-устройствах он бесполезен, а слушатели указателя
+     * всё равно ничего не почувствуют без наведения.
+     */
+    const isCoarsePointer =
+      window.matchMedia(
+        "(pointer: coarse)"
+      ).matches;
+
+    if (prefersReducedMotion || isCoarsePointer) {
       return;
     }
 

@@ -4,12 +4,13 @@ import {
   type FormEvent,
 } from "react";
 
-import type { Session } from "@supabase/supabase-js";
+import type { Session } from "@supabase/auth-js";
 
 import {
   supabase,
   isSupabaseConfigured,
 } from "../../lib/supabaseClient";
+import { auth } from "../../lib/supabaseAuth";
 import type { Review } from "../../data/review";
 
 import StarRating from "../../components/StarRating/StarRating";
@@ -114,11 +115,11 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    if (!supabase) {
+    if (!auth) {
       return;
     }
 
-    supabase.auth
+    auth
       .getSession()
       .then(({ data }) => {
         setSession(data.session);
@@ -131,7 +132,7 @@ const Admin = () => {
 
     const {
       data: subscription,
-    } = supabase.auth.onAuthStateChange(
+    } = auth.onAuthStateChange(
       (_event, nextSession) => {
         setSession(nextSession);
 
@@ -174,7 +175,7 @@ const Admin = () => {
   ) => {
     event.preventDefault();
 
-    if (!supabase) {
+    if (!auth) {
       return;
     }
 
@@ -182,12 +183,10 @@ const Admin = () => {
     setLoginError("");
 
     const { error } =
-      await supabase.auth.signInWithPassword(
-        {
-          email: email.trim(),
-          password,
-        }
-      );
+      await auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
 
     setLoggingIn(false);
 
@@ -374,7 +373,7 @@ const Admin = () => {
             type="button"
             className={styles.signOut}
             onClick={() =>
-              supabase?.auth.signOut()
+              auth?.signOut()
             }
           >
             Выйти

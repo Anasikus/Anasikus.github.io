@@ -116,6 +116,17 @@ const AmbientBackground = ({
     const ctx = canvas?.getContext("2d") ?? null;
     const sprite = ctx ? getDotSprite() : null;
 
+    /*
+     * На touch-устройствах курсора нет: параллакс по мыши и
+     * подсветка точек вокруг указателя всё равно не сработают,
+     * а цикл на 60 кадров/сек не бесплатный. Рисуем сетку одним
+     * статичным кадром вместо анимации — как раз то, что заметно
+     * "тормозило" мобильную версию.
+     */
+    const isCoarsePointer = window.matchMedia(
+      "(pointer: coarse)"
+    ).matches;
+
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
@@ -223,7 +234,7 @@ const AmbientBackground = ({
       );
     };
 
-    const tick = () => {
+    const renderFrame = () => {
       currentX +=
         (targetX - currentX) *
         LERP_FACTOR;
@@ -372,11 +383,21 @@ const AmbientBackground = ({
 
         ctx.globalAlpha = 1;
       }
+    };
+
+    const tick = () => {
+      renderFrame();
 
       rafId = requestAnimationFrame(tick);
     };
 
     const startLoop = () => {
+      if (isCoarsePointer) {
+        renderFrame();
+
+        return;
+      }
+
       if (rafId !== null) {
         return;
       }
@@ -393,8 +414,18 @@ const AmbientBackground = ({
 
     rebuildGrid();
 
+    if (isCoarsePointer) {
+      renderFrame();
+    }
+
     const resizeObserver = new ResizeObserver(
-      () => rebuildGrid()
+      () => {
+        rebuildGrid();
+
+        if (isCoarsePointer) {
+          renderFrame();
+        }
+      }
     );
 
     resizeObserver.observe(container);
@@ -413,16 +444,22 @@ const AmbientBackground = ({
 
     intersectionObserver.observe(container);
 
-    window.addEventListener(
-      "pointermove",
-      handlePointerMove,
-      { passive: true }
-    );
+    /*
+     * Параллакс блобов и подсветка точек рассчитаны на мышь —
+     * на touch-устройствах курсора нет, слушатели не нужны.
+     */
+    if (!isCoarsePointer) {
+      window.addEventListener(
+        "pointermove",
+        handlePointerMove,
+        { passive: true }
+      );
 
-    window.addEventListener(
-      "pointerleave",
-      handlePointerLeave
-    );
+      window.addEventListener(
+        "pointerleave",
+        handlePointerLeave
+      );
+    }
 
     return () => {
       window.removeEventListener(
