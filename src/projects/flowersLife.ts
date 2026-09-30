@@ -30,5 +30,16 @@ export const flowersLife: Project = {
     to: "#a855f7",
   },
 
+  previewImage: "/projects/flowers-life/cover.webp",
+
+  gallery: [
+    "/projects/flowers-life/cover.webp",
+    "/projects/flowers-life/shot-1.webp",
+    "/projects/flowers-life/shot-2.webp",
+    "/projects/flowers-life/shot-3.webp",
+    "/projects/flowers-life/shot-4.webp",
+    "/projects/flowers-life/shot-5.webp",
+  ],
+
   featured: true,
 };
