@@ -81,6 +81,15 @@
   will-change: transform;
 
   /*
+   * Пока раздел не показался на экране, анимация стоит на
+   * паузе — на странице одновременно живёт больше десятка таких
+   * пятен (своё в каждой секции), и крутить их все разом,
+   * включая те, что ещё далеко внизу, было той самой "лишней
+   * слежкой", от которой на телефоне всё подвисало.
+   */
+  animation-play-state: paused;
+
+  /*
    * Базовое положение — тот же var(), что участвует
    * в keyframes ниже, со своим fallback на случай, если
    * JS ещё не успел выставить значение (сразу после
@@ -119,7 +128,16 @@
       transparent 70%
     );
 
-  animation: driftOne 20s ease-in-out infinite;
+  /*
+   * Долгота записана через отдельные animation-* свойства, а не
+   * сокращённым "animation: ..." — сокращённая запись сбрасывает
+   * ВСЕ входящие в неё свойства разом, включая animation-play-state
+   * из .blob выше, и пауза переставала работать.
+   */
+  animation-name: driftOne;
+  animation-duration: 20s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 .blobTwo {
@@ -139,7 +157,10 @@
       transparent 70%
     );
 
-  animation: driftTwo 24s ease-in-out infinite;
+  animation-name: driftTwo;
+  animation-duration: 24s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 .blobThree {
@@ -159,7 +180,10 @@
       transparent 70%
     );
 
-  animation: driftThree 27s ease-in-out infinite;
+  animation-name: driftThree;
+  animation-duration: 27s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 /*
@@ -230,6 +254,10 @@
       )
       scale(1.15);
   }
+}
+
+.active .blob {
+  animation-play-state: running;
 }
 
 @media (prefers-reduced-motion: reduce) {

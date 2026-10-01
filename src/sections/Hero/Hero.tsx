@@ -31,7 +31,14 @@ const Hero = () => {
   const { t } = useLanguage();
   const heroRef = useRef<HTMLElement | null>(null);
 
-  const [showLines, setShowLines] =
+  /*
+   * Декоративный слой (фоновые пятна, пульсирующее свечение,
+   * линии) показываем только после того, как браузер освободится
+   * от показа заголовка, текста и кнопок — это самое "неважное",
+   * что есть на первом экране, и именно оно грузило телефон
+   * сильнее всего сразу при открытии сайта.
+   */
+  const [showDecor, setShowDecor] =
     useState(false);
 
   const introRef = useRef<HTMLDivElement | null>(null);
@@ -45,10 +52,10 @@ const Hero = () => {
 
   /*
    * Ждём, пока браузер освободится после первой отрисовки (или
-   * не больше 2 секунд, чтобы линии всё равно появились, если
-   * браузер вечно "занят"), и только тогда запрашиваем файл
-   * с линиями и показываем их — текст и кнопки первого экрана
-   * от них никак не зависят.
+   * не больше 2 секунд, чтобы декор всё равно появился, если
+   * браузер вечно "занят"), и только тогда включаем фоновые пятна,
+   * свечение и линии — текст и кнопки первого экрана от них
+   * никак не зависят.
    */
   useEffect(() => {
     const requestIdle =
@@ -61,7 +68,7 @@ const Hero = () => {
       window.clearTimeout;
 
     const id = requestIdle(
-      () => setShowLines(true),
+      () => setShowDecor(true),
       { timeout: 2000 }
     );
 
@@ -163,31 +170,78 @@ const Hero = () => {
           },
           "-=0.4"
         );
-
-      gsap.to(glowRef.current, {
-        scale: 1.15,
-        opacity: 0.75,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
+
+  /*
+   * Пульсация свечения — чисто декоративная и бесконечная, поэтому
+   * заводим её отдельно от входной анимации текста (чтобы не
+   * отнимать у неё процессор в первые же секунды) и останавливаем,
+   * как только первый экран уходит за край — крутить её, пока
+   * человек уже читает другой раздел, незачем.
+   */
+  useEffect(() => {
+    if (!showDecor) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const tween = gsap.to(glowRef.current, {
+      scale: 1.15,
+      opacity: 0.75,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    const hero = heroRef.current;
+
+    const observer = hero
+      ? new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              tween.resume();
+            } else {
+              tween.pause();
+            }
+          },
+          { rootMargin: "200px 0px" }
+        )
+      : null;
+
+    if (hero && observer) {
+      observer.observe(hero);
+    }
+
+    return () => {
+      observer?.disconnect();
+      tween.kill();
+    };
+  }, [showDecor]);
 
   return (
     <section
       ref={heroRef}
       className={styles.hero}
     >
-      <AmbientBackground />
+      {showDecor && (
+        <>
+          <AmbientBackground />
 
-      {showLines && (
-        <Suspense fallback={null}>
-          <FlowField />
-        </Suspense>
+          <Suspense fallback={null}>
+            <FlowField />
+          </Suspense>
+        </>
       )}
 
       <div className={styles.background} />

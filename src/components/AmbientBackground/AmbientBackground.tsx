@@ -433,6 +433,11 @@ const AmbientBackground = ({
     const intersectionObserver =
       new IntersectionObserver(
         ([entry]) => {
+          container.classList.toggle(
+            styles.active,
+            entry.isIntersecting
+          );
+
           if (entry.isIntersecting) {
             startLoop();
           } else {
